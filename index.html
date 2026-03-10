@@ -197,82 +197,117 @@
     <!-- Pricing -->
     <section class="pricing" id="pricing">
         <h2>Simple, Transparent <span class="gradient-text">Pricing</span></h2>
-        <p style="color: var(--text-secondary); text-align:center; max-width:600px; margin: -8px auto 40px; font-size:17px;">Most companies charge $70-$500/month. We offer one-time scans at a fraction of the cost.</p>
-        <div class="pricing-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <p style="color: var(--text-secondary); text-align:center; max-width:650px; margin: -8px auto 16px; font-size:17px;">Other scanners lock you into $70-$500/month subscriptions. We give you everything in a single, one-time scan.</p>
+        <p style="color: var(--text-secondary); text-align:center; max-width:650px; margin: 0 auto 48px; font-size:14px; opacity:0.7;">No subscriptions · No hidden fees · Pay once, own your report forever</p>
+        <div class="pricing-grid">
+            <!-- FREE TIER -->
             <div class="price-card">
-                <div class="price-tier">Recon</div>
+                <div class="price-tier">Recon Scan</div>
                 <div class="price-amount">Free</div>
-                <div class="price-period">forever</div>
-                <ul class="price-features">
-                    <li>✓ Security Grade (A-F)</li>
-                    <li>✓ Risk Score (0-100)</li>
-                    <li>✓ Subdomain count</li>
-                    <li>✓ Live host detection</li>
-                    <li>✓ Technology fingerprinting</li>
-                    <li class="locked-feature">✗ Vulnerability details</li>
-                    <li class="locked-feature">✗ CVE identification</li>
-                    <li class="locked-feature">✗ PDF report</li>
-                    <li class="locked-feature">✗ Remediation steps</li>
-                </ul>
+                <div class="price-period">no signup needed</div>
+                
+                <div style="text-align:left; padding:0 4px;">
+                    <p style="font-size:12px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:16px 0 8px;">🔍 Discovery</p>
+                    <ul class="price-features">
+                        <li>✓ Security Grade (A-F rating)</li>
+                        <li>✓ Risk Score (0-100 scale)</li>
+                        <li>✓ Subdomain enumeration</li>
+                        <li>✓ Live host detection</li>
+                        <li>✓ Technology fingerprinting</li>
+                    </ul>
+                    
+                    <p style="font-size:12px; color:#6b7280; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:12px 0 8px;">🔒 Locked</p>
+                    <ul class="price-features">
+                        <li class="locked-feature">✗ Vulnerability details</li>
+                        <li class="locked-feature">✗ CVE identification</li>
+                        <li class="locked-feature">✗ PDF report</li>
+                        <li class="locked-feature">✗ Remediation guidance</li>
+                        <li class="locked-feature">✗ Compliance mapping</li>
+                    </ul>
+                </div>
+                
                 <button class="price-btn" onclick="document.getElementById('domainInput').focus()">Start Free Scan</button>
-                <p style="font-size:11px; color:var(--text-secondary); margin-top:8px;">No signup required</p>
+                <p style="font-size:11px; color:var(--text-secondary); margin-top:8px;">See your grade instantly — upgrade anytime</p>
             </div>
+
+            <!-- $49 QUICK SCAN -->
             <div class="price-card">
                 <div class="price-badge" style="background:linear-gradient(135deg,#22c55e,#16a34a);">Best Value</div>
                 <div class="price-tier">Quick Scan</div>
                 <div class="price-amount">$49</div>
-                <div class="price-period">one-time</div>
-                <ul class="price-features">
-                    <li>✓ Everything in Recon</li>
-                    <li>✓ <strong>Full vulnerability scan</strong></li>
-                    <li>✓ CVE detection (200+ tracked)</li>
-                    <li>✓ Secret exposure check</li>
-                    <li>✓ <strong>Professional PDF report</strong></li>
-                    <li>✓ Risk score with grade</li>
-                    <li>✓ Basic remediation steps</li>
-                    <li class="locked-feature">✗ OWASP Top 10 mapping</li>
-                    <li class="locked-feature">✗ Compliance mapping</li>
-                </ul>
-                <button class="price-btn" onclick="checkout('quick')">Get Quick Scan</button>
-                <p style="font-size:11px; color:#22c55e; margin-top:8px;">⚡ Results in 10 minutes</p>
+                <div class="price-period">one-time payment</div>
+                
+                <div style="text-align:left; padding:0 4px;">
+                    <p style="font-size:12px; color:#22c55e; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:16px 0 8px;">🔍 Everything in Recon, plus:</p>
+                    
+                    <p style="font-size:12px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:12px 0 8px;">⚡ Vulnerability Scanning</p>
+                    <ul class="price-features">
+                        <li>✓ <strong>Full vulnerability scan</strong></li>
+                        <li>✓ CVE detection (200+ actively tracked)</li>
+                        <li>✓ Secret & API key exposure check</li>
+                        <li>✓ Open port analysis</li>
+                    </ul>
+
+                    <p style="font-size:12px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:12px 0 8px;">📄 Professional Report</p>
+                    <ul class="price-features">
+                        <li>✓ <strong>Branded PDF report</strong></li>
+                        <li>✓ Security grade & risk score</li>
+                        <li>✓ Finding details with severity ratings</li>
+                        <li>✓ Basic remediation steps</li>
+                    </ul>
+                </div>
+                
+                <button class="price-btn" onclick="checkout('quick')">Get Quick Scan — $49</button>
+                <p style="font-size:11px; color:#22c55e; margin-top:8px;">⚡ Report delivered in 10 minutes</p>
             </div>
+
+            <!-- $199 DEEP SCAN -->
             <div class="price-card featured">
                 <div class="price-badge">Most Popular</div>
                 <div class="price-tier">Deep Scan</div>
                 <div class="price-amount">$199</div>
-                <div class="price-period">one-time</div>
-                <ul class="price-features">
-                    <li>✓ Everything in Quick Scan</li>
-                    <li>✓ <strong>OWASP Top 10 mapping</strong></li>
-                    <li>✓ <strong>PCI DSS / SOC2 / GDPR</strong> compliance check</li>
-                    <li>✓ <strong>Detailed remediation with code fixes</strong></li>
-                    <li>✓ SSL/TLS deep analysis</li>
-                    <li>✓ API endpoint discovery</li>
-                    <li>✓ <strong>Board-ready executive summary</strong></li>
-                    <li>✓ Priority email support</li>
-                    <li>✓ Re-scan comparison ready</li>
-                </ul>
-                <button class="price-btn featured-btn" onclick="checkout('deep')">Get Deep Scan</button>
-                <p style="font-size:11px; color:var(--accent); margin-top:8px;">🔥 Competitors charge $199/month for this</p>
+                <div class="price-period">one-time payment</div>
+                
+                <div style="text-align:left; padding:0 4px;">
+                    <p style="font-size:12px; color:#22c55e; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:16px 0 8px;">🔍 Everything in Quick Scan, plus:</p>
+
+                    <p style="font-size:12px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:12px 0 8px;">🛡️ Advanced Security Testing</p>
+                    <ul class="price-features">
+                        <li>✓ <strong>OWASP Top 10 vulnerability mapping</strong></li>
+                        <li>✓ SSL/TLS configuration deep analysis</li>
+                        <li>✓ API endpoint discovery & testing</li>
+                        <li>✓ Authentication bypass checks</li>
+                        <li>✓ Server misconfiguration detection</li>
+                    </ul>
+
+                    <p style="font-size:12px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:12px 0 8px;">📋 Compliance & Reporting</p>
+                    <ul class="price-features">
+                        <li>✓ <strong>PCI DSS compliance check</strong></li>
+                        <li>✓ <strong>SOC 2 readiness assessment</strong></li>
+                        <li>✓ <strong>GDPR security evaluation</strong></li>
+                        <li>✓ Board-ready executive summary</li>
+                    </ul>
+
+                    <p style="font-size:12px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin:12px 0 8px;">🔧 Remediation</p>
+                    <ul class="price-features">
+                        <li>✓ <strong>Step-by-step fix instructions</strong></li>
+                        <li>✓ Code-level remediation examples</li>
+                        <li>✓ Priority-ranked action plan</li>
+                        <li>✓ Re-scan comparison tracking</li>
+                        <li>✓ Priority email support</li>
+                    </ul>
+                </div>
+                
+                <button class="price-btn featured-btn" onclick="checkout('deep')">Get Deep Scan — $199</button>
+                <p style="font-size:11px; color:var(--accent); margin-top:8px;">🔥 Competitors charge $199/month — we charge once</p>
             </div>
-            <div class="price-card">
-                <div class="price-tier">Sentinel</div>
-                <div class="price-amount">$299</div>
-                <div class="price-period">per month</div>
-                <ul class="price-features">
-                    <li>✓ Everything in Deep Scan</li>
-                    <li>✓ <strong>Daily automated scans</strong></li>
-                    <li>✓ <strong>Real-time vulnerability alerts</strong></li>
-                    <li>✓ New CVE monitoring</li>
-                    <li>✓ Attack surface change detection</li>
-                    <li>✓ Monthly trend reports</li>
-                    <li>✓ <strong>Grade tracking over time</strong></li>
-                    <li>✓ Slack/Email/Discord alerts</li>
-                    <li>✓ Dedicated account manager</li>
-                </ul>
-                <button class="price-btn" onclick="checkout('sentinel')">Start Monitoring</button>
-                <p style="font-size:11px; color:var(--text-secondary); margin-top:8px;">Cancel anytime</p>
-            </div>
+        </div>
+
+        <!-- Enterprise CTA -->
+        <div style="text-align:center; margin-top:48px; padding:32px; border:1px solid rgba(99,102,241,0.2); border-radius:16px; background:rgba(99,102,241,0.05);">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">🏢 Need Enterprise-Level Security?</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px; font-size:15px;">Custom assessments, ongoing monitoring, and dedicated security consulting for large organizations.</p>
+            <button class="price-btn" onclick="checkout('enterprise')" style="display:inline-block; padding:12px 32px;">Contact Us for Custom Pricing</button>
         </div>
     </section>
 
