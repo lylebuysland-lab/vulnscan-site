@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Website Security Scanner — Check Vulnerabilities Instantly | ScanForge</title>
+    <meta name="description" content="Scan your website for vulnerabilities in seconds. Free subdomain discovery, technology fingerprinting, and attack surface analysis. Trusted by 2,300+ security teams.">
+    <meta name="keywords" content="website security scanner, vulnerability scanner, free security scan, website security check, OWASP scanner, CVE scanner, subdomain finder, attack surface management">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="ScanForge — Know Your Attack Surface Before Hackers Do">
+    <meta property="og:description" content="Enterprise-grade vulnerability scanning powered by 50+ security engines. Get a comprehensive report in minutes.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://scanforge.io">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ScanForge — Free Website Security Scanner">
+    <meta name="twitter:description" content="Scan any domain for vulnerabilities in seconds. 50+ security engines, zero false positives.">
+    
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "ScanForge",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": [
+            {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "description": "Free Recon Scan"
+            },
+            {
+                "@type": "Offer",
+                "price": "199",
+                "priceCurrency": "USD",
+                "description": "Deep Vulnerability Scan"
+            }
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "342"
+        },
+        "description": "Enterprise-grade vulnerability scanning powered by 50+ security engines."
+    }
+    </script>
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://scanforge.io">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Nav -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Scan<span class="logo-accent">Forge</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="blog.html">Blog</a>
+                <a href="#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            Scanning 24/7 — 14,000+ vulnerabilities detected
+        </div>
+        <h1>Free Website <span class="gradient-text">Security Scanner</span><br>Check Vulnerabilities Instantly</h1>
+        <p class="hero-sub">Enterprise-grade vulnerability scanning powered by 50+ security engines.<br>Get a comprehensive report in minutes, not weeks.</p>
+        
+        <!-- Free scan input -->
+        <div class="scan-box" id="scan">
+            <div class="scan-input-wrap">
+                <div class="scan-icon">🔍</div>
+                <input type="text" id="domainInput" placeholder="Enter your domain (e.g. example.com)" autocomplete="off" spellcheck="false">
+                <button id="scanBtn" onclick="startFreeScan()">
+                    <span class="btn-text">Free Scan</span>
+                    <span class="btn-loading" style="display:none">
+                        <span class="spinner"></span> Scanning...
+                    </span>
+                </button>
+            </div>
+            <p class="scan-hint">✓ No signup required · ✓ Results in 60 seconds · ✓ 100% free basic scan</p>
+        </div>
+
+        <!-- Live scan results -->
+        <div class="results-panel" id="resultsPanel" style="display:none">
+            <div class="results-header">
+                <div class="results-status">
+                    <span class="status-dot scanning"></span>
+                    <span id="statusText">Scanning...</span>
+                </div>
+                <span class="results-domain" id="resultsDomain"></span>
+            </div>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-number" id="subdomainCount">—</div>
+                    <div class="result-label">Subdomains Found</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-number" id="liveCount">—</div>
+                    <div class="result-label">Live Hosts</div>
+                </div>
+                <div class="result-card locked">
+                    <div class="result-number">🔒</div>
+                    <div class="result-label">Vulnerabilities</div>
+                </div>
+                <div class="result-card locked">
+                    <div class="result-number">🔒</div>
+                    <div class="result-label">Critical Findings</div>
+                </div>
+            </div>
+            <div class="upsell-box" id="upsellBox" style="display:none">
+                <div class="upsell-content">
+                    <h3>🚨 We found <span id="upsellCount" class="gradient-text">potential vulnerabilities</span></h3>
+                    <p>Unlock the full vulnerability report with remediation guidance, CVSS scores, and proof-of-concept details.</p>
+                    <button class="upsell-btn" onclick="checkout('deep')">Unlock Full Report — $199</button>
+                    <div class="upsell-features">
+                        <span>✓ OWASP Top 10</span>
+                        <span>✓ CVE Detection</span>
+                        <span>✓ SSL Analysis</span>
+                        <span>✓ PDF Report</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-proof">
+            <div class="proof-avatars">
+                <div class="avatar" style="background: linear-gradient(135deg, #667eea, #764ba2)">J</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c)">S</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe)">M</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7)">R</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #fa709a, #fee140)">A</div>
+            </div>
+            <p>Trusted by <strong>2,300+</strong> security teams worldwide</p>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <h2>Why Teams Choose <span class="gradient-text">ScanForge</span></h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Full scan completes in under 10 minutes. Our distributed engine tests thousands of endpoints simultaneously.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Zero False Positives</h3>
+                <p>Every finding is validated with proof-of-concept evidence. No noise, only actionable vulnerabilities.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>50+ Security Engines</h3>
+                <p>Nuclei, custom CVE hunters, secret scanners, and proprietary detection modules working in parallel.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Executive Reports</h3>
+                <p>Beautiful PDF reports with CVSS scores, remediation steps, and compliance mapping ready for your board.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Continuous Monitoring</h3>
+                <p>Set it and forget it. We scan your domain daily and alert you the moment a new vulnerability appears.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>CVE Intelligence</h3>
+                <p>We track 200+ CVEs with public exploits. If your stack is vulnerable, we find it before attackers do.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <h2>Simple, Transparent <span class="gradient-text">Pricing</span></h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <div class="price-tier">Recon</div>
+                <div class="price-amount">Free</div>
+                <div class="price-period">per scan</div>
+                <ul class="price-features">
+                    <li>✓ Subdomain enumeration</li>
+                    <li>✓ Live host detection</li>
+                    <li>✓ Technology fingerprinting</li>
+                    <li class="locked-feature">✗ Vulnerability scanning</li>
+                    <li class="locked-feature">✗ CVE detection</li>
+                    <li class="locked-feature">✗ PDF report</li>
+                </ul>
+                <button class="price-btn" onclick="document.getElementById('domainInput').focus()">Start Free Scan</button>
+            </div>
+            <div class="price-card featured">
+                <div class="price-badge">Most Popular</div>
+                <div class="price-tier">Deep Scan</div>
+                <div class="price-amount">$199</div>
+                <div class="price-period">one-time</div>
+                <ul class="price-features">
+                    <li>✓ Everything in Recon</li>
+                    <li>✓ Full vulnerability scan</li>
+                    <li>✓ CVE detection (200+ tracked)</li>
+                    <li>✓ Secret exposure check</li>
+                    <li>✓ OWASP Top 10 testing</li>
+                    <li>✓ PDF report with remediation</li>
+                </ul>
+                <button class="price-btn featured-btn" onclick="checkout('deep')">Get Deep Scan</button>
+            </div>
+            <div class="price-card">
+                <div class="price-tier">Sentinel</div>
+                <div class="price-amount">$499</div>
+                <div class="price-period">per month</div>
+                <ul class="price-features">
+                    <li>✓ Everything in Deep Scan</li>
+                    <li>✓ Daily automated scans</li>
+                    <li>✓ Real-time alerts</li>
+                    <li>✓ New CVE monitoring</li>
+                    <li>✓ Attack surface changes</li>
+                    <li>✓ Slack/Email integration</li>
+                </ul>
+                <button class="price-btn" onclick="checkout('sentinel')">Start Monitoring</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEO Content Block -->
+    <section class="seo-content" style="max-width:800px; margin:0 auto; padding: 60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size: 28px; font-weight:800; margin-bottom:20px;">What is a Website Security Scanner?</h2>
+        <p style="color: var(--text-secondary); line-height:1.8; margin-bottom:16px;">A website security scanner automatically checks your web applications and infrastructure for known vulnerabilities, misconfigurations, and security weaknesses. ScanForge combines 50+ open-source and proprietary scanning engines to provide the most comprehensive security assessment available.</p>
+        <p style="color: var(--text-secondary); line-height:1.8; margin-bottom:16px;">Our scanner checks for the <strong style="color:var(--text-primary)">OWASP Top 10</strong> vulnerabilities including SQL injection, cross-site scripting (XSS), broken authentication, server-side request forgery (SSRF), and more. We also track over <strong style="color:var(--text-primary)">200 CVEs with public exploit code</strong>, meaning we can detect if your systems are vulnerable to actively exploited threats.</p>
+        <h3 style="font-size:20px; font-weight:700; margin:24px 0 12px;">How Our Free Security Scan Works</h3>
+        <p style="color: var(--text-secondary); line-height:1.8; margin-bottom:16px;">Enter your domain in the scanner above, and within 60 seconds, our engines will enumerate all subdomains associated with your domain and identify which hosts are actively responding. This gives you an instant view of your <strong style="color:var(--text-primary)">external attack surface</strong> — the same view an attacker would have.</p>
+        <p style="color: var(--text-secondary); line-height:1.8;">The full Deep Scan goes further: testing every discovered host for thousands of known vulnerabilities, checking for exposed secrets and API keys, analyzing SSL/TLS configurations, and generating a professional PDF report with step-by-step remediation guidance.</p>
+    </section>
+
+    <!-- CTA -->
+    <section class="final-cta">
+        <h2>Stop wondering if you're vulnerable.<br><span class="gradient-text">Know for certain.</span></h2>
+        <button class="cta-btn" onclick="document.getElementById('domainInput').focus()">Scan Your Domain Now — Free</button>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Scan<span class="logo-accent">Forge</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="blog.html">Blog</a>
+            </div>
+            <p class="footer-copy">© 2026 ScanForge. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
