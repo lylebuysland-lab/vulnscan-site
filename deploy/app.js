@@ -29,9 +29,8 @@ function isRateLimited() {
 const CONFIG = {
     // Create your Stripe Payment Links at https://dashboard.stripe.com/payment-links
     // It's FREE to create — Stripe only charges 2.9%+30¢ when you get paid
-    STRIPE_QUICK_SCAN_LINK: 'https://buy.stripe.com/fZu4gz8OV13MfeW1xa2oE00', // $49 one-time
     STRIPE_DEEP_SCAN_LINK: 'https://buy.stripe.com/YOUR_LINK_HERE',  // $199 one-time
-    STRIPE_SENTINEL_LINK: 'https://buy.stripe.com/YOUR_LINK_HERE',   // $299/mo recurring
+    STRIPE_SENTINEL_LINK: 'https://buy.stripe.com/YOUR_LINK_HERE',   // $499/mo recurring
     
     // Contact email for enterprise inquiries
     CONTACT_EMAIL: 'security@VulnScan.io',
