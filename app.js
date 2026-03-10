@@ -2,6 +2,28 @@
 // MVP: Free recon scan → upsell to paid report via Stripe Payment Link
 
 // ============================================
+// SECURITY UTILITIES
+// ============================================
+function sanitize(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function isValidDomain(d) {
+    return /^[a-zA-Z0-9][a-zA-Z0-9\-\.]{1,253}\.[a-zA-Z]{2,}$/.test(d);
+}
+
+// Rate limiter: max 3 scans per minute
+const scanTimes = [];
+function isRateLimited() {
+    const now = Date.now();
+    scanTimes.push(now);
+    while (scanTimes.length > 0 && scanTimes[0] < now - 60000) scanTimes.shift();
+    return scanTimes.length > 3;
+}
+
+// ============================================
 // CONFIGURATION — Update these after setup
 // ============================================
 const CONFIG = {
@@ -26,12 +48,20 @@ const SCAN_STAGES = [
 
 function startFreeScan() {
     const input = document.getElementById('domainInput');
-    const domain = input.value.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    const domain = input.value.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '').toLowerCase();
     
-    if (!domain || !domain.includes('.')) {
+    if (!domain || !isValidDomain(domain)) {
         input.style.borderColor = '#ef4444';
         input.placeholder = 'Please enter a valid domain';
         setTimeout(() => { input.style.borderColor = ''; input.placeholder = 'Enter your domain (e.g. example.com)'; }, 2000);
+        return;
+    }
+    
+    if (isRateLimited()) {
+        input.value = '';
+        input.placeholder = 'Too many scans. Please wait a minute.';
+        input.style.borderColor = '#ef4444';
+        setTimeout(() => { input.style.borderColor = ''; input.placeholder = 'Enter your domain (e.g. example.com)'; }, 3000);
         return;
     }
 
@@ -157,15 +187,15 @@ function showContactModal(data) {
             <div class="modal-summary">
                 <div class="modal-row">
                     <span>Domain</span>
-                    <span class="mono accent">${data.domain || '—'}</span>
+                    <span class="mono accent">${sanitize(data.domain || '—')}</span>
                 </div>
                 <div class="modal-row">
                     <span>Attack Surface</span>
-                    <span>${data.subs || '—'} subdomains, ${data.live || '—'} live</span>
+                    <span>${sanitize(String(data.subs || '—'))} subdomains, ${sanitize(String(data.live || '—'))} live</span>
                 </div>
                 <div class="modal-row">
                     <span>Est. Findings</span>
-                    <span class="warning">${data.vulnEstimate || '—'} potential vulns</span>
+                    <span class="warning">${sanitize(String(data.vulnEstimate || '—'))} potential vulns</span>
                 </div>
             </div>
             
@@ -240,7 +270,7 @@ function submitLead(e) {
             <h4 style="font-size: 20px; margin-bottom: 8px;">Request Received!</h4>
             <p style="color: #8888a0; font-size: 14px; line-height: 1.7;">
                 We'll send a detailed proposal and secure payment link to<br>
-                <strong style="color: #6366f1;">${lead.email}</strong><br>within 2 hours.
+                <strong style="color: #6366f1;">${sanitize(lead.email)}</strong><br>within 2 hours.
             </p>
         </div>
     `;
