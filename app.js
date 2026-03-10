@@ -27,14 +27,12 @@ function isRateLimited() {
 // CONFIGURATION — Update these after setup
 // ============================================
 const CONFIG = {
-    // Create your Stripe Payment Links at https://dashboard.stripe.com/payment-links
-    // It's FREE to create — Stripe only charges 2.9%+30¢ when you get paid
+    // Live Stripe Payment Links
     STRIPE_QUICK_SCAN_LINK: 'https://buy.stripe.com/fZu4gz8OV13MfeW1xa2oE00', // $49 one-time
-    STRIPE_DEEP_SCAN_LINK: 'https://buy.stripe.com/YOUR_LINK_HERE',  // $199 one-time
-    STRIPE_SENTINEL_LINK: 'https://buy.stripe.com/YOUR_LINK_HERE',   // $299/mo recurring
+    STRIPE_DEEP_SCAN_LINK: 'https://buy.stripe.com/14A14ne9f4fY4Ai7Vy2oE01',  // $199 one-time
     
     // Contact email for enterprise inquiries
-    CONTACT_EMAIL: 'security@VulnScan.io',
+    CONTACT_EMAIL: 'security@vulnscan.tech',
 };
 
 // ============================================
@@ -145,26 +143,26 @@ function checkout(tier) {
     const data = window.__scanData || {};
     const domain = data.domain || '';
     
-    if (tier === 'sentinel') {
-        // $499/mo continuous monitoring
-        const url = CONFIG.STRIPE_SENTINEL_LINK + 
+    if (tier === 'quick') {
+        // $49 Quick Scan
+        const url = CONFIG.STRIPE_QUICK_SCAN_LINK + 
             `?prefilled_email=&client_reference_id=${encodeURIComponent(domain)}`;
         window.open(url, '_blank');
-        saveLead({ type: 'checkout_sentinel', domain, ...data });
+        saveLead({ type: 'checkout_quick', domain, ...data });
         return;
     }
     
-    // Default: $199 deep scan
-    // If Stripe link not set yet, show contact form
-    if (CONFIG.STRIPE_DEEP_SCAN_LINK.includes('YOUR_LINK')) {
-        showContactModal(data);
+    if (tier === 'deep') {
+        // $199 Deep Scan
+        const url = CONFIG.STRIPE_DEEP_SCAN_LINK + 
+            `?prefilled_email=&client_reference_id=${encodeURIComponent(domain)}`;
+        window.open(url, '_blank');
+        saveLead({ type: 'checkout_deep', domain, ...data });
         return;
     }
     
-    const url = CONFIG.STRIPE_DEEP_SCAN_LINK + 
-        `?prefilled_email=&client_reference_id=${encodeURIComponent(domain)}`;
-    window.open(url, '_blank');
-    saveLead({ type: 'checkout_deep', domain, ...data });
+    // Enterprise — show contact form
+    showContactModal({ ...data, plan: 'Enterprise Assessment' });
 }
 
 // ============================================
