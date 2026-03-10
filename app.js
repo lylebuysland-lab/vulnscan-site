@@ -1,4 +1,4 @@
-// ScanForge — Frontend Logic
+// VulnScan — Frontend Logic
 // MVP: Free recon scan → upsell to paid report via Stripe Payment Link
 
 // ============================================
@@ -33,7 +33,7 @@ const CONFIG = {
     STRIPE_SENTINEL_LINK: 'https://buy.stripe.com/YOUR_LINK_HERE',   // $499/mo recurring
     
     // Contact email for enterprise inquiries
-    CONTACT_EMAIL: 'security@scanforge.io',
+    CONTACT_EMAIL: 'security@VulnScan.io',
 };
 
 // ============================================
@@ -283,9 +283,9 @@ function submitLead(e) {
 // LEAD STORAGE & NOTIFICATIONS
 // ============================================
 function saveLead(data) {
-    const leads = JSON.parse(localStorage.getItem('scanforge_leads') || '[]');
+    const leads = JSON.parse(localStorage.getItem('VulnScan_leads') || '[]');
     leads.push({ ...data, timestamp: new Date().toISOString() });
-    localStorage.setItem('scanforge_leads', JSON.stringify(leads));
+    localStorage.setItem('VulnScan_leads', JSON.stringify(leads));
     console.log('📧 Lead saved:', data);
 }
 
@@ -297,7 +297,7 @@ function notifyNewLead(lead) {
     if (DISCORD_WEBHOOK) {
         const msg = {
             embeds: [{
-                title: '🚨 New ScanForge Lead!',
+                title: '🚨 New VulnScan Lead!',
                 color: 0x6366f1,
                 fields: [
                     { name: 'Name', value: lead.name, inline: true },
@@ -321,7 +321,7 @@ function notifyNewLead(lead) {
 
 // Admin: View all leads (type viewLeads() in console)
 window.viewLeads = function() {
-    const leads = JSON.parse(localStorage.getItem('scanforge_leads') || '[]');
+    const leads = JSON.parse(localStorage.getItem('VulnScan_leads') || '[]');
     console.table(leads);
     return leads;
 };
@@ -395,5 +395,5 @@ modalCSS.textContent = `
 document.head.appendChild(modalCSS);
 
 // Console branding
-console.log('%c⚡ ScanForge Engine v1.0', 'font-size: 20px; font-weight: bold; color: #6366f1;');
+console.log('%c⚡ VulnScan Engine v1.0', 'font-size: 20px; font-weight: bold; color: #6366f1;');
 console.log('%cType viewLeads() to see captured leads', 'color: #8888a0;');

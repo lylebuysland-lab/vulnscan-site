@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://scanforge.pages.dev/sitemap.xml
+Sitemap: https://vulnscan.pages.dev/sitemap.xml
 
 User-agent: GPTBot
 Disallow: /
