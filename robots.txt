@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
-Sitemap: https://vulnscan.pages.dev/sitemap.xml
+Disallow: /backend/
+Disallow: /tools/
+Disallow: /sample_*.pdf
+
+Sitemap: https://vulnscan.tech/sitemap.xml
 
 User-agent: GPTBot
 Disallow: /

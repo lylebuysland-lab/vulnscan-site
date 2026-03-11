@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Website Security Check — Scan Your Site for Vulnerabilities | VulnScan</title>
+    <meta name="description" content="Check if your website is secure in 10 seconds. Free website security scanner finds vulnerabilities, exposed subdomains, and misconfigurations. No signup required.">
+    <meta name="keywords" content="free website security check, is my website secure, website security test, check website vulnerabilities, free security scan, how to check website security">
+    
+    <meta property="og:title" content="Free Website Security Check — Is Your Site Vulnerable?">
+    <meta property="og:description" content="Find out if your website is secure. Free instant scan — no signup needed.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vulnscan.tech/free-website-security-check">
+    
+    <link rel="canonical" href="https://vulnscan.tech/free-website-security-check">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "VulnScan Free Security Check",
+        "url": "https://vulnscan.tech/free-website-security-check",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Free website security check that scans for vulnerabilities, exposed subdomains, and security misconfigurations in seconds."
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How do I check if my website is secure?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Enter your domain at VulnScan.tech to get an instant security grade (A-F) and risk score. The free scan checks subdomains, live hosts, and technology fingerprints. Upgrade for a full vulnerability report with remediation steps."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is the website security check really free?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, the basic security check is 100% free with no signup required. You'll get a security grade (A through F) and risk score. Detailed vulnerability reports with remediation steps are available starting at $49."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What does a website security scan check for?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "VulnScan checks for subdomains, exposed services, technology fingerprints, known CVE vulnerabilities, missing security headers, SSL/TLS issues, and more using 50+ security engines."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long does a website security scan take?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The free security check takes about 10 seconds. A full Quick Scan report is delivered in about 10 minutes. The Deep Scan with OWASP and compliance mapping takes 15-30 minutes."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="bg-animation"><div class="grid-lines"></div></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding-top:120px;">
+        <h1 class="hero-title">Free Website <span class="gradient-text">Security Check</span></h1>
+        <p class="hero-sub" style="max-width:700px;">Find out if your website is vulnerable to hackers — in 10 seconds. No signup, no credit card, no nonsense. Just enter your domain and get your security grade instantly.</p>
+
+        <div class="scan-container" id="scan">
+            <div class="scan-box">
+                <div class="scan-input-group">
+                    <input type="text" id="domainInput" placeholder="Enter your domain (e.g. example.com)" autocomplete="off" spellcheck="false">
+                    <button class="scan-btn" onclick="startFreeScan()">
+                        <span class="btn-text">Check My Security</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">Initializing scan...</p>
+        </div>
+
+        <div id="scanResults" class="results-panel" style="display:none;"></div>
+    </section>
+
+    <!-- SEO Content -->
+    <section style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">How to Check If Your Website Is Secure</h2>
+        <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:16px;">Website security isn't optional anymore. In 2026, over <strong>30,000 websites are hacked every day</strong>, and most of them are small businesses who didn't know they were vulnerable. A single breach can cost your business reputation, customer trust, and thousands in recovery.</p>
+        <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:16px;">VulnScan's free website security check gives you an instant <strong>A through F security grade</strong> based on your attack surface. We check your subdomains, exposed services, technology stack, and known vulnerabilities — all in seconds.</p>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">What We Scan For</h3>
+        <ul style="color:var(--text-secondary); line-height:2; list-style:disc; padding-left:24px;">
+            <li><strong>Subdomains</strong> — Hidden entry points attackers use to bypass your main site's security</li>
+            <li><strong>Exposed Services</strong> — Admin panels, databases, and APIs that shouldn't be public</li>
+            <li><strong>Technology Stack</strong> — Outdated software versions with known vulnerabilities</li>
+            <li><strong>Security Headers</strong> — Missing CSP, HSTS, and X-Frame-Options headers</li>
+            <li><strong>SSL/TLS Configuration</strong> — Weak encryption, expired certificates, deprecated protocols</li>
+            <li><strong>Known CVEs</strong> — Publicly disclosed vulnerabilities that hackers actively exploit</li>
+        </ul>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Why Business Owners Need Security Scanning</h3>
+        <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:16px;">You wouldn't leave your office door unlocked overnight. But <strong>73% of small business websites</strong> have at least one critical vulnerability. If your site handles customer data, processes payments, or stores any personal information, security isn't just recommended — in many cases it's legally required under PCI DSS, GDPR, and SOC 2.</p>
+        <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:16px;">Our paid reports include <strong>OWASP Top 10 mapping</strong>, <strong>compliance checks</strong>, and <strong>step-by-step remediation instructions</strong> so you or your developer know exactly what to fix and how.</p>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Is the free security check really free?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Yes, 100% free with no signup or credit card required. You get a security grade and risk score instantly. Detailed vulnerability reports with remediation steps start at $49.</p>
+        </div>
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Will the scan affect my website?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">No. Our scanning is completely non-intrusive and non-destructive. We perform passive reconnaissance — no exploitation attempts are ever made against your systems.</p>
+        </div>
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How long does it take?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">The free check takes about 10 seconds. Full reports are delivered within 10-30 minutes depending on the scan type.</p>
+        </div>
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What's the difference between free and paid scans?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">The free scan gives you a grade and overview. Paid scans provide specific vulnerability details, CVE identifications, affected URLs, CVSS scores, and actionable remediation steps — everything you need to actually fix the issues.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/#pricing">Pricing</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

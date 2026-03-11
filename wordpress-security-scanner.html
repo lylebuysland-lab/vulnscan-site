@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordPress Security Scanner — Free WordPress Vulnerability Check | VulnScan</title>
+    <meta name="description" content="Free WordPress security scanner detects XML-RPC exploits, exposed login pages, outdated plugins, and missing security headers. Protect your WordPress site in seconds.">
+    <meta name="keywords" content="wordpress security scanner, wordpress vulnerability scanner, is my wordpress site secure, wordpress security check, wordpress security audit, wp security scan">
+    
+    <meta property="og:title" content="WordPress Security Scanner — Is Your WordPress Site Vulnerable?">
+    <meta property="og:description" content="85% of hacked websites run WordPress. Scan yours for free in 10 seconds.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vulnscan.tech/wordpress-security-scanner">
+    
+    <link rel="canonical" href="https://vulnscan.tech/wordpress-security-scanner">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How do I check if my WordPress site is secure?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Use VulnScan's free WordPress security scanner to instantly check for common WordPress vulnerabilities like exposed XML-RPC, unprotected login pages, outdated plugins, and missing security headers."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What are the most common WordPress security vulnerabilities?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The most common WordPress vulnerabilities include: XML-RPC brute force attacks, exposed wp-login.php without rate limiting, outdated plugins with known CVEs, directory listing on wp-content/uploads, missing Content-Security-Policy headers, and weak SSL/TLS configurations."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is WordPress insecure?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "WordPress core is generally secure when kept updated. However, 85% of WordPress hacks occur due to outdated plugins, weak passwords, and security misconfigurations. Regular security scanning helps identify these issues before attackers do."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="bg-animation"><div class="grid-lines"></div></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding-top:120px;">
+        <h1 class="hero-title">WordPress <span class="gradient-text">Security Scanner</span></h1>
+        <p class="hero-sub" style="max-width:700px;">85% of hacked websites run WordPress. Find out if yours is vulnerable — free scan in 10 seconds. We check for XML-RPC exploits, exposed logins, outdated plugins, and 200+ known CVEs.</p>
+
+        <div class="scan-container" id="scan">
+            <div class="scan-box">
+                <div class="scan-input-group">
+                    <input type="text" id="domainInput" placeholder="Enter your WordPress site (e.g. myblog.com)" autocomplete="off" spellcheck="false">
+                    <button class="scan-btn" onclick="startFreeScan()">
+                        <span class="btn-text">Scan My WordPress</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">Initializing scan...</p>
+        </div>
+
+        <div id="scanResults" class="results-panel" style="display:none;"></div>
+    </section>
+
+    <!-- SEO Content -->
+    <section style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">Why Your WordPress Site Needs a Security Scan</h2>
+        <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:16px;">WordPress powers <strong>43% of all websites</strong> on the internet, making it the #1 target for hackers. In 2026, over <strong>90,000 attacks per minute</strong> are targeting WordPress sites worldwide. Most site owners don't know they're vulnerable until it's too late.</p>
+        <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:16px;">VulnScan's WordPress security scanner specifically checks for the vulnerabilities that matter most for WordPress installations.</p>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">What We Check on WordPress Sites</h3>
+        <ul style="color:var(--text-secondary); line-height:2.2; list-style:none; padding-left:0;">
+            <li style="margin-bottom:8px;">🔴 <strong>XML-RPC Exploitation</strong> — The #1 WordPress attack vector. We check if xmlrpc.php is exposed and exploitable for brute-force and DDoS amplification.</li>
+            <li style="margin-bottom:8px;">🔴 <strong>Login Page Brute Force</strong> — Is your wp-login.php protected? We check for rate limiting, CAPTCHA, and 2FA enforcement.</li>
+            <li style="margin-bottom:8px;">🟡 <strong>Version Disclosure</strong> — Exposed WordPress, PHP, and plugin versions tell attackers exactly which exploits to use.</li>
+            <li style="margin-bottom:8px;">🟡 <strong>Directory Listing</strong> — Can attackers browse your wp-content/uploads/ folder and download files?</li>
+            <li style="margin-bottom:8px;">🟡 <strong>Security Headers</strong> — Missing CSP, HSTS, X-Frame-Options, and X-Content-Type-Options headers.</li>
+            <li style="margin-bottom:8px;">🔵 <strong>SSL/TLS Configuration</strong> — Weak ciphers, deprecated TLS versions, and certificate chain issues.</li>
+            <li style="margin-bottom:8px;">🔵 <strong>Database Exposure</strong> — phpMyAdmin, adminer, and database backup files left publicly accessible.</li>
+        </ul>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">WordPress Security Statistics (2026)</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px;">
+            <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:32px; font-weight:800; color:var(--accent);">43%</div>
+                <div style="color:var(--text-secondary); font-size:13px;">of all websites run WordPress</div>
+            </div>
+            <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:32px; font-weight:800; color:#ef4444;">90,000</div>
+                <div style="color:var(--text-secondary); font-size:13px;">attacks per minute on WP sites</div>
+            </div>
+            <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:32px; font-weight:800; color:#f97316;">97%</div>
+                <div style="color:var(--text-secondary); font-size:13px;">of WP hacks are via plugins</div>
+            </div>
+            <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:32px; font-weight:800; color:#22c55e;">$50K+</div>
+                <div style="color:var(--text-secondary); font-size:13px;">average cost of a data breach</div>
+            </div>
+        </div>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Is my WordPress site secure?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Most WordPress sites have at least one vulnerability. Enter your domain above to get a free security grade and find out exactly where you stand.</p>
+        </div>
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Do I need a WordPress security plugin?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Security plugins like Wordfence help protect your site, but they can't detect all external vulnerabilities. An external scan like VulnScan sees your site the way attackers do — from the outside.</p>
+        </div>
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How often should I scan my WordPress site?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Best practice is monthly, or after any major update (WordPress core, plugins, themes). New CVEs are published daily, and yesterday's secure site might be tomorrow's target.</p>
+        </div>
+
+        <div style="text-align:center; margin-top:40px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Don't wait until you're hacked</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px;">Scan your WordPress site now — it takes 10 seconds and it's completely free.</p>
+            <button class="scan-btn" onclick="document.getElementById('domainInput').focus(); window.scrollTo({top:0,behavior:'smooth'});" style="display:inline-block; padding:14px 32px;">
+                <span class="btn-text">Scan My WordPress Site Free</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/#pricing">Pricing</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+﻿tools/
+backend/__pycache__/
+sample_*.pdf
+*.pyc
