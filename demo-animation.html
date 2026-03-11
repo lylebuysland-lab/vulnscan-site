@@ -246,118 +246,93 @@ function showScene(n) {
     currentScene = n;
 }
 
-// Scene 0: Typing animation
-function typeText() {
-    const input = document.getElementById('typeTarget');
-    let i = 0;
-    const timer = setInterval(() => {
-        if (i <= DOMAIN.length) {
-            input.value = DOMAIN.substring(0, i) + (i < DOMAIN.length ? '|' : '');
-            i++;
-        } else {
-            clearInterval(timer);
-            input.value = DOMAIN;
-            setTimeout(() => showScene(1), 1200);
-            setTimeout(animateScanSteps, 1400);
-        }
-    }, 120);
-}
-
-// Scene 1: Scan steps
-function animateScanSteps() {
-    const steps = ['ss0','ss1','ss2','ss3','ss4'];
-    steps.forEach((id, i) => {
-        setTimeout(() => {
-            const el = document.getElementById(id);
-            el.classList.add('active');
-            el.textContent = '⏳ ' + el.textContent.substring(2);
-            if (i > 0) {
-                const prev = document.getElementById(steps[i-1]);
-                prev.classList.remove('active');
-                prev.classList.add('done');
-                prev.textContent = '✅ ' + prev.textContent.substring(2);
-            }
-        }, i * 800);
-    });
-    setTimeout(() => {
-        document.getElementById('ss4').classList.remove('active');
-        document.getElementById('ss4').classList.add('done');
-        document.getElementById('ss4').textContent = '✅ ' + document.getElementById('ss4').textContent.substring(2);
-    }, 5 * 800);
-    setTimeout(() => showScene(2), 5 * 800 + 800);
-    setTimeout(animateMetrics, 5 * 800 + 1000);
-}
-
-// Scene 2: Metrics pop in
-function animateMetrics() {
-    ['m0','m1','m2','m3'].forEach((id, i) => {
-        setTimeout(() => document.getElementById(id).classList.add('show'), i * 300);
-    });
-    setTimeout(() => showScene(3), 3500);
-    setTimeout(() => document.getElementById('reportMock').classList.add('show'), 3700);
-}
-
-// Reset everything and restart the full animation loop
 function resetAll() {
-    // Reset typing input
     document.getElementById('typeTarget').value = '';
-    // Reset scan steps
     ['ss0','ss1','ss2','ss3','ss4'].forEach(id => {
         const el = document.getElementById(id);
         el.classList.remove('done','active');
-        el.textContent = '\u23f3 ' + el.textContent.substring(2);
+        const txt = el.textContent.substring(2);
+        el.textContent = '\u23f3 ' + txt;
     });
-    // Reset metrics
     ['m0','m1','m2','m3'].forEach(id => document.getElementById(id).classList.remove('show'));
-    // Reset report
     document.getElementById('reportMock').classList.remove('show');
-    // Reset CTA
     document.getElementById('ctaText').classList.remove('show');
     document.getElementById('ctaSub').classList.remove('show');
     document.getElementById('ctaUrl').classList.remove('show');
-    // Back to scene 0
     showScene(0);
 }
 
-function runFullLoop() {
+function startAnimation() {
     resetAll();
-    setTimeout(typeText, 1500);
-}
 
-// Scene 3 → 4 auto-transition, then loop
-setTimeout(() => {
-    const check = setInterval(() => {
-        if (currentScene === 3) {
-            clearInterval(check);
-            setTimeout(() => {
-                showScene(4);
-                setTimeout(() => document.getElementById('ctaText').classList.add('show'), 200);
-                setTimeout(() => document.getElementById('ctaSub').classList.add('show'), 600);
-                setTimeout(() => document.getElementById('ctaUrl').classList.add('show'), 1000);
-                // Loop: restart after 4 seconds on CTA
+    // Scene 0: Type domain (starts at 1.5s, typing takes ~1.5s, hold 1.2s = ~4.2s)
+    setTimeout(() => {
+        const input = document.getElementById('typeTarget');
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i <= DOMAIN.length) {
+                input.value = DOMAIN.substring(0, i) + (i < DOMAIN.length ? '|' : '');
+                i++;
+            } else {
+                clearInterval(timer);
+                input.value = DOMAIN;
+
+                // Scene 1: Scanning (starts at ~3s from type start)
                 setTimeout(() => {
-                    runFullLoop();
-                    // Re-watch for scene 3 again
-                    const recheck = setInterval(() => {
-                        if (currentScene === 3) {
-                            clearInterval(recheck);
+                    showScene(1);
+                    const steps = ['ss0','ss1','ss2','ss3','ss4'];
+                    steps.forEach((id, idx) => {
+                        setTimeout(() => {
+                            const el = document.getElementById(id);
+                            el.classList.add('active');
+                            if (idx > 0) {
+                                const prev = document.getElementById(steps[idx-1]);
+                                prev.classList.remove('active');
+                                prev.classList.add('done');
+                                prev.textContent = '\u2705 ' + prev.textContent.substring(2);
+                            }
+                        }, idx * 800);
+                    });
+                    // Finish last step
+                    setTimeout(() => {
+                        const last = document.getElementById('ss4');
+                        last.classList.remove('active');
+                        last.classList.add('done');
+                        last.textContent = '\u2705 ' + last.textContent.substring(2);
+                    }, 5 * 800);
+
+                    // Scene 2: Results (after scanning)
+                    setTimeout(() => {
+                        showScene(2);
+                        ['m0','m1','m2','m3'].forEach((id, idx) => {
+                            setTimeout(() => document.getElementById(id).classList.add('show'), idx * 300);
+                        });
+
+                        // Scene 3: Report
+                        setTimeout(() => {
+                            showScene(3);
+                            setTimeout(() => document.getElementById('reportMock').classList.add('show'), 200);
+
+                            // Scene 4: CTA
                             setTimeout(() => {
                                 showScene(4);
                                 setTimeout(() => document.getElementById('ctaText').classList.add('show'), 200);
                                 setTimeout(() => document.getElementById('ctaSub').classList.add('show'), 600);
                                 setTimeout(() => document.getElementById('ctaUrl').classList.add('show'), 1000);
-                                setTimeout(() => runFullLoop(), 4000);
-                            }, 4500);
-                        }
-                    }, 100);
-                }, 4000);
-            }, 4500);
-        }
-    }, 100);
-}, 0);
 
-// Start first loop
-setTimeout(typeText, 1500);
+                                // LOOP: restart after 4s on CTA
+                                setTimeout(startAnimation, 4000);
+                            }, 4500);
+                        }, 3500);
+                    }, 5 * 800 + 800);
+                }, 1200);
+            }
+        }, 120);
+    }, 1500);
+}
+
+// Go
+startAnimation();
 </script>
 </body>
 </html>
