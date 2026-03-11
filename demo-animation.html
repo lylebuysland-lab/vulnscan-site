@@ -297,9 +297,35 @@ function animateMetrics() {
     setTimeout(() => document.getElementById('reportMock').classList.add('show'), 3700);
 }
 
-// Scene 3 → 4 auto-transition
+// Reset everything and restart the full animation loop
+function resetAll() {
+    // Reset typing input
+    document.getElementById('typeTarget').value = '';
+    // Reset scan steps
+    ['ss0','ss1','ss2','ss3','ss4'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('done','active');
+        el.textContent = '\u23f3 ' + el.textContent.substring(2);
+    });
+    // Reset metrics
+    ['m0','m1','m2','m3'].forEach(id => document.getElementById(id).classList.remove('show'));
+    // Reset report
+    document.getElementById('reportMock').classList.remove('show');
+    // Reset CTA
+    document.getElementById('ctaText').classList.remove('show');
+    document.getElementById('ctaSub').classList.remove('show');
+    document.getElementById('ctaUrl').classList.remove('show');
+    // Back to scene 0
+    showScene(0);
+}
+
+function runFullLoop() {
+    resetAll();
+    setTimeout(typeText, 1500);
+}
+
+// Scene 3 → 4 auto-transition, then loop
 setTimeout(() => {
-    // Watch for scene3 becoming active
     const check = setInterval(() => {
         if (currentScene === 3) {
             clearInterval(check);
@@ -308,12 +334,29 @@ setTimeout(() => {
                 setTimeout(() => document.getElementById('ctaText').classList.add('show'), 200);
                 setTimeout(() => document.getElementById('ctaSub').classList.add('show'), 600);
                 setTimeout(() => document.getElementById('ctaUrl').classList.add('show'), 1000);
+                // Loop: restart after 4 seconds on CTA
+                setTimeout(() => {
+                    runFullLoop();
+                    // Re-watch for scene 3 again
+                    const recheck = setInterval(() => {
+                        if (currentScene === 3) {
+                            clearInterval(recheck);
+                            setTimeout(() => {
+                                showScene(4);
+                                setTimeout(() => document.getElementById('ctaText').classList.add('show'), 200);
+                                setTimeout(() => document.getElementById('ctaSub').classList.add('show'), 600);
+                                setTimeout(() => document.getElementById('ctaUrl').classList.add('show'), 1000);
+                                setTimeout(() => runFullLoop(), 4000);
+                            }, 4500);
+                        }
+                    }, 100);
+                }, 4000);
             }, 4500);
         }
     }, 100);
 }, 0);
 
-// Start
+// Start first loop
 setTimeout(typeText, 1500);
 </script>
 </body>
