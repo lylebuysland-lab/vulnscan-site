@@ -248,11 +248,17 @@ function showScene(n) {
 
 function resetAll() {
     document.getElementById('typeTarget').value = '';
-    ['ss0','ss1','ss2','ss3','ss4'].forEach(id => {
+    const origTexts = [
+        '\u23f3 Discovering subdomains...',
+        '\u23f3 Probing live hosts...',
+        '\u23f3 Fingerprinting technologies...',
+        '\u23f3 Running vulnerability checks...',
+        '\u23f3 Generating security grade...'
+    ];
+    ['ss0','ss1','ss2','ss3','ss4'].forEach((id, i) => {
         const el = document.getElementById(id);
         el.classList.remove('done','active');
-        const txt = el.textContent.substring(2);
-        el.textContent = '\u23f3 ' + txt;
+        el.textContent = origTexts[i];
     });
     ['m0','m1','m2','m3'].forEach(id => document.getElementById(id).classList.remove('show'));
     document.getElementById('reportMock').classList.remove('show');
