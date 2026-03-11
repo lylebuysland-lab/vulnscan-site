@@ -138,12 +138,15 @@ function finishScan(domain, subs, live) {
 // Check for returning buyers on page load
 (function checkReturningBuyer() {
     const order = JSON.parse(localStorage.getItem('vulnscan_pending_order') || 'null');
-    if (order && Date.now() - order.ts < 86400000) {
-        // Show a subtle banner for returning buyers
+    // Only show banner if: valid order exists, has a real domain, and is within 24h
+    if (order && order.domain && order.domain.length > 3 && order.ts && Date.now() - order.ts < 86400000) {
         const banner = document.createElement('div');
         banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:12px 20px;text-align:center;font-size:14px;font-weight:600;color:#fff;font-family:Inter,sans-serif;';
         banner.innerHTML = `📧 Your <strong>${sanitize(order.tier)}</strong> report for <strong>${sanitize(order.domain)}</strong> is being prepared — typically delivered within 2-6 hours. <a href="mailto:security@vulnscan.tech" style="color:#fde68a;margin-left:8px;">Questions?</a> <button onclick="this.parentElement.remove();localStorage.removeItem('vulnscan_pending_order')" style="background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;margin-left:12px;font-size:16px;">✕</button>`;
         document.body.prepend(banner);
+    } else {
+        // Clear stale/invalid banner data
+        localStorage.removeItem('vulnscan_pending_order');
     }
 })();
 
