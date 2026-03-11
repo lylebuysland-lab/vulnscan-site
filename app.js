@@ -132,9 +132,20 @@ function finishScan(domain, subs, live) {
 
     window.__scanData = { domain, subs, live, vulnEstimate };
     
-    // Track conversion
     saveLead({ type: 'free_scan', domain, subs, live, vulnEstimate });
 }
+
+// Check for returning buyers on page load
+(function checkReturningBuyer() {
+    const order = JSON.parse(localStorage.getItem('vulnscan_pending_order') || 'null');
+    if (order && Date.now() - order.ts < 86400000) {
+        // Show a subtle banner for returning buyers
+        const banner = document.createElement('div');
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:12px 20px;text-align:center;font-size:14px;font-weight:600;color:#fff;font-family:Inter,sans-serif;';
+        banner.innerHTML = `📧 Your <strong>${sanitize(order.tier)}</strong> report for <strong>${sanitize(order.domain)}</strong> is being prepared — typically delivered within 2-6 hours. <a href="mailto:security@vulnscan.tech" style="color:#fde68a;margin-left:8px;">Questions?</a> <button onclick="this.parentElement.remove();localStorage.removeItem('vulnscan_pending_order')" style="background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;margin-left:12px;font-size:16px;">✕</button>`;
+        document.body.prepend(banner);
+    }
+})();
 
 // ============================================
 // CHECKOUT — Stripe Payment Links (no backend needed!)
@@ -144,25 +155,73 @@ function checkout(tier) {
     const domain = data.domain || '';
     
     if (tier === 'quick') {
-        // $49 Quick Scan
         const url = CONFIG.STRIPE_QUICK_SCAN_LINK + 
             `?prefilled_email=&client_reference_id=${encodeURIComponent(domain)}`;
         window.open(url, '_blank');
         saveLead({ type: 'checkout_quick', domain, ...data });
+        localStorage.setItem('vulnscan_pending_order', JSON.stringify({ tier: 'Quick Scan', domain, ts: Date.now() }));
+        showPostPurchaseConfirmation('Quick Scan', domain);
         return;
     }
     
     if (tier === 'deep') {
-        // $199 Deep Scan
         const url = CONFIG.STRIPE_DEEP_SCAN_LINK + 
             `?prefilled_email=&client_reference_id=${encodeURIComponent(domain)}`;
         window.open(url, '_blank');
         saveLead({ type: 'checkout_deep', domain, ...data });
+        localStorage.setItem('vulnscan_pending_order', JSON.stringify({ tier: 'Deep Scan', domain, ts: Date.now() }));
+        showPostPurchaseConfirmation('Deep Scan', domain);
         return;
     }
     
-    // Enterprise — show contact form
     showContactModal({ ...data, plan: 'Enterprise Assessment' });
+}
+
+function showPostPurchaseConfirmation(tier, domain) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+    modal.innerHTML = `
+        <div class="modal-content" style="text-align:center;">
+            <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            <div style="font-size:56px;margin-bottom:16px;">🎯</div>
+            <h3 style="font-size:24px;font-weight:800;margin-bottom:8px;">You're Almost There!</h3>
+            <p style="color:#8888a0;font-size:15px;line-height:1.7;margin-bottom:20px;">
+                Complete your payment in the Stripe tab that just opened.
+            </p>
+            <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:14px;padding:24px;margin-bottom:20px;">
+                <div style="font-size:13px;color:#6366f1;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">📋 ${tier} — ${sanitize(domain || 'Your Domain')}</div>
+                <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:8px;">Report Delivery Timeline</div>
+                <div style="display:flex;justify-content:center;gap:24px;margin:16px 0;">
+                    <div style="text-align:center;">
+                        <div style="font-size:28px;font-weight:900;color:#22c55e;">2-6h</div>
+                        <div style="font-size:11px;color:#8888a0;margin-top:2px;">Typical delivery</div>
+                    </div>
+                    <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+                    <div style="text-align:center;">
+                        <div style="font-size:28px;font-weight:900;color:#f59e0b;">24h</div>
+                        <div style="font-size:11px;color:#8888a0;margin-top:2px;">Maximum wait</div>
+                    </div>
+                </div>
+                <p style="font-size:12px;color:#8888a0;line-height:1.6;margin-top:12px;">
+                    Our scanning engines will analyze your entire attack surface. You'll receive your professional PDF report via email as soon as it's ready.
+                </p>
+            </div>
+            <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:14px;margin-bottom:16px;">
+                <div style="font-size:13px;color:#22c55e;font-weight:600;">✅ What happens next:</div>
+                <div style="font-size:12px;color:#8888a0;line-height:1.8;margin-top:6px;text-align:left;padding-left:20px;">
+                    1. Complete payment in the Stripe tab<br>
+                    2. Check your email for order confirmation<br>
+                    3. Our engines begin scanning immediately<br>
+                    4. PDF report delivered to your inbox (2-6 hours typical)
+                </div>
+            </div>
+            <p style="font-size:11px;color:#55556a;">
+                Questions? Email <a href="mailto:security@vulnscan.tech" style="color:#6366f1;">security@vulnscan.tech</a>
+            </p>
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
 // ============================================
