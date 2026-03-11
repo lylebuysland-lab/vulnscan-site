@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VulnScan — How It Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Inter',sans-serif;
+    background:#0a0a1a;
+    color:#fff;
+    overflow:hidden;
+    width:1280px;
+    height:720px;
+}
+.scene { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; opacity:0; transition: opacity 0.8s ease; pointer-events:none; }
+.scene.active { opacity:1; }
+
+/* Glowing background */
+.bg-glow {
+    position:fixed; width:500px; height:500px; border-radius:50%;
+    filter:blur(150px); opacity:0.15; z-index:0;
+}
+.g1 { background:#6366f1; top:-100px; left:-100px; }
+.g2 { background:#8b5cf6; bottom:-100px; right:-100px; }
+
+/* Scene 1: Enter Domain */
+.scan-box {
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px; padding:8px; display:flex; gap:8px; width:600px;
+    backdrop-filter:blur(20px);
+}
+.scan-input {
+    flex:1; background:transparent; border:none; color:#fff; font-size:18px;
+    padding:16px 20px; font-family:'Inter'; outline:none;
+}
+.scan-btn {
+    background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border:none;
+    padding:16px 32px; border-radius:12px; font-size:16px; font-weight:700;
+    cursor:pointer; font-family:'Inter';
+}
+.typing-cursor { animation: blink 0.8s infinite; }
+@keyframes blink { 0%,50% { opacity:1; } 51%,100% { opacity:0; } }
+
+/* Scene 2: Scanning */
+.scan-ring {
+    width:200px; height:200px; border-radius:50%;
+    border:4px solid rgba(99,102,241,0.2);
+    border-top:4px solid #6366f1;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.scan-steps { margin-top:30px; text-align:left; }
+.scan-step { font-size:15px; color:#6b7280; margin:8px 0; opacity:0; transform:translateX(-20px);
+    transition: all 0.5s ease; }
+.scan-step.done { opacity:1; transform:translateX(0); color:#22c55e; }
+.scan-step.active { opacity:1; transform:translateX(0); color:#6366f1; }
+
+/* Scene 3: Results */
+.grade-card {
+    text-align:center; padding:40px 60px;
+    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px; backdrop-filter:blur(20px);
+}
+.grade-letter {
+    font-size:140px; font-weight:900; line-height:1;
+    background:linear-gradient(135deg,#ef4444,#f97316);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.grade-label { font-size:18px; color:#9ca3af; margin-top:8px; }
+.grade-score { font-size:24px; font-weight:700; margin-top:4px; color:#f97316; }
+
+.metrics { display:flex; gap:16px; margin-top:30px; }
+.metric {
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px; padding:20px 28px; text-align:center; min-width:130px;
+    opacity:0; transform:translateY(20px); transition: all 0.5s ease;
+}
+.metric.show { opacity:1; transform:translateY(0); }
+.metric-num { font-size:28px; font-weight:800; }
+.metric-label { font-size:12px; color:#9ca3af; margin-top:4px; text-transform:uppercase; letter-spacing:1px; }
+.m-red .metric-num { color:#ef4444; }
+.m-orange .metric-num { color:#f97316; }
+.m-blue .metric-num { color:#6366f1; }
+.m-green .metric-num { color:#22c55e; }
+
+/* Scene 4: Report */
+.report-mockup {
+    width:400px; background:#fff; border-radius:12px; padding:30px;
+    color:#1f2937; box-shadow:0 25px 80px rgba(99,102,241,0.3);
+    transform:perspective(800px) rotateY(-5deg) rotateX(2deg);
+    opacity:0; transform-origin:center;
+    transition: all 1s ease;
+}
+.report-mockup.show {
+    opacity:1;
+    transform:perspective(800px) rotateY(-5deg) rotateX(2deg) translateY(0);
+}
+.report-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.report-brand { font-size:18px; font-weight:800; color:#6366f1; }
+.report-badge { background:#6366f1; color:#fff; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; }
+.report-grade { text-align:center; margin:20px 0; }
+.report-grade-letter { font-size:60px; font-weight:900; color:#f97316; }
+.report-grade-text { font-size:13px; color:#6b7280; }
+.finding-row { display:flex; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid #f3f4f6; font-size:13px; }
+.sev-badge { padding:2px 8px; border-radius:4px; font-size:10px; font-weight:700; color:#fff; }
+.sev-high { background:#ef4444; }
+.sev-med { background:#f59e0b; }
+.sev-low { background:#3b82f6; }
+
+/* Scene 5: CTA */
+.cta-text {
+    font-size:48px; font-weight:900; text-align:center; line-height:1.2;
+    opacity:0; transform:scale(0.9);
+    transition: all 0.8s ease;
+}
+.cta-text.show { opacity:1; transform:scale(1); }
+.cta-sub { font-size:20px; color:#9ca3af; margin-top:16px; text-align:center;
+    opacity:0; transition: opacity 0.8s ease 0.3s; }
+.cta-sub.show { opacity:1; }
+.cta-url { font-size:28px; font-weight:700; color:#6366f1; margin-top:24px;
+    opacity:0; transition: opacity 0.8s ease 0.6s; }
+.cta-url.show { opacity:1; }
+.gradient-text { background:linear-gradient(135deg,#6366f1,#a855f7,#ec4899);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+/* Step indicators */
+.step-dots { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:100; }
+.dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.2); transition:all 0.3s; }
+.dot.active { background:#6366f1; width:30px; border-radius:5px; }
+
+.step-label { position:fixed; top:30px; left:50%; transform:translateX(-50%); font-size:13px;
+    color:#6b7280; letter-spacing:2px; text-transform:uppercase; z-index:100; }
+</style>
+</head>
+<body>
+<div class="bg-glow g1"></div>
+<div class="bg-glow g2"></div>
+
+<div class="step-label" id="stepLabel">STEP 1 — ENTER YOUR DOMAIN</div>
+
+<div class="step-dots">
+    <div class="dot active" id="d0"></div>
+    <div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div>
+    <div class="dot" id="d3"></div>
+    <div class="dot" id="d4"></div>
+</div>
+
+<!-- SCENE 1: Enter Domain -->
+<div class="scene active" id="scene0">
+    <h2 style="font-size:32px;font-weight:300;margin-bottom:8px;color:#9ca3af;">Enter any domain</h2>
+    <h1 style="font-size:48px;font-weight:800;margin-bottom:40px;">Get your <span class="gradient-text">security grade</span> instantly</h1>
+    <div class="scan-box">
+        <input class="scan-input" id="typeTarget" value="" placeholder="" readonly>
+        <button class="scan-btn">Free Scan →</button>
+    </div>
+    <p style="color:#6b7280;margin-top:16px;font-size:14px;">✓ No signup · ✓ 10 seconds · ✓ 100% free</p>
+</div>
+
+<!-- SCENE 2: Scanning -->
+<div class="scene" id="scene1">
+    <div class="scan-ring"></div>
+    <p style="font-size:20px;font-weight:600;margin-top:24px;">Scanning acmecorp.com</p>
+    <div class="scan-steps">
+        <div class="scan-step" id="ss0">⏳ Discovering subdomains...</div>
+        <div class="scan-step" id="ss1">⏳ Probing live hosts...</div>
+        <div class="scan-step" id="ss2">⏳ Fingerprinting technologies...</div>
+        <div class="scan-step" id="ss3">⏳ Running vulnerability checks...</div>
+        <div class="scan-step" id="ss4">⏳ Generating security grade...</div>
+    </div>
+</div>
+
+<!-- SCENE 3: Results -->
+<div class="scene" id="scene2">
+    <div class="grade-card">
+        <div class="grade-letter">D</div>
+        <div class="grade-label">Security Grade</div>
+        <div class="grade-score">Risk Score: 67 / 100</div>
+    </div>
+    <div class="metrics">
+        <div class="metric m-blue" id="m0"><div class="metric-num">12</div><div class="metric-label">Subdomains</div></div>
+        <div class="metric m-green" id="m1"><div class="metric-num">7</div><div class="metric-label">Live Hosts</div></div>
+        <div class="metric m-orange" id="m2"><div class="metric-num">15</div><div class="metric-label">Findings</div></div>
+        <div class="metric m-red" id="m3"><div class="metric-num">3</div><div class="metric-label">Critical</div></div>
+    </div>
+</div>
+
+<!-- SCENE 4: PDF Report -->
+<div class="scene" id="scene3" style="flex-direction:row;gap:60px;">
+    <div style="max-width:350px;">
+        <h2 style="font-size:36px;font-weight:800;margin-bottom:16px;">Professional<br><span class="gradient-text">PDF Report</span></h2>
+        <p style="color:#9ca3af;line-height:1.7;font-size:15px;">Get a detailed vulnerability assessment with CVSS scores, OWASP mapping, and step-by-step remediation. Looks like a $1,000 consulting deliverable.</p>
+        <div style="margin-top:20px;">
+            <div style="color:#22c55e;margin:8px 0;font-size:14px;">✓ Detailed finding descriptions</div>
+            <div style="color:#22c55e;margin:8px 0;font-size:14px;">✓ CVSS severity scoring</div>
+            <div style="color:#22c55e;margin:8px 0;font-size:14px;">✓ Code-level remediation</div>
+            <div style="color:#22c55e;margin:8px 0;font-size:14px;">✓ Compliance mapping</div>
+        </div>
+    </div>
+    <div class="report-mockup" id="reportMock">
+        <div class="report-header">
+            <div class="report-brand">⚡ VulnScan</div>
+            <div class="report-badge">DEEP SCAN</div>
+        </div>
+        <div class="report-grade">
+            <div class="report-grade-letter">D</div>
+            <div class="report-grade-text">Risk Score 67/100 — acmecorp.com</div>
+        </div>
+        <div class="finding-row"><span class="sev-badge sev-high">HIGH</span> SQL Injection in Login Form</div>
+        <div class="finding-row"><span class="sev-badge sev-high">HIGH</span> Exposed Admin Panel</div>
+        <div class="finding-row"><span class="sev-badge sev-high">HIGH</span> XML-RPC Brute Force</div>
+        <div class="finding-row"><span class="sev-badge sev-med">MED</span> Missing CSP Header</div>
+        <div class="finding-row"><span class="sev-badge sev-med">MED</span> Directory Listing Enabled</div>
+        <div class="finding-row"><span class="sev-badge sev-low">LOW</span> TLS 1.0 Supported</div>
+    </div>
+</div>
+
+<!-- SCENE 5: CTA -->
+<div class="scene" id="scene4">
+    <div class="cta-text" id="ctaText">Know your vulnerabilities<br>before <span class="gradient-text">hackers do</span></div>
+    <div class="cta-sub" id="ctaSub">Free scan. No signup. 10 seconds.</div>
+    <div class="cta-url" id="ctaUrl">vulnscan.tech</div>
+</div>
+
+<script>
+const DOMAIN = 'acmecorp.com';
+const LABELS = [
+    'STEP 1 — ENTER YOUR DOMAIN',
+    'STEP 2 — SCANNING IN PROGRESS',
+    'STEP 3 — YOUR SECURITY GRADE',
+    'STEP 4 — GET YOUR REPORT',
+    'TRY IT FREE'
+];
+
+let currentScene = 0;
+const scenes = document.querySelectorAll('.scene');
+
+function showScene(n) {
+    scenes.forEach((s, i) => s.classList.toggle('active', i === n));
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === n));
+    document.getElementById('stepLabel').textContent = LABELS[n];
+    currentScene = n;
+}
+
+// Scene 0: Typing animation
+function typeText() {
+    const input = document.getElementById('typeTarget');
+    let i = 0;
+    const timer = setInterval(() => {
+        if (i <= DOMAIN.length) {
+            input.value = DOMAIN.substring(0, i) + (i < DOMAIN.length ? '|' : '');
+            i++;
+        } else {
+            clearInterval(timer);
+            input.value = DOMAIN;
+            setTimeout(() => showScene(1), 1200);
+            setTimeout(animateScanSteps, 1400);
+        }
+    }, 120);
+}
+
+// Scene 1: Scan steps
+function animateScanSteps() {
+    const steps = ['ss0','ss1','ss2','ss3','ss4'];
+    steps.forEach((id, i) => {
+        setTimeout(() => {
+            const el = document.getElementById(id);
+            el.classList.add('active');
+            el.textContent = '⏳ ' + el.textContent.substring(2);
+            if (i > 0) {
+                const prev = document.getElementById(steps[i-1]);
+                prev.classList.remove('active');
+                prev.classList.add('done');
+                prev.textContent = '✅ ' + prev.textContent.substring(2);
+            }
+        }, i * 800);
+    });
+    setTimeout(() => {
+        document.getElementById('ss4').classList.remove('active');
+        document.getElementById('ss4').classList.add('done');
+        document.getElementById('ss4').textContent = '✅ ' + document.getElementById('ss4').textContent.substring(2);
+    }, 5 * 800);
+    setTimeout(() => showScene(2), 5 * 800 + 800);
+    setTimeout(animateMetrics, 5 * 800 + 1000);
+}
+
+// Scene 2: Metrics pop in
+function animateMetrics() {
+    ['m0','m1','m2','m3'].forEach((id, i) => {
+        setTimeout(() => document.getElementById(id).classList.add('show'), i * 300);
+    });
+    setTimeout(() => showScene(3), 3500);
+    setTimeout(() => document.getElementById('reportMock').classList.add('show'), 3700);
+}
+
+// Scene 3 → 4 auto-transition
+setTimeout(() => {
+    // Watch for scene3 becoming active
+    const check = setInterval(() => {
+        if (currentScene === 3) {
+            clearInterval(check);
+            setTimeout(() => {
+                showScene(4);
+                setTimeout(() => document.getElementById('ctaText').classList.add('show'), 200);
+                setTimeout(() => document.getElementById('ctaSub').classList.add('show'), 600);
+                setTimeout(() => document.getElementById('ctaUrl').classList.add('show'), 1000);
+            }, 4500);
+        }
+    }, 100);
+}, 0);
+
+// Start
+setTimeout(typeText, 1500);
+</script>
+</body>
+</html>
