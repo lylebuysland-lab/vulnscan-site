@@ -337,7 +337,7 @@ function generatePage(page) {
     <meta name="description" content="${page.description}">
     <meta name="keywords" content="${page.keywords}">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.vulnscan.tech https://api.stripe.com; frame-src https://js.stripe.com; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.vulnscan.tech https://api.stripe.com; frame-src 'self' https://js.stripe.com; img-src 'self' data:;">
     
     <meta property="og:title" content="${page.title}">
     <meta property="og:description" content="${page.description}">
