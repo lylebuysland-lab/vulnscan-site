@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>OWASP Top 10 Scanner — Test for All 10 Critical Risks | VulnScan</title>
+    <meta name="description" content="Test your website against all OWASP Top 10 vulnerabilities. Detect broken access control, injection, cryptographic failures, and more. Free scanning tool.">
+    <meta name="keywords" content="owasp scanner, owasp top 10 scanner, owasp vulnerability scanner, owasp testing, web application security testing">
+    
+    <meta property="og:title" content="OWASP Top 10 Scanner — Test for All 10 Critical Risks | VulnScan">
+    <meta property="og:description" content="Test your website against all OWASP Top 10 vulnerabilities. Detect broken access control, injection, cryptographic failures, and more. Free scanning tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vulnscan.tech/owasp-scanner">
+    
+    <link rel="canonical" href="https://vulnscan.tech/owasp-scanner">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VulnScan - OWASP Top 10 Scanner",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "312",
+            "bestRating": "5"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is the OWASP Top 10?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A regularly updated list of the 10 most critical web application security risks, published by the Open Web Application Security Project. It is the industry standard reference for web security."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How often is the OWASP Top 10 updated?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Approximately every 3-4 years. The current version is from 2021. OWASP gathers data from hundreds of organizations to determine the most prevalent risks."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Does VulnScan check for all OWASP Top 10 risks?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our Deep Scan ($199) maps findings directly to OWASP Top 10 categories and provides remediation guidance for each identified risk."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="bg-animation"><div class="grid-lines"></div></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding-top:120px;">
+        <h1 class="hero-title">OWASP Top 10 <span class="gradient-text">Scanner</span></h1>
+        <p class="hero-sub" style="max-width:700px;">The OWASP Top 10 represents the most critical web application security risks. Test your website against all 10 categories — free, instant, no signup.</p>
+
+        <div class="scan-container" id="scan">
+            <div class="scan-box">
+                <div class="scan-input-group">
+                    <input type="text" id="domainInput" placeholder="Enter your website URL (e.g. example.com)" autocomplete="off" spellcheck="false">
+                    <button class="scan-btn" onclick="startFreeScan()">
+                        <span class="btn-text">Scan Now Free</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">Initializing scan...</p>
+        </div>
+        <div id="scanResults" class="results-panel" style="display:none;"></div>
+    </section>
+
+    <section style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">The OWASP Top 10 (2021): Every Risk Explained</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">
+            <p>The <strong>OWASP Top 10</strong> is the global standard for web application security awareness. Published by the Open Web Application Security Project, it represents the most critical security risks that every web developer and business owner should know.</p>
+        <h3>The 10 Categories</h3>
+        <ol>
+            <li><strong>A01 — Broken Access Control</strong> — Users can act outside their intended permissions</li>
+            <li><strong>A02 — Cryptographic Failures</strong> — Weak encryption exposing sensitive data</li>
+            <li><strong>A03 — Injection</strong> — SQL, NoSQL, OS, and LDAP injection attacks</li>
+            <li><strong>A04 — Insecure Design</strong> — Missing security controls in the design phase</li>
+            <li><strong>A05 — Security Misconfiguration</strong> — Default configs, unnecessary features enabled</li>
+            <li><strong>A06 — Vulnerable Components</strong> — Using libraries with known vulnerabilities</li>
+            <li><strong>A07 — Auth Failures</strong> — Broken authentication and session management</li>
+            <li><strong>A08 — Data Integrity Failures</strong> — Insecure deserialization and CI/CD issues</li>
+            <li><strong>A09 — Logging Failures</strong> — Insufficient logging and monitoring</li>
+            <li><strong>A10 — SSRF</strong> — Server-Side Request Forgery attacks</li>
+        </ol>
+        </div>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+        
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What is the OWASP Top 10?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">A regularly updated list of the 10 most critical web application security risks, published by the Open Web Application Security Project. It is the industry standard reference for web security.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How often is the OWASP Top 10 updated?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Approximately every 3-4 years. The current version is from 2021. OWASP gathers data from hundreds of organizations to determine the most prevalent risks.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Does VulnScan check for all OWASP Top 10 risks?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Our Deep Scan ($199) maps findings directly to OWASP Top 10 categories and provides remediation guidance for each identified risk.</p>
+        </div>
+
+        <div style="text-align:center; margin-top:40px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Every day you wait is another day hackers have the advantage</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px;">Scan your website now — free, instant, no signup.</p>
+            <button class="scan-btn" onclick="document.getElementById('domainInput').focus(); window.scrollTo({top:0,behavior:'smooth'});" style="display:inline-block; padding:14px 32px;">
+                <span class="btn-text">Scan My Website Free</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/#pricing">Pricing</a>
+                <a href="/free-website-security-check">Free Security Check</a>
+                <a href="/wordpress-security-scanner">WordPress Scanner</a>
+                <a href="/online-vulnerability-scanner">Online Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

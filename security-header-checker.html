@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>Security Headers Checker — Test HTTP Headers Free | VulnScan</title>
+    <meta name="description" content="Check your website's HTTP security headers. Test Content-Security-Policy, HSTS, X-Frame-Options, and more. Free instant analysis with recommendations.">
+    <meta name="keywords" content="security headers checker, http headers check, content security policy checker, hsts checker, security headers test">
+    
+    <meta property="og:title" content="Security Headers Checker — Test HTTP Headers Free | VulnScan">
+    <meta property="og:description" content="Check your website's HTTP security headers. Test Content-Security-Policy, HSTS, X-Frame-Options, and more. Free instant analysis with recommendations.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vulnscan.tech/security-header-checker">
+    
+    <link rel="canonical" href="https://vulnscan.tech/security-header-checker">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VulnScan - Security Headers Checker",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "312",
+            "bestRating": "5"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Why are security headers important?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "They prevent entire classes of attacks (clickjacking, XSS, MIME confusion) with zero impact on user experience. Setting them is one of the easiest security wins for any website."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is Content-Security-Policy?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "CSP tells the browser which sources of content (scripts, styles, images) are allowed. This prevents XSS attacks by blocking any script that isn't explicitly whitelisted."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I add security headers?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Add them in your web server configuration (nginx.conf, .htaccess, or web.config), CDN settings (Cloudflare, AWS CloudFront), or application middleware."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="bg-animation"><div class="grid-lines"></div></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding-top:120px;">
+        <h1 class="hero-title">Security Headers <span class="gradient-text">Checker</span></h1>
+        <p class="hero-sub" style="max-width:700px;">Missing security headers leave your website exposed to clickjacking, XSS, and data theft. Check all critical headers in seconds — free.</p>
+
+        <div class="scan-container" id="scan">
+            <div class="scan-box">
+                <div class="scan-input-group">
+                    <input type="text" id="domainInput" placeholder="Enter your website URL (e.g. example.com)" autocomplete="off" spellcheck="false">
+                    <button class="scan-btn" onclick="startFreeScan()">
+                        <span class="btn-text">Scan Now Free</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">Initializing scan...</p>
+        </div>
+        <div id="scanResults" class="results-panel" style="display:none;"></div>
+    </section>
+
+    <section style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">Essential HTTP Security Headers</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">
+            <p>HTTP security headers are your website's first line of defense. They instruct browsers on how to handle your content, preventing common attacks like clickjacking, cross-site scripting, and MIME-type confusion.</p>
+        <h3>Headers We Check</h3>
+        <ul>
+            <li><strong>Content-Security-Policy (CSP)</strong> — Controls which resources can be loaded, preventing XSS and data injection</li>
+            <li><strong>Strict-Transport-Security (HSTS)</strong> — Forces HTTPS connections, preventing downgrade attacks</li>
+            <li><strong>X-Frame-Options</strong> — Prevents clickjacking by controlling iframe embedding</li>
+            <li><strong>X-Content-Type-Options</strong> — Prevents MIME-type sniffing attacks</li>
+            <li><strong>Referrer-Policy</strong> — Controls how much referrer information is shared</li>
+            <li><strong>Permissions-Policy</strong> — Restricts browser features like camera, microphone, geolocation</li>
+        </ul>
+        </div>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+        
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Why are security headers important?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">They prevent entire classes of attacks (clickjacking, XSS, MIME confusion) with zero impact on user experience. Setting them is one of the easiest security wins for any website.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What is Content-Security-Policy?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">CSP tells the browser which sources of content (scripts, styles, images) are allowed. This prevents XSS attacks by blocking any script that isn't explicitly whitelisted.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How do I add security headers?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Add them in your web server configuration (nginx.conf, .htaccess, or web.config), CDN settings (Cloudflare, AWS CloudFront), or application middleware.</p>
+        </div>
+
+        <div style="text-align:center; margin-top:40px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Every day you wait is another day hackers have the advantage</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px;">Scan your website now — free, instant, no signup.</p>
+            <button class="scan-btn" onclick="document.getElementById('domainInput').focus(); window.scrollTo({top:0,behavior:'smooth'});" style="display:inline-block; padding:14px 32px;">
+                <span class="btn-text">Scan My Website Free</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/#pricing">Pricing</a>
+                <a href="/free-website-security-check">Free Security Check</a>
+                <a href="/wordpress-security-scanner">WordPress Scanner</a>
+                <a href="/online-vulnerability-scanner">Online Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

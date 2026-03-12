@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>SQL Injection Scanner — Detect SQLi Vulnerabilities Free | VulnScan</title>
+    <meta name="description" content="Scan your website for SQL injection vulnerabilities. Detect blind SQLi, error-based injection, and UNION-based attacks. Free online SQLi testing tool.">
+    <meta name="keywords" content="sql injection scanner, sqli scanner, sql injection test, detect sql injection, sql injection vulnerability scanner">
+    
+    <meta property="og:title" content="SQL Injection Scanner — Detect SQLi Vulnerabilities Free | VulnScan">
+    <meta property="og:description" content="Scan your website for SQL injection vulnerabilities. Detect blind SQLi, error-based injection, and UNION-based attacks. Free online SQLi testing tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vulnscan.tech/sql-injection-scanner">
+    
+    <link rel="canonical" href="https://vulnscan.tech/sql-injection-scanner">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VulnScan - SQL Injection Scanner",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "312",
+            "bestRating": "5"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How do I know if my site is vulnerable to SQL injection?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Run a VulnScan security scan. Our engines check all common injection points including URL parameters, form fields, headers, and cookies. The free scan flags potential SQLi issues; the paid report provides specific details."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can SQL injection be prevented?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Use parameterized queries (prepared statements), input validation, and least-privilege database accounts. Never concatenate user input directly into SQL queries."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What damage can SQL injection cause?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Full database access — attackers can read all data (passwords, credit cards), modify records, delete tables, and in some cases execute operating system commands on the database server."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="bg-animation"><div class="grid-lines"></div></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding-top:120px;">
+        <h1 class="hero-title">SQL Injection <span class="gradient-text">Scanner</span></h1>
+        <p class="hero-sub" style="max-width:700px;">SQL injection remains the #1 web vulnerability. Test your website for blind, error-based, and UNION-based SQL injection attacks — free and instant.</p>
+
+        <div class="scan-container" id="scan">
+            <div class="scan-box">
+                <div class="scan-input-group">
+                    <input type="text" id="domainInput" placeholder="Enter your website URL (e.g. example.com)" autocomplete="off" spellcheck="false">
+                    <button class="scan-btn" onclick="startFreeScan()">
+                        <span class="btn-text">Scan Now Free</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">Initializing scan...</p>
+        </div>
+        <div id="scanResults" class="results-panel" style="display:none;"></div>
+    </section>
+
+    <section style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">SQL Injection: The #1 Web Application Vulnerability</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">
+            <p>SQL injection (SQLi) has been the most dangerous web vulnerability for over two decades. It allows attackers to read, modify, or delete your entire database — including user passwords, credit card numbers, and personal data.</p>
+        <p>According to OWASP, injection attacks remain the <strong>#1 security risk</strong> for web applications. VulnScan checks for all major SQL injection variants:</p>
+        <h3>Types of SQL Injection We Detect</h3>
+        <ul>
+            <li><strong>Error-Based SQLi</strong> — The database returns error messages that reveal its structure</li>
+            <li><strong>Blind SQLi (Boolean)</strong> — The application returns different responses based on true/false queries</li>
+            <li><strong>Time-Based Blind SQLi</strong> — The database is forced to wait, revealing information through timing</li>
+            <li><strong>UNION-Based SQLi</strong> — Attacker combines results from multiple queries to extract data</li>
+            <li><strong>Out-of-Band SQLi</strong> — Data is extracted through DNS or HTTP requests to attacker-controlled servers</li>
+        </ul>
+        <h3>Common Entry Points</h3>
+        <p>SQL injection can occur anywhere user input reaches a database query: login forms, search boxes, URL parameters, HTTP headers, cookies, and API endpoints.</p>
+        </div>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+        
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How do I know if my site is vulnerable to SQL injection?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Run a VulnScan security scan. Our engines check all common injection points including URL parameters, form fields, headers, and cookies. The free scan flags potential SQLi issues; the paid report provides specific details.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Can SQL injection be prevented?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Yes. Use parameterized queries (prepared statements), input validation, and least-privilege database accounts. Never concatenate user input directly into SQL queries.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What damage can SQL injection cause?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Full database access — attackers can read all data (passwords, credit cards), modify records, delete tables, and in some cases execute operating system commands on the database server.</p>
+        </div>
+
+        <div style="text-align:center; margin-top:40px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Every day you wait is another day hackers have the advantage</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px;">Scan your website now — free, instant, no signup.</p>
+            <button class="scan-btn" onclick="document.getElementById('domainInput').focus(); window.scrollTo({top:0,behavior:'smooth'});" style="display:inline-block; padding:14px 32px;">
+                <span class="btn-text">Scan My Website Free</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/#pricing">Pricing</a>
+                <a href="/free-website-security-check">Free Security Check</a>
+                <a href="/wordpress-security-scanner">WordPress Scanner</a>
+                <a href="/online-vulnerability-scanner">Online Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

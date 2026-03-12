@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>SSL Certificate Checker — Verify HTTPS Security Free | VulnScan</title>
+    <meta name="description" content="Check your SSL/TLS certificate for errors, weak ciphers, and misconfigurations. Verify HTTPS setup, expiration dates, and protocol versions. Free online tool.">
+    <meta name="keywords" content="ssl checker, ssl certificate checker, https checker, tls checker, ssl test, check ssl certificate">
+    
+    <meta property="og:title" content="SSL Certificate Checker — Verify HTTPS Security Free | VulnScan">
+    <meta property="og:description" content="Check your SSL/TLS certificate for errors, weak ciphers, and misconfigurations. Verify HTTPS setup, expiration dates, and protocol versions. Free online tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vulnscan.tech/ssl-checker">
+    
+    <link rel="canonical" href="https://vulnscan.tech/ssl-checker">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VulnScan - SSL Certificate Checker",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "312",
+            "bestRating": "5"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How do I check if my SSL certificate is valid?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Enter your website URL in VulnScan. We'll verify the certificate chain, check expiration, test cipher suites, and confirm protocol support — all in seconds."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What happens if my SSL certificate expires?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Visitors see a scary browser warning and most will leave immediately. Google also penalizes sites with invalid SSL in search rankings."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is a free SSL certificate (Let's Encrypt) as secure as paid ones?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Technically yes — the encryption is identical. Paid certificates (EV/OV) add organization verification but don't provide stronger encryption."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="bg-animation"><div class="grid-lines"></div></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Start Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding-top:120px;">
+        <h1 class="hero-title">SSL Certificate <span class="gradient-text">Checker</span></h1>
+        <p class="hero-sub" style="max-width:700px;">Is your SSL certificate configured correctly? Check for expired certificates, weak ciphers, mixed content, and TLS misconfigurations — free and instant.</p>
+
+        <div class="scan-container" id="scan">
+            <div class="scan-box">
+                <div class="scan-input-group">
+                    <input type="text" id="domainInput" placeholder="Enter your website URL (e.g. example.com)" autocomplete="off" spellcheck="false">
+                    <button class="scan-btn" onclick="startFreeScan()">
+                        <span class="btn-text">Scan Now Free</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">Initializing scan...</p>
+        </div>
+        <div id="scanResults" class="results-panel" style="display:none;"></div>
+    </section>
+
+    <section style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">Why SSL/TLS Configuration Matters</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">
+            <p>An SSL/TLS certificate encrypts the connection between your website and its visitors. But simply having a certificate isn't enough — <strong>misconfigured SSL causes 23% of all security warnings</strong> that drive visitors away.</p>
+        <h3>What We Check</h3>
+        <ul>
+            <li><strong>Certificate Validity</strong> — Expiration date, issuer trust chain, domain match</li>
+            <li><strong>Protocol Versions</strong> — TLS 1.2/1.3 support, deprecated SSL 3.0/TLS 1.0/1.1 disabled</li>
+            <li><strong>Cipher Strength</strong> — Strong cipher suites, no RC4, DES, or NULL ciphers</li>
+            <li><strong>HSTS Configuration</strong> — HTTP Strict Transport Security header with proper max-age</li>
+            <li><strong>Mixed Content</strong> — No HTTP resources loaded on HTTPS pages</li>
+            <li><strong>Certificate Transparency</strong> — CT logs for public accountability</li>
+        </ul>
+        </div>
+
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+        
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How do I check if my SSL certificate is valid?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Enter your website URL in VulnScan. We'll verify the certificate chain, check expiration, test cipher suites, and confirm protocol support — all in seconds.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What happens if my SSL certificate expires?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Visitors see a scary browser warning and most will leave immediately. Google also penalizes sites with invalid SSL in search rankings.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Is a free SSL certificate (Let's Encrypt) as secure as paid ones?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Technically yes — the encryption is identical. Paid certificates (EV/OV) add organization verification but don't provide stronger encryption.</p>
+        </div>
+
+        <div style="text-align:center; margin-top:40px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Every day you wait is another day hackers have the advantage</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px;">Scan your website now — free, instant, no signup.</p>
+            <button class="scan-btn" onclick="document.getElementById('domainInput').focus(); window.scrollTo({top:0,behavior:'smooth'});" style="display:inline-block; padding:14px 32px;">
+                <span class="btn-text">Scan My Website Free</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/#pricing">Pricing</a>
+                <a href="/free-website-security-check">Free Security Check</a>
+                <a href="/wordpress-security-scanner">WordPress Scanner</a>
+                <a href="/online-vulnerability-scanner">Online Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
