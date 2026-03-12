@@ -72,7 +72,10 @@
     </script>
 </head>
 <body>
-    <div class="bg-animation"><div class="grid-lines"></div></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
 
     <nav class="nav">
         <div class="nav-inner">
@@ -83,33 +86,69 @@
             <div class="nav-links">
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
-                <a href="/#scan" class="nav-cta">Start Scan</a>
+                <a href="#scan" class="nav-cta">Start Scan</a>
             </div>
         </div>
     </nav>
 
-    <section class="hero" style="padding-top:120px;">
-        <h1 class="hero-title">Free Website <span class="gradient-text">Security Check</span></h1>
-        <p class="hero-sub" style="max-width:700px;">Find out if your website is vulnerable to hackers — in 10 seconds. No signup, no credit card, no nonsense. Just enter your domain and get your security grade instantly.</p>
+    <section class="hero">
+        <h1>Free Website <span class="gradient-text">Security Check</span></h1>
+        <p class="hero-sub">Find out if your website is vulnerable to hackers — in 10 seconds. No signup, no credit card, no nonsense. Just enter your domain and get your security grade instantly.</p>
 
-        <div class="scan-container" id="scan">
-            <div class="scan-box">
-                <div class="scan-input-group">
-                    <input type="text" id="domainInput" placeholder="Enter your domain (e.g. example.com)" autocomplete="off" spellcheck="false">
-                    <button class="scan-btn" onclick="startFreeScan()">
-                        <span class="btn-text">Check My Security</span>
-                        <span class="btn-icon">→</span>
-                    </button>
+        <div class="scan-box" id="scan">
+            <div class="scan-input-wrap">
+                <div class="scan-icon">🔍</div>
+                <input type="text" id="domainInput" placeholder="Enter your domain (e.g. example.com)" autocomplete="off" spellcheck="false">
+                <button id="scanBtn" onclick="startFreeScan()">
+                    <span class="btn-text">Free Scan</span>
+                    <span class="btn-loading" style="display:none">
+                        <span class="spinner"></span> Scanning...
+                    </span>
+                </button>
+            </div>
+            <p class="scan-hint">✓ No signup required · ✓ Results in 60 seconds · ✓ 100% free basic scan</p>
+        </div>
+
+        <div class="results-panel" id="resultsPanel" style="display:none">
+            <div class="results-header">
+                <div class="results-status">
+                    <span class="status-dot scanning"></span>
+                    <span id="statusText">Scanning...</span>
+                </div>
+                <span class="results-domain" id="resultsDomain"></span>
+            </div>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-number" id="subdomainCount">—</div>
+                    <div class="result-label">Subdomains Found</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-number" id="liveCount">—</div>
+                    <div class="result-label">Live Hosts</div>
+                </div>
+                <div class="result-card locked">
+                    <div class="result-number">🔒</div>
+                    <div class="result-label">Vulnerabilities</div>
+                </div>
+                <div class="result-card locked">
+                    <div class="result-number">🔒</div>
+                    <div class="result-label">Critical Findings</div>
+                </div>
+            </div>
+            <div class="upsell-box" id="upsellBox" style="display:none">
+                <div class="upsell-content">
+                    <h3>🚨 We found <span id="upsellCount" class="gradient-text">potential vulnerabilities</span></h3>
+                    <p>Unlock the full vulnerability report with remediation guidance, CVSS scores, and proof-of-concept details.</p>
+                    <button class="upsell-btn" onclick="checkout('deep')">Unlock Full Report — $199</button>
+                    <div class="upsell-features">
+                        <span>✓ OWASP Top 10</span>
+                        <span>✓ CVE Detection</span>
+                        <span>✓ SSL Analysis</span>
+                        <span>✓ PDF Report</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div id="scanProgress" class="scan-progress" style="display:none;">
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-            <p class="progress-text" id="progressText">Initializing scan...</p>
-        </div>
-
-        <div id="scanResults" class="results-panel" style="display:none;"></div>
     </section>
 
     <!-- SEO Content -->
@@ -160,6 +199,13 @@
             </div>
             <div class="footer-links">
                 <a href="/#pricing">Pricing</a>
+                <a href="/website-vulnerability-scanner">Vulnerability Scanner</a>
+                <a href="/wordpress-security-scanner">WordPress Scanner</a>
+                <a href="/online-vulnerability-scanner">Online Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="/xss-scanner">XSS Scanner</a>
+                <a href="/ssl-checker">SSL Checker</a>
+                <a href="/owasp-scanner">OWASP Scanner</a>
                 <a href="mailto:security@vulnscan.tech">Contact</a>
             </div>
             <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
