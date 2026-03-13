@@ -29,6 +29,10 @@
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
     <link rel="preload" href="app.js" as="script">
+    <style>
+        .related-link { display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: all 0.2s; }
+        .related-link:hover { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: var(--text-primary); }
+    </style>
 
     <script type="application/ld+json">
     {
@@ -226,6 +230,8 @@
             <button class="cta-btn" onclick="document.getElementById('domainInput').focus(); window.scrollTo({top:0,behavior:'smooth'});">Scan My Website Free</button>
         </div>
     </section>
+
+    ${relatedHtml}
 
     <footer class="footer">
         <div class="footer-inner">
