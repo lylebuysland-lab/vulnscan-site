@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>VulnScan Security Blog</title>
+    <link>https://vulnscan.tech/blog</link>
+    <description>Free website security guides, vulnerability research, and CVE coverage from VulnScan.</description>
+    <language>en-us</language>
+    <lastBuildDate>2026-03-13T13:40:51Z</lastBuildDate>
+    <atom:link href="https://vulnscan.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://vulnscan.tech/favicon.svg</url>
+      <title>VulnScan</title>
+      <link>https://vulnscan.tech</link>
+    </image>
+    <item>
+      <title>OWASP Top 10 Vulnerabilities Explained (2026 Edition)</title>
+      <link>https://vulnscan.tech/blog/owasp-top-10-explained</link>
+      <pubDate>Mon, 10 Mar 2026 09:00:00 +0000</pubDate>
+      <category>Web Security</category>
+      <description>Learn what the OWASP Top 10 vulnerabilities are, how attackers exploit them, and how to protect your website. Covers A01-A10 with real-world examples.</description>
+    </item>
+    <item>
+      <title>How to Fix SQL Injection Vulnerabilities (Developer Guide 2026)</title>
+      <link>https://vulnscan.tech/blog/how-to-fix-sql-injection</link>
+      <pubDate>Tue, 11 Mar 2026 09:00:00 +0000</pubDate>
+      <category>Vulnerability Fixes</category>
+      <description>Complete developer guide to finding and fixing SQL injection. Covers parameterized queries, ORMs, WAF deployment, and testing with free tools.</description>
+    </item>
+    <item>
+      <title>Website Security Checklist 2026 â€” 50 Things to Check Right Now</title>
+      <link>https://vulnscan.tech/blog/website-security-checklist</link>
+      <pubDate>Wed, 12 Mar 2026 09:00:00 +0000</pubDate>
+      <category>Security Guides</category>
+      <description>Complete 50-item website security checklist covering SSL, headers, authentication, injection, WordPress hardening, and more. Free scanner included.</description>
+    </item>
+    <item>
+      <title>How to Check if Your Website Has Been Hacked (Free Guide 2026)</title>
+      <link>https://vulnscan.tech/blog/how-to-check-if-website-hacked</link>
+      <pubDate>Thu, 13 Mar 2026 09:00:00 +0000</pubDate>
+      <category>Website Security</category>
+      <description>5 ways to detect a compromised website, what to do if you're hacked, and how to prevent future attacks. Free tools and step-by-step recovery instructions.</description>
+    </item>
+  </channel>
+</rss>
