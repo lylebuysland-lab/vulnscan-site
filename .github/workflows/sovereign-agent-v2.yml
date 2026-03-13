@@ -8,6 +8,8 @@ on:
     - cron: '0 9 * * *'
     # Rank analysis + strategy update: daily at midnight UTC
     - cron: '0 0 * * *'
+    # Weekly content publisher: every Monday 10 AM UTC
+    - cron: '0 10 * * 1'
   workflow_dispatch:
     inputs:
       agent:
@@ -138,4 +140,38 @@ jobs:
           git config user.email "agent@vulnscan.tech"
           git add -A
           git diff --cached --quiet || git commit -m "📊 Strategy update: $(date -u +%Y-%m-%d)"
+          git push
+
+  # ─────────────────────────────────────────────
+  # AGENT 4: WEEKLY PUBLISHER — posts to all platforms
+  # Dev.to, Hashnode, Mastodon, Telegram — every Monday
+  # ─────────────────────────────────────────────
+  weekly-publisher:
+    name: "📣 Weekly Publisher"
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 10 * * 1' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Publish weekly content to all platforms
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: node .github/scripts/content-publisher.js
+
+      - name: Commit publisher log
+        run: |
+          git config user.name "Sovereign Agent"
+          git config user.email "agent@vulnscan.tech"
+          git add -A
+          git diff --cached --quiet || git commit -m "📣 Weekly publish: $(date -u +%Y-%m-%d)"
           git push
