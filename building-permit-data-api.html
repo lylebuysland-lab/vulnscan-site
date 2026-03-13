@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Permit Data API — Scrape Building Permits from 10 US Cities | DataHawk</title>
+    <meta name="description" content="Access real-time building permit data from Chicago, NYC, LA, Seattle, Austin, and 5 more US cities via API. Developers, real estate investors, and contractors use this scraper for lead generation and market analysis.">
+    <meta name="keywords" content="building permit data API, building permit scraper, construction permit data, real estate leads API, permit data US cities">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://apify.com/lylebuysland-lab/building-permit-scraper">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="application/ld+json">{
+        "@context":"https://schema.org","@type":"SoftwareApplication",
+        "name":"Building Permit Scraper — 10 US Cities",
+        "applicationCategory":"DeveloperApplication",
+        "operatingSystem":"Any",
+        "description":"Scrape building permit data from 10 major US cities via open government APIs. Returns structured data with permit type, contractor, estimated value, address, and gentrification signals.",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Pay only for compute units used"},
+        "provider":{"@type":"Organization","name":"DataHawk on Apify","url":"https://apify.com/lylebuysland-lab"}
+    }</script>
+    <script type="application/ld+json">{
+        "@context":"https://schema.org","@type":"FAQPage",
+        "mainEntity":[
+            {"@type":"Question","name":"Which cities does the building permit scraper cover?","acceptedAnswer":{"@type":"Answer","text":"Chicago, New York City, Los Angeles, San Francisco, Seattle, Austin, Denver, Boston, Miami, and Atlanta. All data comes from official government open data portals (Socrata API) — no scraping of private sites."}},
+            {"@type":"Question","name":"What data fields does the building permit API return?","acceptedAnswer":{"@type":"Answer","text":"Address, permit number, permit type (new construction, renovation, commercial, etc.), estimated value, contractor name, issue date, expiry date, zip code, GPS coordinates, and a gentrification score (development signal)."}},
+            {"@type":"Question","name":"How is the building permit data priced?","acceptedAnswer":{"@type":"Answer","text":"You pay only for what you use — Apify charges per compute unit consumed. A typical run scraping 500 permits from 3 cities costs approximately $0.10-0.50. No subscription required."}}
+        ]
+    }</script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#e8e8f0;min-height:100vh;}
+        .hero{background:linear-gradient(160deg,#0d1117 0%,#1a1f2e 50%,#0d1117 100%);border-bottom:1px solid rgba(255,255,255,0.06);padding:80px 32px 64px;}
+        .container{max-width:1000px;margin:0 auto;}
+        .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);font-size:12px;font-weight:600;color:#22c55e;margin-bottom:20px;}
+        h1{font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.15;letter-spacing:-1.5px;margin-bottom:18px;}
+        .accent{background:linear-gradient(135deg,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .sub{font-size:18px;color:#94a3b8;line-height:1.7;max-width:620px;margin-bottom:36px;}
+        .cta-row{display:flex;gap:12px;flex-wrap:wrap;}
+        .btn-primary{background:linear-gradient(135deg,#22c55e,#16a34a);color:white;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;}
+        .btn-secondary{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#e8e8f0;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:48px 0;}
+        .stat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;text-align:center;}
+        .stat-num{font-size:28px;font-weight:800;color:#22c55e;}
+        .stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
+        section{padding:64px 32px;border-bottom:1px solid rgba(255,255,255,0.04);}
+        h2{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;}
+        .use-cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px;}
+        .use-case{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;}
+        .use-case-icon{font-size:28px;margin-bottom:12px;}
+        .use-case h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+        .use-case p{font-size:14px;color:#94a3b8;line-height:1.6;}
+        .code-block{background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;font-family:monospace;font-size:13px;line-height:1.8;color:#a9b4c9;overflow-x:auto;margin:16px 0;}
+        .tag{display:inline-block;padding:3px 10px;border-radius:100px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);font-size:12px;color:#22c55e;margin:3px;}
+        .faq-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:12px;}
+        .faq-item h3{font-size:15px;font-weight:700;margin-bottom:8px;}
+        .faq-item p{font-size:14px;color:#94a3b8;line-height:1.6;}
+        .pricing{background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(16,163,74,0.08));border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:32px;text-align:center;margin-top:32px;}
+        footer{padding:32px;text-align:center;color:#334155;font-size:13px;}
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="badge">🏗️ Live on Apify Store</div>
+            <h1>Building Permit Data API<br><span class="accent">10 US Cities. Real-Time.</span></h1>
+            <p class="sub">Access structured building permit records from Chicago, NYC, LA, San Francisco, Seattle, Austin, Denver, Boston, Miami, and Atlanta. No key needed — powered by official government open data APIs.</p>
+            <div class="cta-row">
+                <a href="https://apify.com/lylebuysland-lab/building-permit-scraper" class="btn-primary">▶ Try Free on Apify →</a>
+                <a href="#use-cases" class="btn-secondary">See Use Cases</a>
+            </div>
+            <div class="stats">
+                <div class="stat"><div class="stat-num">10</div><div class="stat-label">US Cities</div></div>
+                <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Permits/Run</div></div>
+                <div class="stat"><div class="stat-num">12</div><div class="stat-label">Data Fields</div></div>
+                <div class="stat"><div class="stat-num">$0</div><div class="stat-label">No Subscription</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="use-cases">
+        <div class="container">
+            <h2>Who Uses This Data</h2>
+            <p style="color:#94a3b8;margin-bottom:8px;">Building permit data is one of the most valuable B2B lead sources — it reveals who is about to spend money.</p>
+            <div class="use-cases">
+                <div class="use-case">
+                    <div class="use-case-icon">🏠</div>
+                    <h3>Real Estate Investors</h3>
+                    <p>Track new construction and major renovations to spot developing neighborhoods 6-12 months before prices rise.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🔧</div>
+                    <h3>Contractors & Tradespeople</h3>
+                    <p>Find projects in progress in your area. HVAC, roofing, electrical, plumbing — every permit is a potential job lead.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">☀️</div>
+                    <h3>Solar Companies</h3>
+                    <p>New construction permits = new homeowners who haven't yet decided on solar. Contact them at the perfect moment.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🏗️</div>
+                    <h3>Building Material Suppliers</h3>
+                    <p>Monitor commercial construction permits by value. $1M+ projects = significant material purchasing opportunity.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">📊</div>
+                    <h3>Market Researchers</h3>
+                    <p>Track construction trends by city, type, and value over time. Essential for real estate market analysis and forecasting.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🤖</div>
+                    <h3>Developers & Data Teams</h3>
+                    <p>Feed structured permit data into your CRM, analytics platform, or lead scoring model via JSON output.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Sample Output</h2>
+            <p style="color:#94a3b8;margin-bottom:16px;">Each permit record returns 12 structured fields:</p>
+            <div class="code-block">{
+  "city": "Chicago",
+  "permitNumber": "100890123",
+  "address": "1234 N Michigan Ave",
+  "permitType": "COMMERCIAL",
+  "estimatedValue": 2500000,
+  "estimatedValueFormatted": "$2,500,000",
+  "contractor": "Acme Construction LLC",
+  "issueDate": "2026-03-10",
+  "status": "ISSUED",
+  "zipCode": "60611",
+  "latitude": 41.8903,
+  "longitude": -87.6231,
+  "gentrification": {
+    "score": 70,
+    "signal": "🔥 HIGH DEVELOPMENT SIGNAL"
+  }
+}</div>
+            <div style="margin-top:16px;">
+                <span class="tag">JSON output</span>
+                <span class="tag">CSV export</span>
+                <span class="tag">Webhook support</span>
+                <span class="tag">Scheduled runs</span>
+                <span class="tag">API access</span>
+                <span class="tag">No proxy needed</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>Which cities does the building permit scraper cover?</h3>
+                <p>Chicago, New York City, Los Angeles, San Francisco, Seattle, Austin, Denver, Boston, Miami, and Atlanta. All via official Socrata open data APIs.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How recent is the building permit data?</h3>
+                <p>The scraper fetches permits issued within the last 90 days by default (configurable). Schedule daily runs to get truly real-time permit data as soon as governments publish it.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is this legal to use for commercial purposes?</h3>
+                <p>Yes. All data comes from official government open data portals under public domain licenses. Building permits are public records by law in all US states.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How much does it cost?</h3>
+                <p>Pay only for compute units consumed. A typical run (500 permits, 3 cities) costs approximately $0.10–$0.50. Apify offers a free tier with $5/month of compute units.</p>
+            </div>
+            <div class="pricing">
+                <h3 style="font-size:22px;font-weight:700;margin-bottom:8px;">Pay Only For What You Use</h3>
+                <p style="color:#94a3b8;margin-bottom:20px;">No subscription. No minimums. Typical run = under $0.50.</p>
+                <a href="https://apify.com/lylebuysland-lab/building-permit-scraper" class="btn-primary">Start Free on Apify →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Building Permit Scraper by <a href="https://apify.com/lylebuysland-lab" style="color:#22c55e;text-decoration:none;">DataHawk on Apify</a> · Public government data · Updated daily</p>
+    </footer>
+</body>
+</html>
