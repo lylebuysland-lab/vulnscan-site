@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://vulnscan.tech/404</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vulnscan.tech/about</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vulnscan.tech/about</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://vulnscan.tech/angular-vulnerability-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vulnscan.tech/apache-vulnerability-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vulnscan.tech/api-security-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -35,6 +35,7 @@
   <url><loc>https://vulnscan.tech/cve-2024-21762</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://vulnscan.tech/cve-2024-3400</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://vulnscan.tech/cve-2024-6387</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vulnscan.tech/cve-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://vulnscan.tech/data-leakage-vulnerability-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vulnscan.tech/demo-animation</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vulnscan.tech/directory-traversal-vulnerability-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -111,4 +112,9 @@
   <url><loc>https://vulnscan.tech/wordpress-security-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://vulnscan.tech/xss-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vulnscan.tech/xxe-vulnerability-scanner</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vulnscan.tech/blog/how-to-check-if-website-hacked</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vulnscan.tech/blog/how-to-fix-sql-injection</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vulnscan.tech/blog</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vulnscan.tech/blog/owasp-top-10-explained</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vulnscan.tech/blog/website-security-checklist</loc><lastmod>2026-03-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
