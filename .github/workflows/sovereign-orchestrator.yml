@@ -1,27 +1,17 @@
-name: ⚡ SOVEREIGN ORCHESTRATOR — Self-Expanding Revenue Machine
+name: VulnScan Sovereign Orchestrator — Security Content Only
 
-# This is the Master Agent.
-# It runs every pipeline, in order, on the optimal schedule.
-# New data sources are added here and run automatically.
-# Zero human work. Forever.
+# THREE security-only pipelines. Zero human work. Forever.
+# Everything on vulnscan.tech is 100% security-relevant.
 
 on:
   schedule:
-    # CVE Pipeline — daily 6am (high-value security content, the core)
-    - cron: '0 6 * * *'
-    # EDGAR Breach — every 6h (time-sensitive, breach traffic spikes fast)
-    - cron: '0 */6 * * *'
-    # Congress Trades — 3x/day (trades disclosed throughout day)
-    - cron: '0 8,14,20 * * *'
-    # FDA Recalls — daily 8am (recalls announced throughout week)
-    - cron: '0 8 * * *'
-    # GSC Keyword Feedback — Mondays 7am (weekly SEO strategy)
-    - cron: '0 7 * * 1'
-
+    - cron: '0 6 * * *'     # CVE pipeline — daily 6am
+    - cron: '0 */6 * * *'   # EDGAR breach — every 6h (time-sensitive)
+    - cron: '0 7 * * 1'     # GSC keyword loop — Mondays 7am
   workflow_dispatch:
     inputs:
       pipeline:
-        description: 'Pipeline to run (all / cve / edgar / congress / fda / gsc)'
+        description: 'Pipeline: all / cve / edgar / gsc'
         required: false
         default: 'all'
 
@@ -30,17 +20,11 @@ permissions:
 
 env:
   INDEXNOW_KEY: vulnscan-indexnow-key-2026
-  SITE_URL: https://vulnscan.tech
 
 jobs:
-  # ============================================================
-  # PIPELINE 1: CVE Auto-Pages (NIST NVD + GitHub Advisory)
-  # The original revenue engine. Runs daily.
-  # ============================================================
   cve-pipeline:
-    name: "CVE Pipeline — NIST NVD + GitHub Advisory"
+    name: "CVE Pages — NIST NVD + GitHub Advisory"
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'all' || github.event.inputs.pipeline == 'cve') || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v4
         with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
@@ -52,20 +36,14 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MOLTBOOK_KEY: ${{ secrets.MOLTBOOK_KEY }}
         run: node .github/scripts/auto-cve-pipeline.js
-      - name: Commit CVE pages
+      - name: Commit
         run: |
-          git config user.name "Sovereign CVE Bot" && git config user.email "bot@vulnscan.tech"
-          git add -A && git diff --staged --quiet || git commit -m "CVE: Auto-pages $(date +%Y-%m-%d)"
-          git push
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "CVE: Auto-pages $(date +%Y-%m-%d)" && git push
 
-  # ============================================================
-  # PIPELINE 2: SEC EDGAR Breach Monitor
-  # Captures "[Company] data breach" searches worth 5K-100K queries/event
-  # ============================================================
   edgar-breach:
-    name: "EDGAR Breach Monitor — SEC 8-K Cybersecurity Disclosures"
+    name: "EDGAR — SEC Cybersecurity Breach Disclosures"
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'all' || github.event.inputs.pipeline == 'edgar') || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v4
         with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
@@ -76,69 +54,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node .github/scripts/edgar-breach-monitor.js
-      - name: Commit breach pages
+      - name: Commit
         run: |
-          git config user.name "Sovereign EDGAR Bot" && git config user.email "bot@vulnscan.tech"
-          git add -A && git diff --staged --quiet || git commit -m "EDGAR: Breach disclosure pages $(date +%Y-%m-%d-%H%M)"
-          git push
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "EDGAR: Breach pages $(date +%Y-%m-%d-%H%M)" && git push
 
-  # ============================================================
-  # PIPELINE 3: Congress Stock Trades
-  # 500K+ monthly searches. Free public data. Nobody is automating this.
-  # ============================================================
-  congress-trades:
-    name: "Congress Trades — STOCK Act Disclosures"
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'all' || github.event.inputs.pipeline == 'congress') || github.event_name == 'schedule'
-    steps:
-      - uses: actions/checkout@v4
-        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - name: Run Congress Trades Monitor
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node .github/scripts/congress-trades-monitor.js
-      - name: Commit trade pages
-        run: |
-          git config user.name "Sovereign Congress Bot" && git config user.email "bot@vulnscan.tech"
-          git add -A && git diff --staged --quiet || git commit -m "Congress: Trade disclosure pages $(date +%Y-%m-%d)"
-          git push
-
-  # ============================================================
-  # PIPELINE 4: FDA Recall Monitor
-  # Drug and food recalls generate massive search spikes. First page wins.
-  # ============================================================
-  fda-recalls:
-    name: "FDA Recall Monitor — Drug & Food Recalls"
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'all' || github.event.inputs.pipeline == 'fda') || github.event_name == 'schedule'
-    steps:
-      - uses: actions/checkout@v4
-        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - name: Run FDA Recall Monitor
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node .github/scripts/fda-recall-monitor.js
-      - name: Commit recall pages
-        run: |
-          git config user.name "Sovereign FDA Bot" && git config user.email "bot@vulnscan.tech"
-          git add -A && git diff --staged --quiet || git commit -m "FDA: Recall pages $(date +%Y-%m-%d)"
-          git push
-
-  # ============================================================
-  # PIPELINE 5: GSC Keyword Feedback Loop
-  # Reads what's ranking → builds more pages for striking-distance keywords
-  # The self-learning loop. Runs weekly.
-  # ============================================================
   gsc-keywords:
-    name: "GSC Keyword Loop — Self-Learning SEO"
+    name: "GSC — Self-Learning Security SEO"
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'all' || github.event.inputs.pipeline == 'gsc') || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v4
         with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
@@ -150,8 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node .github/scripts/gsc-keyword-feedback.js
-      - name: Commit GSC pages
+      - name: Commit
         run: |
-          git config user.name "Sovereign GSC Bot" && git config user.email "bot@vulnscan.tech"
-          git add -A && git diff --staged --quiet || git commit -m "GSC: Keyword expansion pages $(date +%Y-%m-%d)"
-          git push
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "GSC: Security keyword pages $(date +%Y-%m-%d)" && git push
