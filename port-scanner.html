@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
-    <title>Port Scanner — Check Open Ports Online Free | VulnScan</title>
-    <meta name="description" content="Scan any server for open ports and exposed services. Detect unnecessary services, default configurations, and potential entry points. Free online port scanner.">
-    <meta name="keywords" content="port scanner, port scanner online, open port checker, port scan tool, check open ports, network port scanner">
+    <title>Port Check — Free Online Port Scanner & Open Port Checker | VulnScan</title>
+    <meta name="description" content="Free port check tool. See which ports are open on any server in seconds. Check port 80, 443, 22, 3306 and 1000+ others. No download, no signup — instant results.">
+    <meta name="keywords" content="port check, port scanner online, open port checker, check open ports, port scan free, network port tester, is port open">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.vulnscan.tech https://api.stripe.com; frame-src 'self' https://js.stripe.com; img-src 'self' data:;">
     
@@ -121,6 +121,7 @@
                 <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
             </div>
             <div class="nav-links">
+                <a href="/blog">Blog</a>
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="#scan" class="nav-cta">Start Scan</a>
@@ -129,8 +130,8 @@
     </nav>
 
     <section class="hero">
-        <h1>Port <span class="gradient-text">Scanner</span></h1>
-        <p class="hero-sub">Every open port is a potential entry point for attackers. Scan your servers for exposed services, unnecessary ports, and dangerous default configurations.</p>
+        <h1>Free Port <span class="gradient-text">Check</span> — Open Port Scanner</h1>
+        <p class="hero-sub">Instantly check which ports are open on any server. Test port 80, 443, 22, 8080, 3306, and thousands more — free, no signup, results in seconds.</p>
 
         <!-- Scan box (same structure as homepage) -->
         <div class="scan-box" id="scan">
@@ -191,35 +192,52 @@
     </section>
 
     <section class="seo-content" style="max-width:800px; margin:0 auto; padding:60px 32px; position:relative; z-index:1;">
-        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">Understanding Open Ports and Security</h2>
+        <h2 style="font-size:28px; font-weight:800; margin-bottom:20px;">Free Port Check — Is Your Port Open?</h2>
         <div style="color:var(--text-secondary); line-height:1.8;">
-            <p>Ports are the doorways to your server. Each open port runs a service that could have vulnerabilities. The fewer ports exposed to the internet, the smaller your attack surface.</p>
-        <h3>Critical Ports to Monitor</h3>
+            <p>A port check tells you whether a specific port on a server is open (accepting connections), closed (actively refusing connections), or filtered (blocked by a firewall). VulnScan's free port check tool scans any IP address or domain across 1,000+ common ports.</p>
+            <p>Every open port is a potential attack surface. Knowing exactly which ports are exposed helps you enforce a strict firewall policy and minimize risk before attackers can exploit it.</p>
+        <h3>Common Ports to Check</h3>
         <ul>
-            <li><strong>Port 22 (SSH)</strong> — Remote admin access — should be restricted by IP</li>
-            <li><strong>Port 80/443 (HTTP/HTTPS)</strong> — Web traffic — should be the only ports open for most websites</li>
-            <li><strong>Port 3306 (MySQL)</strong> — Database — should NEVER be publicly accessible</li>
-            <li><strong>Port 5432 (PostgreSQL)</strong> — Database — should NEVER be publicly accessible</li>
-            <li><strong>Port 3389 (RDP)</strong> — Windows Remote Desktop — major ransomware target</li>
-            <li><strong>Port 21 (FTP)</strong> — File transfer — insecure, should use SFTP instead</li>
+            <li><strong>Port 22 (SSH)</strong> — Remote admin access — should be restricted by IP only</li>
+            <li><strong>Port 80/443 (HTTP/HTTPS)</strong> — Web traffic — typically the only ports that should be open publicly</li>
+            <li><strong>Port 3306 (MySQL)</strong> — Database — must NEVER be publicly accessible</li>
+            <li><strong>Port 5432 (PostgreSQL)</strong> — Database — must NEVER be publicly accessible</li>
+            <li><strong>Port 27017 (MongoDB)</strong> — Database — must NEVER be publicly accessible</li>
+            <li><strong>Port 3389 (RDP)</strong> — Windows Remote Desktop — major ransomware entry point</li>
+            <li><strong>Port 21 (FTP)</strong> — Insecure file transfer — replace with SFTP (port 22)</li>
+            <li><strong>Port 8080/8443</strong> — Alternative HTTP/HTTPS — often exposed unintentionally</li>
+            <li><strong>Port 6379 (Redis)</strong> — Cache — frequently exposed with no auth, leading to data theft</li>
+            <li><strong>Port 9200 (Elasticsearch)</strong> — Search index — often publicly accessible with no auth</li>
         </ul>
+        <h3>What Happens When the Wrong Port is Open?</h3>
+        <p>Automated scanners and bots run port checks against every IP address on the internet 24/7. Within minutes of a server coming online, attackers know exactly which services are running. An exposed database port (3306, 5432, 27017) is scanned within 4 minutes of going live on the internet.</p>
         </div>
 
-        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions</h3>
+        <h3 style="font-size:22px; font-weight:700; margin:32px 0 16px;">Frequently Asked Questions — Port Check</h3>
         
         <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What is a port check?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">A port check is a test that determines whether a specific TCP or UDP port on a server is open (accepting connections), closed, or filtered by a firewall. It's the first step in understanding your server's attack surface.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">How do I check if port 80 is open?</h4>
+            <p style="color:var(--text-secondary); line-height:1.6;">Enter your domain or IP address in the VulnScan scanner above. Our free port check will automatically test port 80 (HTTP), 443 (HTTPS), and hundreds of other common ports. Results appear in seconds with no signup required.</p>
+        </div>
+
+        <div style="margin-bottom:16px;">
             <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">What ports should be open on a web server?</h4>
-            <p style="color:var(--text-secondary); line-height:1.6;">Typically only ports 80 (HTTP) and 443 (HTTPS). Everything else should be firewalled or restricted to specific IP addresses.</p>
+            <p style="color:var(--text-secondary); line-height:1.6;">Typically only ports 80 (HTTP) and 443 (HTTPS). Everything else should be firewalled or restricted to specific IP addresses. SSH (port 22) should be locked down to a specific management IP.</p>
         </div>
 
         <div style="margin-bottom:16px;">
             <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Is port scanning legal?</h4>
-            <p style="color:var(--text-secondary); line-height:1.6;">Scanning your own servers is legal. Scanning others without permission may violate computer fraud laws. Always scan only systems you own or are authorized to test.</p>
+            <p style="color:var(--text-secondary); line-height:1.6;">Scanning your own servers is always legal. Scanning servers you don't own without permission may violate computer fraud laws in your country. VulnScan is designed for scanning your own infrastructure and websites.</p>
         </div>
 
         <div style="margin-bottom:16px;">
             <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">Why is an exposed database port dangerous?</h4>
-            <p style="color:var(--text-secondary); line-height:1.6;">Open database ports (3306, 5432, 27017) allow attackers to attempt authentication directly. Combined with weak passwords, this leads to full database access and data breaches.</p>
+            <p style="color:var(--text-secondary); line-height:1.6;">Open database ports (3306 MySQL, 5432 PostgreSQL, 27017 MongoDB) allow attackers to attempt brute-force authentication directly. Bots scan all internet-facing IPs continuously. An exposed database port is often compromised within hours.</p>
         </div>
 
         <div style="text-align:center; margin-top:40px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
@@ -238,6 +256,7 @@
                 <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
             </div>
             <div class="footer-links">
+                <a href="/blog">Security Blog</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="/free-website-security-check">Free Security Check</a>
                 <a href="/wordpress-security-scanner">WordPress Scanner</a>
@@ -247,6 +266,10 @@
                 <a href="/website-security-audit">Security Audit</a>
                 <a href="/ssl-checker">SSL Checker</a>
                 <a href="/owasp-scanner">OWASP Scanner</a>
+                <a href="/react-vulnerability-scanner">React Scanner</a>
+                <a href="/laravel-vulnerability-scanner">Laravel Scanner</a>
+                <a href="/ssrf-vulnerability-scanner">SSRF Scanner</a>
+                <a href="/rce-vulnerability-scanner">RCE Scanner</a>
                 <a href="mailto:security@vulnscan.tech">Contact</a>
             </div>
             <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
