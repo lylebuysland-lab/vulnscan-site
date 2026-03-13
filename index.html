@@ -100,6 +100,12 @@
     <link rel="canonical" href="https://vulnscan.tech">
     <link rel="alternate" hreflang="en" href="https://vulnscan.tech">
     <link rel="alternate" hreflang="x-default" href="https://vulnscan.tech">
+    <!-- rel=me entity ownership: confirms these profiles belong to VulnScan in Google's Knowledge Graph -->
+    <link rel="me" href="https://github.com/lylebuysland-lab/vulnscan-site">
+    <link rel="me" href="https://twitter.com/vulnscan">
+    <link rel="me" href="https://www.linkedin.com/company/vulnscan">
+    <!-- Preconnect to NIST NVD -- signals topical entity relationship to Googlebot -->
+    <link rel="related" href="https://nvd.nist.gov">
     
     <!-- Preload critical resources (Core Web Vitals boost) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,9 +132,12 @@
             </div>
             <div class="nav-links">
                 <a href="/blog">Blog</a>
+                <a href="/cve-scanner">CVE Database</a>
                 <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
                 <a href="#pricing">Pricing</a>
+                <a href="/about">About</a>
+                <a href="/" class="nav-cta">Free Scan</a>
+            </div>
                 <a href="#scan" class="nav-cta">Start Scan</a>
             </div>
         </div>
@@ -332,7 +341,7 @@
                 </div>
                 
                 <button class="price-btn" onclick="checkout('quick')">Get Quick Scan — $49</button>
-                <p style="font-size:11px; color:#22c55e; margin-top:8px;">⚡ Report delivered in 2-6 hours (24h max)</p>
+                <p style="font-size:11px; color:#22c55e; margin-top:8px;">⚡ Delivered in under 6 hours · No subscription ever</p>
             </div>
 
             <!-- $199 DEEP SCAN -->
@@ -373,7 +382,7 @@
                 </div>
                 
                 <button class="price-btn featured-btn" onclick="checkout('deep')">Get Deep Scan — $199</button>
-                <p style="font-size:11px; color:var(--accent); margin-top:8px;">🔥 Report delivered in 2-6 hours (24h max) · Competitors charge $199/month</p>
+                <p style="font-size:11px; color:var(--accent); margin-top:8px;">🔥 $199 once — not $199/month like Qualys or Nessus · Delivered in hours</p>
             </div>
         </div>
 
