@@ -94,17 +94,24 @@ async function parallel(tasks, concurrency = 10) {
 // ═══════════════════════════════════════════════════════
 
 const PING_SERVICES = [
+  // ── Core / High-value ─────────────────────────────────────
+  'http://rpc.pingomatic.com/',
   'http://rpc.pingler.com/rpc/RPC2',
+  'http://pingoat.com/goat/RPC2',
   'http://ping.feedburner.com/',
   'http://blogsearch.google.com/ping/RPC2',
   'http://ping.blo.gs/',
   'http://rpc.technorati.com/rpc/ping',
-  'http://ping.feedburner.google.com/',
   'http://rpc.weblogs.com/RPC2',
   'http://ping.blogs.yandex.ru/RPC2',
+  'https://ping.blogs.yandex.ru/RPC2',
   'http://ping.twingly.com/',
+  'http://rpc.twingly.com/',
   'http://api.moreover.com/ping',
+
+  // ── Blog directories ──────────────────────────────────────
   'http://www.blogpeople.net/ping/',
+  'http://www.blogpeople.net/servlet/weblogUpdates',
   'http://www.bloglines.com/ping',
   'http://xmlrpc.blogg.de/',
   'http://rpc.blogbuzzmachine.com/RPC2',
