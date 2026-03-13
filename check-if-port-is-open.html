@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>Check if Port Is Open — Free TCP Port Tester | VulnScan 2026</title>
+    <meta name="description" content="Check if any TCP port is open on a website or server instantly. Free online tool — no install needed. Get immediate results: port open, closed, or filtered.">
+    <meta name="keywords" content="check if port is open, how to check if a port is open, test if port is open">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.vulnscan.tech; img-src 'self' data:;">
+    <link rel="canonical" href="https://vulnscan.tech/check-if-port-is-open">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="alternate" type="application/rss+xml" title="VulnScan Security Blog" href="https://vulnscan.tech/feed.xml">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why would a port show as filtered instead of closed?","acceptedAnswer":{"@type":"Answer","text":"\"Filtered\" means a firewall is blocking the scan probe — the port may or may not be open behind the firewall. \"Closed\" means the port is reachable but no service is listening. \"Open\" means a service is actively accepting connections."}},{"@type":"Question","name":"How can I open a blocked port?","acceptedAnswer":{"@type":"Answer","text":"To open a port on a server: configure your firewall (iptables, ufw, AWS Security Groups, etc.) to allow inbound traffic on that port, and ensure the service is running and bound to that port. Consult your hosting provider's documentation for specific steps."}},{"@type":"Question","name":"What is the difference between TCP and UDP ports?","acceptedAnswer":{"@type":"Answer","text":"TCP ports require a confirmed handshake — they are reliable and used for web (80/443), SSH (22), databases. UDP ports are connectionless — faster but unreliable, used for DNS (53), VoIP, gaming. Most web security scans focus on TCP ports."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vulnscan.tech"},{"@type":"ListItem","position":2,"name":"Check If a Port Is Open","item":"https://vulnscan.tech/check-if-port-is-open"}]}</script>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/blog">Blog</a>
+                <a href="/cve-scanner">CVE Database</a>
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/about">About</a>
+                <a href="/" class="nav-cta">Free Scan</a>
+            </div>
+        </div>
+    </nav>
+    <main style="max-width:860px;margin:0 auto;padding:100px 32px 60px;position:relative;z-index:1;">
+        <nav style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">
+            <a href="/" style="color:var(--text-muted);text-decoration:none;">Home</a> / <span style="color:var(--accent);">Check If a Port Is Open</span>
+        </nav>
+        <h1 style="font-size:clamp(28px,4vw,44px);font-weight:800;line-height:1.2;letter-spacing:-1px;margin-bottom:20px;">Check If a Port Is Open</h1>
+        <p style="font-size:18px;color:var(--text-secondary);line-height:1.8;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--border);">Need to check if a port is open? Whether you're a developer debugging a firewall rule, a sysadmin verifying a service is running, or a security professional auditing your attack surface — VulnScan's port tester gives you an instant answer from any browser.</p>
+        
+        <!-- CTA -->
+        <div style="padding:24px;background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(168,85,247,0.12));border:1px solid rgba(99,102,241,0.25);border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:48px;">
+            <div>
+                <div style="font-weight:700;font-size:17px;margin-bottom:4px;">🔍 Start Your Free Port Scan</div>
+                <div style="font-size:14px;color:var(--text-secondary);">Scan any website — 60 seconds, no signup</div>
+            </div>
+            <a href="/port-scanner" style="background:var(--gradient);color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap;">Scan Ports Now →</a>
+        </div>
+
+        <!-- Related tools -->
+        <h2 style="font-size:20px;font-weight:700;margin:0 0 16px;">Related Port Scanning Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:48px;">
+            <a href="/port-scanner" style="display:block;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);font-weight:600;font-size:14px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">Port Scanner</a><a href="/open-port-checker" style="display:block;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);font-weight:600;font-size:14px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">Open Port Checker</a><a href="/port-scan-online" style="display:block;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);font-weight:600;font-size:14px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">Port Scan Online</a>
+        </div>
+
+        <!-- Common ports reference -->
+        <h2 style="font-size:22px;font-weight:800;margin:0 0 16px;">Common Ports & Their Security Risk</h2>
+        <div style="overflow-x:auto;margin-bottom:48px;">
+            <table style="width:100%;border-collapse:collapse;font-size:14px;">
+                <thead><tr style="border-bottom:2px solid var(--border);">
+                    <th style="text-align:left;padding:12px 16px;color:var(--text-secondary);font-weight:600;">Port</th>
+                    <th style="text-align:left;padding:12px 16px;color:var(--text-secondary);font-weight:600;">Service</th>
+                    <th style="text-align:left;padding:12px 16px;color:var(--text-secondary);font-weight:600;">Risk Level</th>
+                    <th style="text-align:left;padding:12px 16px;color:var(--text-secondary);font-weight:600;">Notes</th>
+                </tr></thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">22</td>
+                        <td style="padding:12px 16px;font-weight:600;">SSH</td>
+                        <td style="padding:12px 16px;">⚠️ Medium</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">OK if needed, restrict to known IPs</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">23</td>
+                        <td style="padding:12px 16px;font-weight:600;">Telnet</td>
+                        <td style="padding:12px 16px;">🔴 Critical</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Unencrypted — disable immediately</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">80</td>
+                        <td style="padding:12px 16px;font-weight:600;">HTTP</td>
+                        <td style="padding:12px 16px;">🟢 Low</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Expected for web servers</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">443</td>
+                        <td style="padding:12px 16px;font-weight:600;">HTTPS</td>
+                        <td style="padding:12px 16px;">🟢 Low</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Expected — ensure TLS is current</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">3306</td>
+                        <td style="padding:12px 16px;font-weight:600;">MySQL</td>
+                        <td style="padding:12px 16px;">🔴 Critical</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Database — never expose to internet</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">3389</td>
+                        <td style="padding:12px 16px;font-weight:600;">RDP</td>
+                        <td style="padding:12px 16px;">🔴 Critical</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Most attacked port on internet</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">5432</td>
+                        <td style="padding:12px 16px;font-weight:600;">PostgreSQL</td>
+                        <td style="padding:12px 16px;">🔴 Critical</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Database — close or firewall</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">6379</td>
+                        <td style="padding:12px 16px;font-weight:600;">Redis</td>
+                        <td style="padding:12px 16px;">🔴 Critical</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Often exposed without auth — check now</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">27017</td>
+                        <td style="padding:12px 16px;font-weight:600;">MongoDB</td>
+                        <td style="padding:12px 16px;">🔴 Critical</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Leaked millions of records historically</td>
+                    </tr><tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:12px 16px;font-family:monospace;font-weight:600;color:var(--accent);">8080</td>
+                        <td style="padding:12px 16px;font-weight:600;">HTTP Alt</td>
+                        <td style="padding:12px 16px;">⚠️ Medium</td>
+                        <td style="padding:12px 16px;color:var(--text-secondary);">Dev servers often exposed accidentally</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FAQ -->
+        <h2 style="font-size:22px;font-weight:800;margin:0 0 20px;">Frequently Asked Questions</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:48px;">
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;">Why would a port show as filtered instead of closed?</h3>
+                <p style="color:var(--text-secondary);font-size:14px;line-height:1.7;margin:0;">"Filtered" means a firewall is blocking the scan probe — the port may or may not be open behind the firewall. "Closed" means the port is reachable but no service is listening. "Open" means a service is actively accepting connections.</p>
+            </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;">How can I open a blocked port?</h3>
+                <p style="color:var(--text-secondary);font-size:14px;line-height:1.7;margin:0;">To open a port on a server: configure your firewall (iptables, ufw, AWS Security Groups, etc.) to allow inbound traffic on that port, and ensure the service is running and bound to that port. Consult your hosting provider's documentation for specific steps.</p>
+            </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;">What is the difference between TCP and UDP ports?</h3>
+                <p style="color:var(--text-secondary);font-size:14px;line-height:1.7;margin:0;">TCP ports require a confirmed handshake — they are reliable and used for web (80/443), SSH (22), databases. UDP ports are connectionless — faster but unreliable, used for DNS (53), VoIP, gaming. Most web security scans focus on TCP ports.</p>
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div style="padding:32px;background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(168,85,247,0.1));border:1px solid rgba(99,102,241,0.2);border-radius:16px;text-align:center;">
+            <h2 style="font-size:22px;font-weight:700;margin-bottom:8px;">Scan Your Ports Now — Free</h2>
+            <p style="color:var(--text-secondary);margin-bottom:20px;">See exactly what attackers see. Results in 60 seconds.</p>
+            <a href="/" class="cta-btn" style="text-decoration:none;display:inline-block;">Start Free Scan →</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo"><div class="logo-icon">⚡</div><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></div>
+            <div class="footer-links">
+                <a href="/port-scanner">Port Scanner</a><a href="/open-port-checker">Open Port Checker</a>
+                <a href="/port-scan-online">Port Scan Online</a><a href="/online-vulnerability-scanner">Vulnerability Scanner</a>
+                <a href="/blog">Blog</a><a href="/about">About</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>
