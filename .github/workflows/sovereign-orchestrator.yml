@@ -77,3 +77,27 @@ jobs:
         run: |
           git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
           git add -A && git diff --staged --quiet || git commit -m "GSC: Security keyword pages $(date +%Y-%m-%d)" && git push
+
+  # ============================================================
+  # PIPELINE 4: Medium Auto-Publisher (OFF-STACK REVENUE)
+  # Publishes AI-written security articles to Medium Partner Program
+  # Medium has 100M monthly visitors + pays per read → Stripe
+  # Zero domain, zero VulnScan dependency. Fully mechanical.
+  # ============================================================
+  medium-publisher:
+    name: "Medium — AI Security Articles (Partner Program Revenue)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Publish to Medium
+        env:
+          MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node .github/scripts/medium-auto-publisher.js
+      - name: Commit log
+        run: |
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "Medium: Published security article $(date +%Y-%m-%d)" && git push
