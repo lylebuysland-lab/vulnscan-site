@@ -1,16 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /backend/
-Disallow: /tools/
-Disallow: /sample_*.pdf
+Disallow: /push_*.ps1
+Disallow: /generate-*.js
+Disallow: /*.ps1
 
 Sitemap: https://vulnscan.tech/sitemap.xml
-
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
