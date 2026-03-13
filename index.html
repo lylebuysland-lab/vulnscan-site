@@ -95,6 +95,75 @@
         }
     }
     </script>
+
+    <!-- FAQPage schema: creates expandable Q&A accordion in Google SERP (2x visual space) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Is VulnScan's website vulnerability scanner really free?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. VulnScan provides a free recon scan for any website — no signup, no credit card. The free scan delivers a security grade (A-F), open port detection, SSL/TLS analysis, and HTTP security header checks in under 60 seconds. Paid plans ($49 and $199 one-time) unlock deeper CVE detection, compliance reports, and code-level remediation."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What vulnerabilities does VulnScan detect?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "VulnScan detects 200+ vulnerability types including: SQL injection, XSS (cross-site scripting), SSRF, open ports, SSL/TLS misconfigurations, outdated software, missing HTTP security headers, WordPress plugin vulnerabilities, and active CVEs from the NIST NVD database including Log4Shell, Spring4Shell, and recent critical vulnerabilities."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How is VulnScan different from Qualys or Nessus?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Qualys and Nessus charge $199-$500+ per month on subscription. VulnScan charges $199 once — no recurring fees, no annual contracts. VulnScan is also web-based (no agent installation required), delivers results in hours not days, and is purpose-built for website security rather than network infrastructure. For most websites and small businesses, VulnScan provides equivalent coverage at a fraction of the cost."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long does a vulnerability scan take?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The free recon scan completes in under 60 seconds. The $49 Quick Scan report is delivered in under 6 hours. The $199 Deep Scan — which includes OWASP Top 10 mapping, compliance checks, and code-level remediation — is delivered within 6 hours (24 hours maximum for complex sites)."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is it legal to scan a website for vulnerabilities?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "It is legal to scan websites you own or have explicit written permission to test. Scanning third-party websites without permission may violate the Computer Fraud and Abuse Act (CFAA) in the US and equivalent laws in other jurisdictions. VulnScan's scanner is designed for website owners and authorized security testers only."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is a CVE vulnerability?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "CVE stands for Common Vulnerabilities and Exposures — a standardized list of publicly disclosed security vulnerabilities maintained by MITRE and published in the NIST National Vulnerability Database (NVD). Each CVE has a unique ID (e.g., CVE-2021-44228). VulnScan's CVE scanner cross-references your site against the NVD database to detect known vulnerabilities in your software stack."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Does my website need a vulnerability scan even if it's small?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Small websites are disproportionately targeted because they typically have weaker security. 43% of cyber attacks target small businesses. A compromised website can result in Google blacklisting (which destroys organic traffic), customer data theft, and SEO sabotage via malware injection. A $0 scan every 30 days is cheap insurance."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- RSS feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="VulnScan Security Blog" href="https://vulnscan.tech/feed.xml">
     
     <!-- Canonical -->
     <link rel="canonical" href="https://vulnscan.tech">
