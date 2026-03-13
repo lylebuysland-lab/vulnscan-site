@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>Website Security Blog — Tips, Guides & Vulnerability Research | VulnScan</title>
+    <meta name="description" content="Free website security guides, vulnerability research, and how-to articles. Learn how to protect your website from hackers, malware, and data breaches.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://vulnscan.tech/blog">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "VulnScan Security Blog",
+        "url": "https://vulnscan.tech/blog",
+        "description": "Website security guides, vulnerability research, and how-to articles from VulnScan.",
+        "publisher": {"@type": "Organization", "name": "VulnScan", "url": "https://vulnscan.tech"}
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .blog-grid { max-width: 900px; margin: 0 auto; padding: 60px 32px 80px; position: relative; z-index: 1; }
+        .blog-header { text-align: center; margin-bottom: 60px; }
+        .blog-header h1 { font-size: 42px; font-weight: 800; margin-bottom: 16px; }
+        .blog-header p { color: var(--text-secondary); font-size: 18px; max-width: 540px; margin: 0 auto; }
+        .post-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; transition: border-color 0.2s; text-decoration: none; display: block; }
+        .post-card:hover { border-color: rgba(99,102,241,0.5); }
+        .post-tag { display: inline-block; padding: 3px 12px; border-radius: 20px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+        .post-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+        .post-card p { color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; font-size: 15px; }
+        .post-meta { color: var(--text-secondary); font-size: 13px; display: flex; gap: 16px; }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/blog" style="color:var(--accent);">Blog</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Free Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="blog-grid">
+        <div class="blog-header">
+            <h1>Website Security <span class="gradient-text">Blog</span></h1>
+            <p>Free guides, vulnerability research, and security tips to protect your website from hackers.</p>
+        </div>
+
+        <a href="/blog/how-to-check-if-website-hacked" class="post-card">
+            <div class="post-tag">🔐 Website Security</div>
+            <h2>How to Check if Your Website Has Been Hacked (Free Guide 2026)</h2>
+            <p>5 ways to detect a compromised website, what to do if you're hacked, and how to prevent future attacks. Includes free tools and step-by-step recovery instructions.</p>
+            <div class="post-meta">
+                <span>📅 March 13, 2026</span>
+                <span>⏱️ 8 min read</span>
+                <span style="color:var(--accent)">Read article →</span>
+            </div>
+        </a>
+
+        <div style="text-align:center; margin-top:48px; padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;">
+            <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Check Your Website Security Now</h3>
+            <p style="color:var(--text-secondary); margin-bottom:20px;">Free scan — no signup, no credit card, results in 60 seconds.</p>
+            <button class="cta-btn" onclick="window.location.href='/#scan'">Start Free Scan →</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/blog">Blog</a>
+                <a href="/free-website-security-check">Free Security Check</a>
+                <a href="/website-vulnerability-scanner">Vulnerability Scanner</a>
+                <a href="/xss-scanner">XSS Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="/ssl-checker">SSL Checker</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="../app.js"></script>
+</body>
+</html>

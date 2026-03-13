@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>How to Check if Your Website Has Been Hacked (Free Guide 2026) | VulnScan</title>
+    <meta name="description" content="5 ways to check if your website has been hacked. Signs of compromise, free tools, and step-by-step recovery guide. Check your site in 10 seconds.">
+    <meta name="keywords" content="how to check if website hacked, website hacked signs, is my website hacked, website security check, detect website compromise">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://vulnscan.tech/blog/how-to-check-if-website-hacked">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+    <meta property="og:title" content="How to Check if Your Website Has Been Hacked (2026 Guide)">
+    <meta property="og:description" content="5 ways to detect a hacked website. Free tools and step-by-step recovery.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://vulnscan.tech/blog/how-to-check-if-website-hacked">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How to Check if Your Website Has Been Hacked (Free Guide 2026)",
+        "description": "5 ways to check if your website has been hacked, with free tools and step-by-step recovery instructions.",
+        "author": {"@type": "Organization", "name": "VulnScan", "url": "https://vulnscan.tech"},
+        "publisher": {"@type": "Organization", "name": "VulnScan", "url": "https://vulnscan.tech"},
+        "datePublished": "2026-03-13",
+        "dateModified": "2026-03-13",
+        "mainEntityOfPage": {"@type": "WebPage", "@id": "https://vulnscan.tech/blog/how-to-check-if-website-hacked"}
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How do I know if my website has been hacked?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Common signs include: Google showing a 'This site may be hacked' warning, unexpected redirects, strange new pages or code in your files, visitors complaining of malware warnings, sudden traffic drops, or your hosting provider suspending your account. Use a free scanner like VulnScan to check in 10 seconds."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What should I do if my website is hacked?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "1. Take the site offline immediately. 2. Change all passwords (hosting, CMS, database, FTP). 3. Scan for malware with a security tool. 4. Remove malicious code and restore from clean backup. 5. Update all software and plugins. 6. Submit a review request to Google if blacklisted."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long does it take to fix a hacked website?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A straightforward hack can be cleaned in 2-4 hours if you have a clean backup. More complex infections with backdoors can take 1-3 days. Google blacklist removal takes an additional 1-3 days after cleanup."
+                }
+            }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://vulnscan.tech"},
+            {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://vulnscan.tech/blog"},
+            {"@type": "ListItem", "position": 3, "name": "How to Check if Your Website Has Been Hacked", "item": "https://vulnscan.tech/blog/how-to-check-if-website-hacked"}
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .blog-article { max-width: 760px; margin: 0 auto; padding: 60px 32px 80px; position: relative; z-index: 1; }
+        .blog-article h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+        .blog-meta { color: var(--text-secondary); font-size: 14px; margin-bottom: 40px; display: flex; gap: 16px; flex-wrap: wrap; }
+        .blog-meta span { display: flex; align-items: center; gap: 6px; }
+        .blog-article h2 { font-size: 24px; font-weight: 700; margin: 40px 0 16px; }
+        .blog-article h3 { font-size: 19px; font-weight: 600; margin: 28px 0 12px; }
+        .blog-article p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+        .blog-article ul, .blog-article ol { color: var(--text-secondary); line-height: 1.8; padding-left: 24px; margin-bottom: 20px; }
+        .blog-article li { margin-bottom: 8px; }
+        .blog-article strong { color: var(--text-primary); }
+        .warning-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .warning-box p { color: #fca5a5; margin: 0; }
+        .tip-box { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .tip-box p { color: var(--text-secondary); margin: 0; }
+        .numbered-step { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
+        .step-num { min-width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: white; }
+        .blog-cta { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; text-align: center; margin: 48px 0; }
+        .blog-cta h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .blog-cta p { color: var(--text-secondary); margin-bottom: 20px; }
+        .blog-nav { border-top: 1px solid var(--border); margin-top: 60px; padding-top: 24px; }
+        .blog-nav a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/blog">Blog</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#scan" class="nav-cta">Free Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <article class="blog-article">
+        <div style="margin-bottom:16px;">
+            <a href="/blog" style="color:var(--accent);text-decoration:none;font-size:14px;">← Blog</a>
+        </div>
+        <h1>How to Check if Your Website Has Been Hacked <span class="gradient-text">(Free Guide 2026)</span></h1>
+        <div class="blog-meta">
+            <span>📅 March 13, 2026</span>
+            <span>⏱️ 8 min read</span>
+            <span>🏷️ Website Security</span>
+        </div>
+
+        <p>Every 39 seconds, a cyberattack occurs somewhere on the internet. Small business websites are hacked <strong>3x more often</strong> than enterprise sites — not because they're more valuable, but because they're easier targets with fewer defenses.</p>
+        <p>The terrifying reality: <strong>most hacked websites go undetected for 197 days on average.</strong> You could be sending malware to your customers right now without knowing it.</p>
+        <p>This guide shows you exactly how to check if your website has been compromised, what to do if it has, and how to prevent it from happening again.</p>
+
+        <div class="blog-cta">
+            <h3>Check Your Website Right Now — Free</h3>
+            <p>Enter your domain and get a security grade (A-F) in 10 seconds. No signup, no credit card.</p>
+            <button class="cta-btn" onclick="window.location.href='/#scan'">Scan My Website Free →</button>
+        </div>
+
+        <h2>5 Warning Signs Your Website Has Been Hacked</h2>
+
+        <h3>1. Google Shows a "This Site May Be Hacked" Warning</h3>
+        <p>If you search for your site on Google and see a warning like <strong>"This site may be hacked"</strong> or <strong>"Deceptive site ahead"</strong> in Chrome, Google has detected malicious activity. This kills your traffic instantly — studies show 94% of users abandon sites with security warnings.</p>
+        <p>Check Google Search Console → Security Issues to see exactly what was flagged.</p>
+
+        <h3>2. Visitors Are Being Redirected</h3>
+        <p>A classic hack: attackers inject a redirect that sends your visitors to spam, phishing, or malware sites. You might not see it yourself (hackers often target only mobile users or new visitors), but your analytics will show a sudden spike in bounce rate and drop in session duration.</p>
+
+        <h3>3. Unknown Files or Code Appear</h3>
+        <p>Log into your hosting file manager and look for:</p>
+        <ul>
+            <li>PHP or .js files with randomized names (e.g., <code>aB3xK9.php</code>)</li>
+            <li>Modified core files with recent edit timestamps</li>
+            <li>Base64-encoded strings in your PHP files (often looks like <code>eval(base64_decode(...))</code>)</li>
+            <li>New admin users you didn't create</li>
+        </ul>
+
+        <h3>4. Your Hosting Provider Suspended Your Account</h3>
+        <p>Reputable hosts scan for malware automatically. If they suspend your account "for abuse," it almost certainly means your site is serving malware, sending spam, or participating in a botnet. Check your email from your host for details.</p>
+
+        <h3>5. Traffic Drops Suddenly</h3>
+        <p>A sudden 30-80% traffic drop, especially from organic search, often means Google has de-indexed or penalized your site. Check Google Search Console for manual actions or security issues.</p>
+
+        <div class="warning-box">
+            <p>⚠️ <strong>Don't wait for symptoms.</strong> Many hacks are invisible to site owners — hidden backdoors, silent crypto miners, or stealthy SEO spam that only appears to search engines. Regular scanning is the only way to catch them early.</p>
+        </div>
+
+        <h2>How to Check if Your Website is Hacked — Step by Step</h2>
+
+        <div class="numbered-step">
+            <div class="step-num">1</div>
+            <div>
+                <h3 style="margin-top:0">Run a Free Security Scan</h3>
+                <p>The fastest way to check for known vulnerabilities and malware signatures is to run an automated scan. <a href="https://vulnscan.tech/#scan" style="color:var(--accent)">VulnScan</a> checks for 200+ CVEs, malware patterns, and security misconfigurations in under 60 seconds. No signup required.</p>
+            </div>
+        </div>
+
+        <div class="numbered-step">
+            <div class="step-num">2</div>
+            <div>
+                <h3 style="margin-top:0">Check Google Safe Browsing</h3>
+                <p>Go to <strong>Google Safe Browsing Transparency Report</strong> and enter your domain. This checks if Google has flagged your site for malware, phishing, or unwanted software. Free and instant.</p>
+            </div>
+        </div>
+
+        <div class="numbered-step">
+            <div class="step-num">3</div>
+            <div>
+                <h3 style="margin-top:0">Search Google for Your Site</h3>
+                <p>Search: <code>site:yourdomain.com</code> in Google. Look for:</p>
+                <ul>
+                    <li>Pages you didn't create (especially in foreign languages or about pharmaceuticals, gambling, or adult content)</li>
+                    <li>Descriptions that look like spam or don't match your content</li>
+                    <li>The "This site may be hacked" label</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="numbered-step">
+            <div class="step-num">4</div>
+            <div>
+                <h3 style="margin-top:0">Check Google Search Console</h3>
+                <p>If you have Search Console set up (you should), go to <strong>Security & Manual Actions → Security Issues</strong>. Google will explicitly list any detected malware, phishing, or hacked content.</p>
+            </div>
+        </div>
+
+        <div class="numbered-step">
+            <div class="step-num">5</div>
+            <div>
+                <h3 style="margin-top:0">Check Your Site as Google Sees It</h3>
+                <p>Use the URL Inspection tool in Search Console to see what Googlebot sees when it visits your site. This can reveal hidden redirects or injected spam that only appears to bots.</p>
+            </div>
+        </div>
+
+        <h2>What to Do If Your Website Is Hacked</h2>
+
+        <h3>Immediate Steps (Do These Now)</h3>
+        <ol>
+            <li><strong>Take the site offline</strong> — Add a maintenance page to prevent spreading malware to visitors</li>
+            <li><strong>Change all passwords immediately</strong> — Hosting control panel, CMS admin, database, and FTP passwords</li>
+            <li><strong>Enable two-factor authentication</strong> — On everything you just changed the password for</li>
+            <li><strong>Revoke all active sessions</strong> — Force logout all users in WordPress: add <code>define('AUTH_KEY', 'new-random-key');</code> to wp-config.php</li>
+            <li><strong>Contact your hosting provider</strong> — They may have server-level logs that help identify the attack vector</li>
+        </ol>
+
+        <h3>Cleanup (Next 24-48 Hours)</h3>
+        <ol>
+            <li><strong>Restore from a clean backup</strong> — If you have a backup from before the compromise, this is the fastest fix. Verify the backup is actually clean first.</li>
+            <li><strong>Scan all files</strong> — Use a malware scanner to identify infected files. Look for base64-encoded PHP, eval() calls, and hidden iframe injections.</li>
+            <li><strong>Remove backdoors</strong> — Attackers often install multiple backdoors. Common locations: wp-includes/ directory, plugin folders, .htaccess file</li>
+            <li><strong>Update everything</strong> — WordPress core, themes, and plugins. Outdated software is the #1 cause of website hacks.</li>
+            <li><strong>Check user accounts</strong> — Remove any admin accounts you didn't create</li>
+        </ol>
+
+        <div class="tip-box">
+            <p>💡 <strong>Pro tip:</strong> After cleanup, run a vulnerability scan to verify you've closed all attack vectors. If you don't find and fix the original vulnerability, attackers will be back within days.</p>
+        </div>
+
+        <h3>After Cleanup</h3>
+        <ol>
+            <li><strong>Request Google review</strong> — If your site was flagged, go to Search Console → Security Issues → Request Review. Takes 1-3 days.</li>
+            <li><strong>Set up monitoring</strong> — Use VulnScan's continuous monitoring to catch future compromises within hours, not months.</li>
+            <li><strong>Enable a WAF</strong> — Cloudflare's free CDN includes basic web application firewall protection.</li>
+        </ol>
+
+        <h2>How Websites Get Hacked — The Most Common Attack Vectors</h2>
+        <ul>
+            <li><strong>Outdated plugins and themes (41% of WordPress hacks)</strong> — This is the #1 cause. Enable auto-updates.</li>
+            <li><strong>Weak passwords</strong> — "admin/password123" gets brute-forced in seconds. Use a password manager.</li>
+            <li><strong>SQL injection</strong> — Attackers inject malicious database queries through your contact forms, search boxes, or login pages. <a href="/sql-injection-scanner" style="color:var(--accent)">Test your site for SQLi vulnerabilities.</a></li>
+            <li><strong>Cross-site scripting (XSS)</strong> — Attackers inject JavaScript that runs in your visitors' browsers. <a href="/xss-scanner" style="color:var(--accent)">Check for XSS vulnerabilities.</a></li>
+            <li><strong>Exposed admin panels</strong> — Default URLs like /wp-admin or /admin are attacked constantly. Move them or add IP restrictions.</li>
+            <li><strong>File upload vulnerabilities</strong> — If users can upload files to your site, attackers can upload web shells.</li>
+        </ul>
+
+        <h2>How to Prevent Your Website from Being Hacked</h2>
+        <ul>
+            <li>✅ Run regular vulnerability scans (monthly minimum)</li>
+            <li>✅ Keep all software updated (enable auto-updates)</li>
+            <li>✅ Use strong, unique passwords + 2FA everywhere</li>
+            <li>✅ Implement security headers (X-Frame-Options, CSP, HSTS)</li>
+            <li>✅ Set up Cloudflare WAF (free tier available)</li>
+            <li>✅ Enable HTTPS everywhere — HTTP sites are an easy target</li>
+            <li>✅ Take regular backups and store them off-server</li>
+            <li>✅ Monitor your site with uptime + security alerts</li>
+        </ul>
+
+        <div class="blog-cta">
+            <h3>Don't Wait Until You're Hacked</h3>
+            <p>VulnScan checks your website for vulnerabilities, malware, and misconfigurations in under 60 seconds. Free, no signup needed.</p>
+            <button class="cta-btn" onclick="window.location.href='/#scan'">Check My Website Now — Free →</button>
+            <p style="font-size:12px; margin-top:12px; opacity:0.6;">Or get a full <a href="/website-vulnerability-scanner" style="color:var(--accent)">website vulnerability scan</a> with CVSS scores and remediation guidance.</p>
+        </div>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>How do I know if my website has been hacked?</h3>
+        <p>Common signs include: Google showing a security warning, unexpected redirects, strange new pages, visitors reporting malware warnings, sudden traffic drops, or your hosting provider suspending your account. The most reliable way is to run a free security scan at <a href="https://vulnscan.tech" style="color:var(--accent)">vulnscan.tech</a>.</p>
+
+        <h3>Can a hacked website affect my visitors?</h3>
+        <p>Yes, absolutely. Hacked websites can redirect visitors to phishing pages, download malware onto their computers, steal form submissions (including credit card data), or show fake content. This is why fast detection matters.</p>
+
+        <h3>How long does it take to fix a hacked website?</h3>
+        <p>If you have a clean backup: 2-4 hours. Manual cleanup without a backup: 1-3 days. Removing a Google blacklist: additional 1-5 days after cleanup. The faster you detect the hack, the faster you can recover.</p>
+
+        <h3>Does having SSL mean my website is secure?</h3>
+        <p>No. SSL only encrypts traffic between your site and visitors — it says nothing about whether your website has vulnerabilities, malware, or insecure code. Most hacked websites have valid SSL certificates. <a href="/ssl-checker" style="color:var(--accent)">Check your SSL configuration here.</a></p>
+
+        <div class="blog-nav">
+            <a href="/blog">← All Security Guides</a>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/blog">Blog</a>
+                <a href="/free-website-security-check">Free Security Check</a>
+                <a href="/website-vulnerability-scanner">Vulnerability Scanner</a>
+                <a href="/xss-scanner">XSS Scanner</a>
+                <a href="/sql-injection-scanner">SQL Injection Scanner</a>
+                <a href="/ssl-checker">SSL Checker</a>
+                <a href="/wordpress-security-scanner">WordPress Scanner</a>
+                <a href="mailto:security@vulnscan.tech">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>
