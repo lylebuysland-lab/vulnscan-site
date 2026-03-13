@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vcMnDYS6l_rY36emCOS1d0A5uQYKYc_deC">
+    <title>How to Fix SQL Injection Vulnerabilities (Developer Guide 2026)</title>
+    <meta name="description" content="Complete developer guide to finding and fixing SQL injection vulnerabilities. Covers parameterized queries, ORMs, input validation, and WAF deployment. Free scanner included.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.vulnscan.tech; img-src 'self' data:;">
+    <link rel="canonical" href="https://vulnscan.tech/blog/how-to-fix-sql-injection">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Fix SQL Injection Vulnerabilities (Developer Guide 2026)",
+  "description": "Complete developer guide to finding and fixing SQL injection vulnerabilities. Covers parameterized queries, ORMs, input validation, and WAF deployment. Free scanner included.",
+  "datePublished": "2026-03-11T09:00:00+00:00",
+  "dateModified": "2026-03-13T09:00:00+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "VulnScan Security Team",
+    "url": "https://vulnscan.tech"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "VulnScan",
+    "url": "https://vulnscan.tech",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://vulnscan.tech/favicon.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://vulnscan.tech/blog/how-to-fix-sql-injection"
+  }
+}</script>
+    <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can SQL injection affect modern frameworks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. While modern ORMs protect against basic SQL injection, custom queries or raw SQL within frameworks can still be vulnerable. Always use parameterized queries even when using Django, Rails, Laravel, or other frameworks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I test if my site has SQL injection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use VulnScan's free SQL injection scanner at vulnscan.tech/sql-injection-scanner. Enter your domain and we check for SQLi vulnerabilities in 60 seconds. For deeper testing, use OWASP ZAP or sqlmap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is SQL injection still common in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — SQL injection remains in the OWASP Top 3 and is responsible for approximately 8% of data breaches. Legacy systems, WordPress plugins, and poorly maintained codebases continue to introduce new SQL injection vulnerabilities."
+      }
+    }
+  ]
+}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vulnscan.tech"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://vulnscan.tech/blog"},{"@type":"ListItem","position":3,"name":"How to Fix SQL Injection Vulnerabilities (Developer Guide 2026)","item":"https://vulnscan.tech/blog/how-to-fix-sql-injection"}]}</script>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/blog" style="color:var(--accent);">Blog</a>
+                <a href="/cve-scanner">CVE Database</a>
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/about">About</a>
+                <a href="/" class="nav-cta">Free Scan</a>
+            </div>
+        </div>
+    </nav>
+
+    <article style="max-width:800px; margin:0 auto; padding:100px 32px 60px; position:relative; z-index:1;">
+        <div style="margin-bottom:24px;">
+            <a href="/blog" style="color:var(--text-secondary); text-decoration:none; font-size:14px;">← Back to Blog</a>
+        </div>
+        <div style="display:inline-block; padding:3px 14px; border-radius:20px; background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.3); font-size:12px; font-weight:600; color:var(--accent); margin-bottom:16px;">Vulnerability Fixes</div>
+        <h1 style="font-size:clamp(28px,4vw,42px); font-weight:800; line-height:1.2; letter-spacing:-1px; margin-bottom:16px;">How to Fix SQL Injection Vulnerabilities — Complete Developer Guide</h1>
+        <div style="display:flex; gap:20px; color:var(--text-secondary); font-size:14px; margin-bottom:32px; flex-wrap:wrap;">
+            <span>📅 March 10, 2026</span>
+            <span>⏱️ 12 min read</span>
+            <span>By VulnScan Security Team</span>
+        </div>
+        <p style="font-size:18px; color:var(--text-secondary); line-height:1.8; margin-bottom:40px; padding-bottom:32px; border-bottom:1px solid var(--border);">SQL injection remains one of the most dangerous and prevalent web vulnerabilities, appearing in OWASP Top 10 every year since 2010. The good news: SQL injection is 100% preventable with the right coding practices. This guide covers detection, prevention, and testing.</p>
+
+        
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">What is SQL Injection?</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">SQL injection (SQLi) occurs when an attacker inserts malicious SQL code into an input field that gets executed by the database. If your application builds SQL queries by concatenating user input directly, it's vulnerable.
+
+Vulnerable code example:
+<pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;font-family:monospace;font-size:13px;overflow-x:auto;margin:12px 0;">// VULNERABLE - never do this
+$query = "SELECT * FROM users WHERE username = '" + $_GET['user'] + "'";</pre>
+
+If an attacker sends <code>admin' OR '1'='1' --</code> as the username, the query becomes <code>SELECT * FROM users WHERE username = 'admin' OR '1'='1' --'</code>, which returns all users.</div>
+    
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">Fix #1: Use Parameterized Queries (Prepared Statements)</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">Parameterized queries separate SQL code from data. The database driver handles escaping, making injection structurally impossible.
+
+<pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;font-family:monospace;font-size:13px;overflow-x:auto;margin:12px 0;">// SAFE - parameterized query (PHP/PDO)
+$stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+$stmt->execute([$username]);
+
+// SAFE - parameterized query (Python)
+cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+
+// SAFE - parameterized query (Java)
+PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+stmt.setString(1, username);</pre></div>
+    
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">Fix #2: Use an ORM</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">Object-Relational Mappers (ORMs) like Eloquent (Laravel), Hibernate (Java), SQLAlchemy (Python), and Prisma (Node.js) use parameterized queries internally. Using an ORM correctly prevents most SQL injection by design.
+
+<pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;font-family:monospace;font-size:13px;overflow-x:auto;margin:12px 0;">// Laravel Eloquent - SAFE
+$user = User::where('username', $username)->first();
+
+// SQLAlchemy - SAFE
+user = session.query(User).filter(User.username == username).first();</pre></div>
+    
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">Fix #3: Input Validation and Allowlisting</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">Never trust user input. Validate that inputs match expected formats before they reach your database layer. Use allowlisting (only permit known-good characters) rather than denylisting.
+
+For a username field: only allow alphanumeric characters and underscores. Reject any input containing quotes, semicolons, or SQL keywords.</div>
+    
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">Fix #4: Principle of Least Privilege for Database Users</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">Your web application's database user should only have the minimum permissions necessary. If your app only reads data, the database user should have SELECT privileges only — no INSERT, UPDATE, DELETE, or DROP.
+
+This limits the blast radius of a successful SQL injection attack. Even if an attacker injects SQL, they can only execute what the database user is permitted to do.</div>
+    
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">Fix #5: Deploy a Web Application Firewall (WAF)</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">A WAF sitting in front of your application can detect and block SQL injection attempts before they reach your code. Major WAF providers include Cloudflare (free tier), AWS WAF, ModSecurity (open source), and Sucuri.
+
+Important: A WAF is defense-in-depth, not a replacement for secure code. Always fix the underlying SQL injection vulnerabilities.</div>
+    
+        <h2 style="font-size:24px; font-weight:800; margin:40px 0 16px;">Testing for SQL Injection</h2>
+        <div style="color:var(--text-secondary); line-height:1.8;">After fixing SQL injection vulnerabilities, verify your fixes work. Use VulnScan's <a href="/sql-injection-scanner" style="color:var(--accent);">free SQL injection scanner</a> to test your website from the outside — the same perspective an attacker uses.
+
+For developers, use OWASP ZAP or sqlmap in your CI/CD pipeline to automatically test for SQL injection on every code deployment.</div>
+    
+
+        <div style="margin-top:48px; padding:32px; background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(168,85,247,0.1)); border:1px solid rgba(99,102,241,0.2); border-radius:16px; text-align:center;">
+            <h2 style="font-size:22px; font-weight:700; margin-bottom:8px;">Check Your Website Now</h2>
+            <p style="color:var(--text-secondary); margin-bottom:20px;">Free vulnerability scan — 60 seconds, no signup.</p>
+            <a href="/" class="cta-btn" style="text-decoration:none; display:inline-block;">Start Free Scan →</a>
+        </div>
+
+        <div style="margin-top:48px;">
+            <h2 style="font-size:24px; font-weight:800; margin-bottom:24px;">Frequently Asked Questions</h2>
+            
+        <div style="margin-bottom:20px; padding:20px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:8px;">Can SQL injection affect modern frameworks?</h3>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:15px;">Yes. While modern ORMs protect against basic SQL injection, custom queries or raw SQL within frameworks can still be vulnerable. Always use parameterized queries even when using Django, Rails, Laravel, or other frameworks.</p>
+        </div>
+    
+        <div style="margin-bottom:20px; padding:20px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:8px;">How do I test if my site has SQL injection?</h3>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:15px;">Use VulnScan's free SQL injection scanner at vulnscan.tech/sql-injection-scanner. Enter your domain and we check for SQLi vulnerabilities in 60 seconds. For deeper testing, use OWASP ZAP or sqlmap.</p>
+        </div>
+    
+        <div style="margin-bottom:20px; padding:20px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:8px;">Is SQL injection still common in 2026?</h3>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:15px;">Yes — SQL injection remains in the OWASP Top 3 and is responsible for approximately 8% of data breaches. Legacy systems, WordPress plugins, and poorly maintained codebases continue to introduce new SQL injection vulnerabilities.</p>
+        </div>
+    
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo"><div class="logo-icon">⚡</div><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></div>
+            <div class="footer-links">
+                <a href="/blog">Blog</a><a href="/about">About</a>
+                <a href="/cve-scanner">CVE Database</a><a href="/online-vulnerability-scanner">Scanner</a>
+                <a href="/port-scanner">Port Check</a><a href="/wordpress-security-scanner">WordPress</a>
+                <a href="/sql-injection-scanner">SQL Injection</a><a href="/xss-scanner">XSS</a>
+                <a href="/ssl-checker">SSL Checker</a>
+            </div>
+            <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="../app.js"></script>
+</body>
+</html>
