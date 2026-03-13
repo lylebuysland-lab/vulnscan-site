@@ -29,6 +29,10 @@
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
     <link rel="preload" href="app.js" as="script">
+    <style>
+        .related-link { display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: all 0.2s; }
+        .related-link:hover { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: var(--text-primary); }
+    </style>
 
     <script type="application/ld+json">
     {
@@ -116,10 +120,12 @@
                 <div class="logo-icon">⚡</div>
                 <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
             </div>
-            <div class="nav-links">
-                <a href="/#features">Features</a>
+                        <div class="nav-links">
+                <a href="/blog">Blog</a>
+                <a href="/cve-scanner">CVE Scanner</a>
                 <a href="/#pricing">Pricing</a>
-                <a href="#scan" class="nav-cta">Start Scan</a>
+                <a href="/about">About</a>
+                <a href="/" class="nav-cta">Free Scan</a>
             </div>
         </div>
     </nav>
@@ -225,6 +231,8 @@
         </div>
     </section>
 
+    ${relatedHtml}
+
     <footer class="footer">
         <div class="footer-inner">
             <div class="logo">
@@ -232,6 +240,7 @@
                 <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
             </div>
             <div class="footer-links">
+                <a href="/blog">Security Blog</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="/free-website-security-check">Free Security Check</a>
                 <a href="/wordpress-security-scanner">WordPress Scanner</a>
@@ -241,6 +250,10 @@
                 <a href="/website-security-audit">Security Audit</a>
                 <a href="/ssl-checker">SSL Checker</a>
                 <a href="/owasp-scanner">OWASP Scanner</a>
+                <a href="/react-vulnerability-scanner">React Scanner</a>
+                <a href="/laravel-vulnerability-scanner">Laravel Scanner</a>
+                <a href="/ssrf-vulnerability-scanner">SSRF Scanner</a>
+                <a href="/rce-vulnerability-scanner">RCE Scanner</a>
                 <a href="mailto:security@vulnscan.tech">Contact</a>
             </div>
             <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
