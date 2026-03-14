@@ -20,12 +20,14 @@ const SITE_URL = 'https://vulnscan.tech';
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 const DEVTO_KEY = process.env.DEVTO_API_KEY;
 const HASHNODE_KEY = process.env.HASHNODE_API_KEY;
-const MASTODON_TOKEN = process.env.MASTODON_TOKEN;         // infosec.exchange
+const MASTODON_TOKEN = process.env.MASTODON_TOKEN;         // mastodon.social
+const MASTODON_INSTANCE = (process.env.MASTODON_INSTANCE || 'https://mastodon.social').replace(/\/$/, '');
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHANNEL = process.env.TELEGRAM_CHANNEL_ID; // e.g. @vulnscan_alerts
 
 const DATA_DIR = '.github/data';
 const PUB_LOG = `${DATA_DIR}/publisher-log.json`;
+const RANK_FILE = `${DATA_DIR}/ranking-data.json`;
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
 let pubLog = { posts: [], total: 0 };
@@ -61,33 +63,66 @@ async function callGemini(prompt) {
   });
 }
 
+async function getTopGSCKeywords() {
+  // Read real ranking data written by rank-analyst.js
+  try {
+    const data = JSON.parse(fs.readFileSync(RANK_FILE, 'utf-8'));
+    const keywords = data.topKeywords || data.keywords || [];
+    if (keywords.length > 0) {
+      // Sort by clicks desc, take top 10
+      const top = keywords
+        .sort((a, b) => (b.clicks || 0) - (a.clicks || 0))
+        .slice(0, 10)
+        .map(k => k.query || k.keyword || k);
+      console.log(`  📊 Loaded ${top.length} top GSC keywords: ${top.slice(0,3).join(', ')}...`);
+      return top;
+    }
+  } catch(e) {
+    console.log('  ℹ️  No GSC ranking data yet — using curated security topics');
+  }
+  // Fallback: high-value security keywords from vulnscan.tech pages
+  return [
+    'website vulnerability scanner', 'free security scanner', 'sql injection scanner',
+    'xss vulnerability scanner', 'wordpress security scanner', 'online vulnerability scanner',
+    'web application security testing', 'cve scanner', 'owasp scanner', 'ssl checker'
+  ];
+}
+
 async function generateWeeklyContent() {
-  // Pick topic based on week number (rotates through topics)
+  const gscKeywords = await getTopGSCKeywords();
   const week = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
+
+  // Fallback structured topics if not enough GSC data
   const topics = [
     { title: 'Top 5 Critical CVEs You Should Patch This Week', angle: 'recently added to CISA KEV catalog', cta: 'Check if your domain is exposed at VulnScan', url: SITE_URL },
     { title: 'Why Free Website Security Scanners Beat Paid Ones for External Testing', angle: 'attacker perspective vs internal scanners', cta: 'Try it free', url: `${SITE_URL}/free-website-security-check` },
     { title: 'How to Check if Your WordPress Site is Vulnerable (Free Method)', angle: 'step by step external scan', cta: 'WordPress vulnerability scanner', url: `${SITE_URL}/wordpress-security-scanner` },
-    { title: 'Log4Shell Is Still Alive: Unpatched Systems in 2026', angle: 'current exploitation stats and how to check', cta: 'Check for Log4Shell', url: `${SITE_URL}/cve-2021-44228` },
+    { title: 'Log4Shell Is Still Alive: Unpatched Systems in 2026', angle: 'current exploitation stats', cta: 'Check for Log4Shell', url: `${SITE_URL}/cve-2021-44228` },
     { title: 'regreSSHion (CVE-2024-6387): Is Your Server Still Vulnerable?', angle: 'race condition in OpenSSH, millions of systems', cta: 'Check your SSH exposure', url: `${SITE_URL}/cve-2024-6387` },
     { title: 'OWASP Top 10 2025: What Changed and How to Test For It', angle: 'practical scanning guide', cta: 'Test your site against OWASP Top 10', url: `${SITE_URL}/online-vulnerability-scanner` },
-    { title: 'The Hidden Attack Surface: Subdomains You Don\'t Know About', angle: 'subdomain takeover, forgotten assets', cta: 'Discover your attack surface', url: SITE_URL },
+    { title: 'The Hidden Attack Surface: Subdomains You Forgot About', angle: 'subdomain takeover, forgotten assets', cta: 'Discover your attack surface', url: SITE_URL },
     { title: 'SQL Injection Still Works in 2026: Real Stats and How to Check', angle: 'Why SQLi persists and free testing method', cta: 'Free SQLi scanner', url: `${SITE_URL}/sql-injection-scanner` },
   ];
-  
+
   const topic = topics[week % topics.length];
-  
-  const prompt = `Write a practical, technical blog post titled "${topic.title}" for a security-savvy developer audience. Focus on: ${topic.angle}. 
+  const keywordContext = gscKeywords.slice(0, 6).join(', ');
+
+  const prompt = `Write a practical, technical blog post titled "${topic.title}" for a security-savvy developer audience.
+
+Focus on: ${topic.angle}.
+
+IMPORTANT: Naturally incorporate these high-traffic SEO keywords where relevant (do NOT force them): ${keywordContext}
 
 Structure:
-1. Brief intro (2 sentences why this matters)
-2. Key technical details (3-4 paragraphs, factual, no fluff)
-3. Practical "how to check" section
-4. Brief mention of ${topic.cta} at ${topic.url}
+1. Brief intro (2 sentences why this matters NOW)
+2. Key technical details (3-4 paragraphs, factual, specific CVE numbers/stats)
+3. Practical "how to detect/check" section  
+4. One-line mention of ${topic.cta} at ${topic.url}
 
-Write in markdown. Use ## for headers. No generic advice. Be specific. Max 600 words.`;
+Write in markdown. Use ## for headers. Be specific and technical. Max 600 words.`;
 
-  return { ...(await callGemini(prompt) ? { body: await callGemini(prompt) } : { body: `# ${topic.title}\n\nSecurity continues to evolve rapidly. ${topic.cta}: [${topic.url}](${topic.url})` }), ...topic };
+  const body = await callGemini(prompt) || `# ${topic.title}\n\n${topic.cta}: [${topic.url}](${topic.url})`;
+  return { body, ...topic, keywords: gscKeywords.slice(0, 5) };
 }
 
 // ═══════════════════════════════════════════════
@@ -180,26 +215,32 @@ async function publishHashnode(title, body, canonicalUrl) {
 async function postMastodon(text) {
   if (!MASTODON_TOKEN) { console.log('⚠️  No MASTODON_TOKEN'); return false; }
   
-  // infosec.exchange is the DA77 security-focused Mastodon instance
-  const body = JSON.stringify({ status: text, visibility: 'public' });
-  
+  const instance = new URL(MASTODON_INSTANCE);
+  const postBody = JSON.stringify({ status: text, visibility: 'public' });
+
   return new Promise((resolve) => {
     const opts = {
-      hostname: 'infosec.exchange',
+      hostname: instance.hostname,
       path: '/api/v1/statuses',
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${MASTODON_TOKEN}`,
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body)
+        'Content-Length': Buffer.byteLength(postBody)
       }
     };
     const req = https.request(opts, (r) => {
-      console.log(`  ${r.statusCode === 200 ? '✅' : '❌'} Mastodon infosec.exchange: ${r.statusCode}`);
-      resolve(r.statusCode === 200);
+      let d = ''; r.on('data', c => d += c);
+      r.on('end', () => {
+        const ok = r.statusCode === 200;
+        let url = '';
+        try { url = JSON.parse(d).url || ''; } catch(e) {}
+        console.log(`  ${ok ? '✅' : '❌'} Mastodon ${instance.hostname}: ${r.statusCode} ${url}`);
+        resolve(ok);
+      });
     });
     req.on('error', (e) => { console.log(`  ❌ Mastodon error: ${e.message}`); resolve(false); });
-    req.write(body); req.end();
+    req.write(postBody); req.end();
   });
 }
 
@@ -252,8 +293,11 @@ async function main() {
   if (!body) { console.log('❌ Gemini generation failed'); return; }
   console.log(`  📝 Title: ${title}`);
   
-  // Short Mastodon/Telegram version
-  const shortPost = `🔐 New on VulnScan Security Blog:\n\n"${title}"\n\nFree external CVE scanner — no signup: ${SITE_URL}\n\n#security #cybersecurity #cve #infosec`;
+  // Short Mastodon/Telegram version — use top GSC keywords as hashtags
+  const kwHashtags = (content.keywords || []).slice(0,3)
+    .map(k => '#' + k.replace(/\s+/g,'').replace(/[^a-zA-Z0-9]/g,''))
+    .join(' ');
+  const shortPost = `🔐 New on VulnScan Security Blog:\n\n"${title}"\n\nFree external CVE scanner — no signup: ${SITE_URL}\n\n${kwHashtags} #security #cybersecurity #infosec`;
   
   // Publish to all platforms simultaneously
   console.log('\n🚀 Publishing to all platforms...');

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Product Data API — Scrape Amazon Prices, Reviews & ASINs | DataHawk</title>
+    <meta name="description" content="Extract Amazon product data at scale — prices, reviews, BSR, images, seller info. No official API key needed. Runs on Apify. Used by ecommerce researchers, FBA sellers, and price tracker developers.">
+    <meta name="keywords" content="amazon scraper api, amazon product data api, amazon price scraper, extract amazon data, amazon reviews api, amazon ASIN scraper">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://apify.com/lylebuysland-lab/amazon-scraper">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="application/ld+json">{
+        "@context":"https://schema.org","@type":"SoftwareApplication",
+        "name":"Amazon Product Data Scraper",
+        "applicationCategory":"DeveloperApplication",
+        "operatingSystem":"Any",
+        "description":"Scrape Amazon product data at scale — prices, reviews, BSR rankings, images, seller details, and more. No Amazon API key required.",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Pay only for compute units used"},
+        "provider":{"@type":"Organization","name":"DataHawk on Apify","url":"https://apify.com/lylebuysland-lab"}
+    }</script>
+    <script type="application/ld+json">{
+        "@context":"https://schema.org","@type":"FAQPage",
+        "mainEntity":[
+            {"@type":"Question","name":"Can I scrape Amazon without an API key?","acceptedAnswer":{"@type":"Answer","text":"Yes. This Apify actor extracts Amazon data without requiring an Amazon Product Advertising API key. It handles anti-bot measures automatically using Apify's residential proxy network."}},
+            {"@type":"Question","name":"What Amazon data can I extract?","acceptedAnswer":{"@type":"Answer","text":"Product title, price (current and original), BSR (Best Seller Rank), star rating, review count, ASIN, images, bullet points, product description, seller name, availability, and category breadcrumbs."}},
+            {"@type":"Question","name":"Is scraping Amazon legal?","acceptedAnswer":{"@type":"Answer","text":"Scraping publicly available Amazon data is generally permitted for research and business intelligence purposes. The actor only scrapes publicly visible data that any browser can access. Consult a legal advisor for specific commercial use cases."}}
+        ]
+    }</script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#e8e8f0;min-height:100vh;}
+        .hero{background:linear-gradient(160deg,#0d1117 0%,#1a1528 50%,#0d1117 100%);border-bottom:1px solid rgba(255,255,255,0.06);padding:80px 32px 64px;}
+        .container{max-width:1000px;margin:0 auto;}
+        .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.25);font-size:12px;font-weight:600;color:#f97316;margin-bottom:20px;}
+        h1{font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.15;letter-spacing:-1.5px;margin-bottom:18px;}
+        .accent{background:linear-gradient(135deg,#f97316,#ea580c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .sub{font-size:18px;color:#94a3b8;line-height:1.7;max-width:620px;margin-bottom:36px;}
+        .cta-row{display:flex;gap:12px;flex-wrap:wrap;}
+        .btn-primary{background:linear-gradient(135deg,#f97316,#ea580c);color:white;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;}
+        .btn-secondary{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#e8e8f0;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:48px 0;}
+        .stat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;text-align:center;}
+        .stat-num{font-size:28px;font-weight:800;color:#f97316;}
+        .stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
+        section{padding:64px 32px;border-bottom:1px solid rgba(255,255,255,0.04);}
+        h2{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;}
+        .use-cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px;}
+        .use-case{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;}
+        .use-case-icon{font-size:28px;margin-bottom:12px;}
+        .use-case h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+        .use-case p{font-size:14px;color:#94a3b8;line-height:1.6;}
+        .code-block{background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;font-family:monospace;font-size:13px;line-height:1.8;color:#a9b4c9;overflow-x:auto;margin:16px 0;}
+        .tag{display:inline-block;padding:3px 10px;border-radius:100px;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.2);font-size:12px;color:#f97316;margin:3px;}
+        .faq-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:12px;}
+        .faq-item h3{font-size:15px;font-weight:700;margin-bottom:8px;}
+        .faq-item p{font-size:14px;color:#94a3b8;line-height:1.6;}
+        .pricing{background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(234,88,12,0.08));border:1px solid rgba(249,115,22,0.15);border-radius:16px;padding:32px;text-align:center;margin-top:32px;}
+        footer{padding:32px;text-align:center;color:#334155;font-size:13px;}
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="badge">🛍️ Live on Apify Store</div>
+            <h1>Amazon Product<br><span class="accent">Data API</span></h1>
+            <p class="sub">Extract prices, reviews, BSR rankings, ASINs, and 15+ fields from any Amazon product page. No Amazon API key. Scales to millions of products. Used by FBA sellers, price trackers, and ecommerce intelligence teams.</p>
+            <div class="cta-row">
+                <a href="https://apify.com/lylebuysland-lab/amazon-scraper" class="btn-primary">▶ Try Free on Apify →</a>
+                <a href="#data-fields" class="btn-secondary">See Data Fields</a>
+            </div>
+            <div class="stats">
+                <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Data Fields</div></div>
+                <div class="stat"><div class="stat-num">All</div><div class="stat-label">Categories</div></div>
+                <div class="stat"><div class="stat-num">Fast</div><div class="stat-label">~1s/Product</div></div>
+                <div class="stat"><div class="stat-num">$0</div><div class="stat-label">No API Key</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="use-cases">
+        <div class="container">
+            <h2>Built for Every Amazon Use Case</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <div class="use-case-icon">📦</div>
+                    <h3>FBA Product Research</h3>
+                    <p>Validate product opportunities before launching. Check BSR, review velocity, and price trends for any category.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">💰</div>
+                    <h3>Price Tracking</h3>
+                    <p>Monitor competitor prices in real time. Schedule daily runs to track price drops and restock events automatically.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">⭐</div>
+                    <h3>Review Analysis</h3>
+                    <p>Bulk extract review counts and star ratings for sentiment analysis, product quality scoring, or market research.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🔍</div>
+                    <h3>SEO & Listing Intelligence</h3>
+                    <p>Analyze top-ranking product titles, bullet points, and descriptions for keyword optimization insights.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🛒</div>
+                    <h3>Dropshipping & Arbitrage</h3>
+                    <p>Find profitable arbitrage opportunities by comparing Amazon prices with supplier costs at scale.</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">📊</div>
+                    <h3>Ecommerce Analytics</h3>
+                    <p>Feed Amazon product data into your BI tools, dashboards, or machine learning pipelines via JSON output.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="data-fields">
+        <div class="container">
+            <h2>Sample Output (15+ Fields)</h2>
+            <div class="code-block">{
+  "asin": "B08N5WRWNW",
+  "title": "Echo Dot (4th Gen) Smart Speaker",
+  "price": 49.99,
+  "originalPrice": 59.99,
+  "currency": "USD",
+  "rating": 4.7,
+  "reviewCount": 432891,
+  "bsr": 3,
+  "bsrCategory": "Electronics",
+  "availability": "In Stock",
+  "seller": "Amazon.com",
+  "brand": "Amazon",
+  "images": ["https://m.media-amazon.com/images/..."],
+  "bullets": ["Stream music, podcasts, and audiobooks...", "..."],
+  "url": "https://www.amazon.com/dp/B08N5WRWNW",
+  "scrapedAt": "2026-03-13T15:00:00Z"
+}</div>
+            <div style="margin-top:16px;">
+                <span class="tag">JSON output</span><span class="tag">CSV export</span>
+                <span class="tag">Webhooks</span><span class="tag">Scheduled runs</span>
+                <span class="tag">REST API</span><span class="tag">All categories</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>Can I scrape Amazon without an API key?</h3>
+                <p>Yes. This actor uses Apify's proxy infrastructure to bypass Amazon's bot detection — no official Amazon API key required.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How many products can I scrape per run?</h3>
+                <p>From a single ASIN to millions of products. Set maxItems in the actor configuration. Large runs use parallel instances automatically.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can I scrape Amazon product reviews?</h3>
+                <p>Yes — the actor returns aggregate review data (star rating, total count). For full individual reviews, schedule our companion Amazon Reviews scraper.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Does it handle Amazon anti-bot protection?</h3>
+                <p>Yes. Apify's Crawlee + residential proxy rotation handles CAPTCHA challenges and IP bans automatically at scale.</p>
+            </div>
+            <div class="pricing">
+                <h3 style="font-size:22px;font-weight:700;margin-bottom:8px;">Start Scraping Amazon — Free</h3>
+                <p style="color:#94a3b8;margin-bottom:20px;">Apify free tier: $5/month compute units included. First 100 products = under $0.10.</p>
+                <a href="https://apify.com/lylebuysland-lab/amazon-scraper" class="btn-primary">Start Free on Apify →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Amazon Product Scraper by <a href="https://apify.com/lylebuysland-lab" style="color:#f97316;text-decoration:none;">DataHawk on Apify</a> · Independent tool · Not affiliated with Amazon</p>
+    </footer>
+</body>
+</html>

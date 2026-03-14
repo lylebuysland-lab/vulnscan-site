@@ -310,109 +310,6 @@ const PAGES = [
     },
 ];
 
-// PROGRAMMATIC SEO: Generate 100+ specialized target pages
-const PROGRAMMATIC_TARGETS = [
-    { name: "React", type: "Framework" }, { name: "Laravel", type: "Framework" },
-    { name: "Next.js", type: "Framework" }, { name: "Node.js", type: "Server" },
-    { name: "Nginx", type: "Server" }, { name: "Apache", type: "Server" },
-    { name: "Angular", type: "Framework" }, { name: "Vue.js", type: "Framework" },
-    { name: "Django", type: "Framework" }, { name: "Flask", type: "Framework" },
-    { name: "Ruby on Rails", type: "Framework" }, { name: "Spring Boot", type: "Framework" },
-    { name: "Joomla", type: "CMS" }, { name: "Drupal", type: "CMS" },
-    { name: "Magento", type: "CMS" }, { name: "Ghost", type: "CMS" },
-    { name: "Webflow", type: "CMS" }, { name: "Shopify", type: "CMS" },
-    { name: "PrestaShop", type: "CMS" }, { name: "OpenCart", type: "CMS" },
-    { name: "PHP", type: "Language" }, { name: "Python", type: "Language" },
-    { name: "Java", type: "Language" }, { name: "Go", type: "Language" },
-    { name: "IIS", type: "Server" }, { name: "Tomcat", type: "Server" },
-    { name: "Express.js", type: "Framework" }, { name: "FastAPI", type: "Framework" },
-    { name: "Gatsby", type: "Framework" }, { name: "Svelte", type: "Framework" },
-    { name: "Nuxt", type: "Framework" }, { name: "NestJS", type: "Framework" },
-    { name: "Symfony", type: "Framework" }, { name: "CodeIgniter", type: "Framework" },
-    { name: "ASP.NET", type: "Framework" }, { name: "Flask", type: "Framework" },
-    { name: "Kubernetes", type: "Infrastructure" }, { name: "Docker", type: "Infrastructure" },
-    { name: "AWS", type: "Cloud" }, { name: "Cloudflare", type: "Infrastructure" },
-    { name: "MongoDB", type: "Database" }, { name: "PostgreSQL", type: "Database" },
-    { name: "MySQL", type: "Database" }, { name: "Redis", type: "Database" },
-    { name: "Elasticsearch", type: "Database" }, { name: "Firebase", type: "Cloud" },
-    { name: "Supabase", type: "Cloud" }, { name: "GraphQL", type: "API" },
-    { name: "REST API", type: "API" }, { name: "gRPC", type: "API" },
-    { name: "cPanel", type: "Infrastructure" }, { name: "Plesk", type: "Infrastructure" }
-];
-
-const VULN_TARGETS = [
-    { name: "Server-Side Request Forgery", abbr: "SSRF" },
-    { name: "Remote Code Execution", abbr: "RCE" },
-    { name: "Local File Inclusion", abbr: "LFI" },
-    { name: "Cross-Site Request Forgery", abbr: "CSRF" },
-    { name: "Broken Access Control", abbr: "" },
-    { name: "Directory Traversal", abbr: "" },
-    { name: "XML External Entity", abbr: "XXE" },
-    { name: "Insecure Deserialization", abbr: "" },
-    { name: "Server Misconfiguration", abbr: "" },
-    { name: "Data Leakage", abbr: "" },
-    { name: "Command Injection", abbr: "" },
-    { name: "Open Redirect", abbr: "" },
-    { name: "Host Header Injection", abbr: "" },
-    { name: "Credential Stuffing", abbr: "" },
-    { name: "CORS Misconfiguration", abbr: "" }
-];
-
-PROGRAMMATIC_TARGETS.forEach(target => {
-    PAGES.push({
-        slug: `${target.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-vulnerability-scanner`,
-        title: `${target.name} Vulnerability Scanner — Security Testing | VulnScan`,
-        h1: `${target.name} <span class="gradient-text">Vulnerability Scanner</span>`,
-        description: `Run a specialized vulnerability scan for ${target.name} applications. Detect framework-specific CVEs, misconfigurations, and ${target.type}-level security flaws. Free online scanner.`,
-        keywords: `${target.name} vulnerability scanner, ${target.name} security scanner, scan ${target.name} website, ${target.name} penetration testing`,
-        heroText: `Specialized security scanning for ${target.name} environments. Detect framework-specific vulnerabilities, exposed configuration files, and critical CVEs instantly.`,
-        contentTitle: `Why Specialized ${target.name} Security Scanning Matters`,
-        content: `<p>Every ${target.type.toLowerCase()} has its own unique security posture, common misconfigurations, and specific vulnerability patterns. Using a generic scanner often misses these specialized attack vectors.</p>
-        <p>VulnScan includes specialized detection rules specifically engineered for <strong>${target.name}</strong> environments. We check for:</p>
-        <ul>
-            <li><strong>Known ${target.name} CVEs</strong> — Vulnerabilities in the core system and popular plugins/dependencies</li>
-            <li><strong>Exposed Configuration</strong> — Hidden files, environment variables, and debug endpoints often left exposed in ${target.name} deployments</li>
-            <li><strong>Version Detection</strong> — Identification of outdated, unsupported, or vulnerable ${target.name} versions</li>
-            <li><strong>Security Misconfigurations</strong> — Common errors in how ${target.name} is deployed to production</li>
-        </ul>
-        <h3>Continuous ${target.name} Security</h3>
-        <p>With thousands of new vulnerabilities disclosed every year, one-time scanning isn't enough. Our continuous monitoring engine tracks new ${target.name} CVEs and alerts you the moment your tech stack is threatened.</p>`,
-        faqs: [
-            { q: `Does VulnScan detect 0-days in ${target.name}?`, a: `VulnScan primarily detects known vulnerabilities (CVEs) and severe misconfigurations. While we cannot detect unknown 0-days, our engine checks for the exploitation symptoms that 0-days often leave behind.` },
-            { q: `How does the scanner identify ${target.name} versions?`, a: `We use passive technology fingerprinting—analyzing HTTP headers, common file paths, script signatures, and DOM structures to accurately identify the ${target.name} version without intrusive active scanning.` },
-            { q: `Is the ${target.name} scanner free?`, a: `Yes, the basic discovery scan and high-level security grading for ${target.name} applications is completely free.` }
-        ]
-    });
-});
-
-VULN_TARGETS.forEach(vuln => {
-    const titleName = vuln.abbr ? `${vuln.name} (${vuln.abbr})` : vuln.name;
-    const slugName = vuln.abbr ? vuln.abbr.toLowerCase() : vuln.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    
-    PAGES.push({
-        slug: `${slugName}-vulnerability-scanner`,
-        title: `${titleName} Scanner — Detect ${titleName} Free | VulnScan`,
-        h1: `${vuln.abbr ? vuln.abbr : vuln.name} <span class="gradient-text">Scanner</span>`,
-        description: `Scan your website for ${titleName} vulnerabilities. Detect advanced injection flaws and security gaps. Free online ${slugName} testing tool.`,
-        keywords: `${slugName} scanner, ${vuln.name.toLowerCase()} scanner, detect ${slugName}, ${slugName} vulnerability test`,
-        heroText: `${titleName} is a critical security flaw that attackers actively exploit. Test your endpoints for ${titleName} vulnerabilities — free, instant, and accurate.`,
-        contentTitle: `Understanding ${titleName} Vulnerabilities`,
-        content: `<p><strong>${titleName}</strong> represents a severe threat to modern web applications. When left unpatched, this vulnerability allows attackers to bypass security controls, manipulate application logic, or access sensitive data.</p>
-        <p>VulnScan utilizes advanced heuristic analysis and active payload testing to accurately identify ${titleName} across your entire attack surface.</p>
-        <h3>How We Detect ${vuln.abbr ? vuln.abbr : vuln.name}</h3>
-        <ul>
-            <li><strong>Payload Injection</strong> — Safely injecting harmless, observable payloads into input vectors</li>
-            <li><strong>Behavioral Analysis</strong> — Analyzing the application's response anomalies to unexpected data</li>
-            <li><strong>Out-of-Band (OOB) Testing</strong> — For blind vulnerabilities, we monitor our secure DNS/HTTP listeners for callbacks from your server</li>
-        </ul>`,
-        faqs: [
-            { q: `How dangerous is ${titleName}?`, a: `Extremely dangerous. ${titleName} vulnerabilities frequently lead to full system compromise, data breaches, or lateral movement within your internal network.` },
-            { q: `How do I fix ${titleName}?`, a: `Remediation depends on your specific tech stack. Our Deep Scan report ($199) provides code-level remediation steps and specific configuration changes required to patch ${titleName} permanently.` },
-            { q: `Is the ${slugName} scanner free?`, a: `Yes, checking for ${titleName} presence is included in our free tier. Detailed proof-of-concept evidence is part of the paid reporting.` }
-        ]
-    });
-});
-
 // HTML template function
 function generatePage(page) {
     const faqSchema = page.faqs.map(faq => `{
@@ -429,25 +326,6 @@ function generatePage(page) {
             <h4 style="font-size:16px; font-weight:600; margin-bottom:6px;">${faq.q}</h4>
             <p style="color:var(--text-secondary); line-height:1.6;">${faq.a}</p>
         </div>`).join('\n');
-
-    // Generate related links
-    const relatedLinks = PAGES
-        .filter(p => p.slug !== page.slug)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 8)
-        .map(p => `<a href="/${p.slug}" class="related-link">${p.h1.replace(/<[^>]+>/g, '')}</a>`)
-        .join('');
-
-    const relatedHtml = `
-    <section class="related-tools-section" style="background:var(--bg-card); padding: 40px 32px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 1;">
-        <div style="max-width: 900px; margin: 0 auto;">
-            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--text-primary);">Related Security Tools & Scanners</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                ${relatedLinks}
-            </div>
-        </div>
-    </section>
-    `;
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -480,10 +358,6 @@ function generatePage(page) {
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
     <link rel="preload" href="app.js" as="script">
-    <style>
-        .related-link { display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: all 0.2s; }
-        .related-link:hover { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: var(--text-primary); }
-    </style>
 
     <script type="application/ld+json">
     {
@@ -549,7 +423,6 @@ function generatePage(page) {
                 <a href="/" style="text-decoration:none;"><span class="logo-text">Vuln<span class="logo-accent">Scan</span></span></a>
             </div>
             <div class="nav-links">
-                <a href="/blog">Blog</a>
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="#scan" class="nav-cta">Start Scan</a>
@@ -635,8 +508,6 @@ function generatePage(page) {
         </div>
     </section>
 
-    \${relatedHtml}
-
     <footer class="footer">
         <div class="footer-inner">
             <div class="logo">
@@ -644,7 +515,6 @@ function generatePage(page) {
                 <span class="logo-text">Vuln<span class="logo-accent">Scan</span></span>
             </div>
             <div class="footer-links">
-                <a href="/blog">Security Blog</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="/free-website-security-check">Free Security Check</a>
                 <a href="/wordpress-security-scanner">WordPress Scanner</a>
@@ -654,10 +524,6 @@ function generatePage(page) {
                 <a href="/website-security-audit">Security Audit</a>
                 <a href="/ssl-checker">SSL Checker</a>
                 <a href="/owasp-scanner">OWASP Scanner</a>
-                <a href="/react-vulnerability-scanner">React Scanner</a>
-                <a href="/laravel-vulnerability-scanner">Laravel Scanner</a>
-                <a href="/ssrf-vulnerability-scanner">SSRF Scanner</a>
-                <a href="/rce-vulnerability-scanner">RCE Scanner</a>
                 <a href="mailto:security@vulnscan.tech">Contact</a>
             </div>
             <p class="footer-copy">© 2026 VulnScan. All rights reserved.</p>
@@ -715,18 +581,6 @@ ${sitemapEntries.map(slug => `  <url>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`).join('\n')}
-  <url>
-    <loc>https://vulnscan.tech/blog</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://vulnscan.tech/blog/how-to-check-if-website-hacked</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
 </urlset>
 `;
 

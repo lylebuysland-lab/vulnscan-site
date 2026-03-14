@@ -1,1 +1,1 @@
-vulnscan-indexnow-key-2026
+﻿vulnscan-indexnow-key-2026
