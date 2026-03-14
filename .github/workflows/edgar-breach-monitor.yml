@@ -1,0 +1,37 @@
+name: EDGAR Breach Monitor — Auto-generate breach pages
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # Every 6 hours — breach disclosures are time-sensitive
+  workflow_dispatch:          # Manual trigger anytime
+
+permissions:
+  contents: write
+
+jobs:
+  edgar-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run EDGAR Breach Monitor
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INDEXNOW_KEY: vulnscan-indexnow-key-2026
+        run: node .github/scripts/edgar-breach-monitor.js
+
+      - name: Commit and push breach pages
+        run: |
+          git config user.name "VulnScan EDGAR Bot"
+          git config user.email "bot@vulnscan.tech"
+          git add -A
+          git diff --staged --quiet || git commit -m "EDGAR: Auto-generated breach disclosure pages $(date +%Y-%m-%d-%H%M)"
+          git push

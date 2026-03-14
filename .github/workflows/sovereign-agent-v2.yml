@@ -1,0 +1,177 @@
+name: Sovereign SEO Agent v2
+
+on:
+  schedule:
+    # Scout + Content: every 6 hours
+    - cron: '0 */6 * * *'
+    # Backlink engine: daily at 9 AM UTC
+    - cron: '0 9 * * *'
+    # Rank analysis + strategy update: daily at midnight UTC
+    - cron: '0 0 * * *'
+    # Weekly content publisher: every Monday 10 AM UTC
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+    inputs:
+      agent:
+        description: 'Which agent to run (all/scout/writer/backlinker/analyst)'
+        required: false
+        default: 'all'
+
+permissions:
+  contents: write
+
+env:
+  REPO_OWNER: lylebuysland-lab
+  REPO_NAME: vulnscan-site
+  SITE_URL: https://vulnscan.tech
+
+jobs:
+
+  # ─────────────────────────────────────────────
+  # AGENT 1: SCOUT — finds new CVEs, breach news
+  # ─────────────────────────────────────────────
+  scout-and-write:
+    name: "🔍 Scout + ✍️ Write"
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 */6 * * *' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Scout Agent
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/scout-agent.js
+
+      - name: Run Writer Agent (Gemini generates content)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node .github/scripts/writer-agent.js
+
+      - name: Commit new pages
+        run: |
+          git config user.name "Sovereign Agent"
+          git config user.email "agent@vulnscan.tech"
+          git add -A
+          git diff --cached --quiet || git commit -m "🤖 Agent: new CVE/breach pages $(date -u +%Y-%m-%d)"
+          git push
+
+  # ─────────────────────────────────────────────
+  # AGENT 2: BACKLINKER — submits to directories
+  # ─────────────────────────────────────────────
+  backlink-engine:
+    name: "🔗 Backlink Engine"
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 9 * * *' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Backlink Engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/backlink-engine.js
+
+      - name: Ping search engines (IndexNow)
+        run: |
+          # Ping IndexNow (Bing, Yandex, Seznam - all simultaneously)
+          node -e "
+          const https = require('https');
+          const urls = [
+            'https://vulnscan.tech',
+            'https://vulnscan.tech/sitemap.xml'
+          ];
+          // IndexNow ping
+          const body = JSON.stringify({
+            host: 'vulnscan.tech',
+            key: 'vulnscan-indexnow-key',
+            urlList: urls
+          });
+          const opts = {
+            hostname: 'api.indexnow.org',
+            path: '/indexnow',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+          };
+          const req = https.request(opts, r => console.log('IndexNow ping:', r.statusCode));
+          req.on('error', e => console.log('IndexNow skip:', e.message));
+          req.write(body); req.end();
+          " || true
+
+      - name: Commit backlink log
+        run: |
+          git config user.name "Sovereign Agent"
+          git config user.email "agent@vulnscan.tech"
+          git add -A
+          git diff --cached --quiet || git commit -m "🔗 Backlink engine run $(date -u +%Y-%m-%d)"
+          git push
+
+  # ─────────────────────────────────────────────
+  # AGENT 3: ANALYST — reads rankings, updates strategy
+  # ─────────────────────────────────────────────
+  rank-analyst:
+    name: "📊 Rank Analyst"
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 0 * * *' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Rank Analyst (reads GSC data)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GSC_SERVICE_ACCOUNT: ${{ secrets.GSC_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/rank-analyst.js
+
+      - name: Commit strategy update
+        run: |
+          git config user.name "Sovereign Agent"
+          git config user.email "agent@vulnscan.tech"
+          git add -A
+          git diff --cached --quiet || git commit -m "📊 Strategy update: $(date -u +%Y-%m-%d)"
+          git push
+
+  # ─────────────────────────────────────────────
+  # AGENT 4: WEEKLY PUBLISHER — posts to all platforms
+  # Dev.to, Hashnode, Mastodon, Telegram — every Monday
+  # ─────────────────────────────────────────────
+  weekly-publisher:
+    name: "📣 Weekly Publisher"
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 10 * * 1' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Publish weekly content to all platforms
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: node .github/scripts/content-publisher.js
+
+      - name: Commit publisher log
+        run: |
+          git config user.name "Sovereign Agent"
+          git config user.email "agent@vulnscan.tech"
+          git add -A
+          git diff --cached --quiet || git commit -m "📣 Weekly publish: $(date -u +%Y-%m-%d)"
+          git push

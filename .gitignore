@@ -18,6 +18,13 @@ moltbook-credentials.txt
 *.json
 !package.json
 
+# Utility scripts
+fix-*.js
+standardize-*.js
+scan.bat
+*.bak
+tools/
+
 # Local dev
 node_modules/
 .env

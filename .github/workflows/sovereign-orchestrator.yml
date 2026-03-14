@@ -1,0 +1,103 @@
+name: VulnScan Sovereign Orchestrator — Security Content Only
+
+# THREE security-only pipelines. Zero human work. Forever.
+# Everything on vulnscan.tech is 100% security-relevant.
+
+on:
+  schedule:
+    - cron: '0 6 * * *'     # CVE pipeline — daily 6am
+    - cron: '0 */6 * * *'   # EDGAR breach — every 6h (time-sensitive)
+    - cron: '0 7 * * 1'     # GSC keyword loop — Mondays 7am
+  workflow_dispatch:
+    inputs:
+      pipeline:
+        description: 'Pipeline: all / cve / edgar / gsc'
+        required: false
+        default: 'all'
+
+permissions:
+  contents: write
+
+env:
+  INDEXNOW_KEY: vulnscan-indexnow-key-2026
+
+jobs:
+  cve-pipeline:
+    name: "CVE Pages — NIST NVD + GitHub Advisory"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Run CVE Pipeline
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MOLTBOOK_KEY: ${{ secrets.MOLTBOOK_KEY }}
+        run: node .github/scripts/auto-cve-pipeline.js
+      - name: Commit
+        run: |
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "CVE: Auto-pages $(date +%Y-%m-%d)" && git push
+
+  edgar-breach:
+    name: "EDGAR — SEC Cybersecurity Breach Disclosures"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Run EDGAR Monitor
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node .github/scripts/edgar-breach-monitor.js
+      - name: Commit
+        run: |
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "EDGAR: Breach pages $(date +%Y-%m-%d-%H%M)" && git push
+
+  gsc-keywords:
+    name: "GSC — Self-Learning Security SEO"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Run GSC Keyword Feedback
+        env:
+          GSC_SERVICE_ACCOUNT: ${{ secrets.GSC_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node .github/scripts/gsc-keyword-feedback.js
+      - name: Commit
+        run: |
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "GSC: Security keyword pages $(date +%Y-%m-%d)" && git push
+
+  # ============================================================
+  # PIPELINE 4: Medium Auto-Publisher (OFF-STACK REVENUE)
+  # Publishes AI-written security articles to Medium Partner Program
+  # Medium has 100M monthly visitors + pays per read → Stripe
+  # Zero domain, zero VulnScan dependency. Fully mechanical.
+  # ============================================================
+  medium-publisher:
+    name: "Medium — AI Security Articles (Partner Program Revenue)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { token: '${{ secrets.GITHUB_TOKEN }}', fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Publish to Medium
+        env:
+          MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node .github/scripts/medium-auto-publisher.js
+      - name: Commit log
+        run: |
+          git config user.name "VulnScan Bot" && git config user.email "bot@vulnscan.tech"
+          git add -A && git diff --staged --quiet || git commit -m "Medium: Published security article $(date +%Y-%m-%d)" && git push
