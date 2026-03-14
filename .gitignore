@@ -1,5 +1,24 @@
+# === PROTECT IP: Never push these to public repo ===
+# Generator scripts (SECRET SAUCE)
+generate-cve-pages.js
+generate-seo-pages.js
+generate-*.js
+
+# Push/deploy scripts with tokens
 push_*.ps1
 push-*.js
 trigger-*.js
 set-github-secret.js
+
+# Indexing & RSS scripts
+rss-and-indexnow.ps1
+
+# Credentials
 moltbook-credentials.txt
+*.json
+!package.json
+
+# Local dev
+node_modules/
+.env
+*.log
