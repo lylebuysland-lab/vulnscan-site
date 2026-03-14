@@ -1,4 +1,5 @@
-﻿tools/
-backend/__pycache__/
-sample_*.pdf
-*.pyc
+push_*.ps1
+push-*.js
+trigger-*.js
+set-github-secret.js
+moltbook-credentials.txt
