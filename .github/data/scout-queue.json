@@ -44,7 +44,7 @@
     "published": "2021-11-03",
     "source": "cisa_kev",
     "kev": true,
-    "status": "queued",
+    "status": "written",
     "queued_at": "2026-03-14T02:39:08.078Z"
   },
   {
@@ -56,7 +56,7 @@
     "published": "2021-11-03",
     "source": "cisa_kev",
     "kev": true,
-    "status": "queued",
+    "status": "written",
     "queued_at": "2026-03-14T02:39:08.078Z"
   },
   {
@@ -68,7 +68,7 @@
     "published": "2021-11-03",
     "source": "cisa_kev",
     "kev": true,
-    "status": "queued",
+    "status": "written",
     "queued_at": "2026-03-14T02:39:08.078Z"
   },
   {
@@ -338,5 +338,27 @@
     "source": "nvd",
     "status": "queued",
     "queued_at": "2026-03-14T02:39:08.078Z"
+  },
+  {
+    "id": "CVE-2026-3757",
+    "desc": "A security flaw has been discovered in projectworlds Online Art Gallery Shop 1.0. Affected by this vulnerability is an unknown functionality of the file /?pass=1. The manipulation of the argument fnm results in sql injection. The attack may be launched remotely. The exploit has been released to the ",
+    "cvss": 7.3,
+    "severity": "HIGH",
+    "tech": "web application",
+    "published": "2026-03-08",
+    "source": "nvd",
+    "status": "queued",
+    "queued_at": "2026-03-14T06:58:19.560Z"
+  },
+  {
+    "id": "CVE-2026-3758",
+    "desc": "A weakness has been identified in projectworlds Online Art Gallery Shop 1.0. Affected by this issue is some unknown functionality of the file /admin/adminHome.php. This manipulation of the argument Info causes sql injection. Remote exploitation of the attack is possible. The exploit has been made av",
+    "cvss": 7.3,
+    "severity": "HIGH",
+    "tech": "web application",
+    "published": "2026-03-08",
+    "source": "nvd",
+    "status": "queued",
+    "queued_at": "2026-03-14T06:58:19.560Z"
   }
 ]
