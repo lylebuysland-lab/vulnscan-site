@@ -77,7 +77,7 @@ def page_bg(c, doc):
     c.setFillColor(ACCENT); c.setFont('Helvetica-Bold',12)
     c.drawString(0.75*inch, h-28, BRAND)
     c.setFillColor(GRAY); c.setFont('Helvetica',9)
-    c.drawRightString(w-0.75*inch, h-22, "QUICK SCAN REPORT")
+    c.drawRightString(w-0.75*inch, h-22, "SECURITY ASSESSMENT REPORT")
     c.drawRightString(w-0.75*inch, h-34, "CONFIDENTIAL")
     # Footer
     c.setFillColor(MID)
@@ -89,7 +89,7 @@ def page_bg(c, doc):
     c.restoreState()
 
 
-def generate_quick_report(results, output_path):
+def generate_quick_report(results, output_path, tier='quick'):
     os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
     doc = SimpleDocTemplate(output_path, pagesize=letter,
         topMargin=0.8*inch, bottomMargin=0.6*inch,
@@ -105,13 +105,15 @@ def generate_quick_report(results, output_path):
                          leading=16, spaceAfter=6)
 
     els = []
-    domain = results.get('domain','Unknown')
+    domain = results.get('domain', 'Unknown')
+    scan_label = 'Deep Scan' if tier == 'deep' else 'Quick Scan'
     dt = datetime.fromisoformat(results.get('scan_date', datetime.now().isoformat()))
+    # Update Report ID generation to be tier-aware and include domain prefix
+    rid = f"VS-{'DS' if tier == 'deep' else 'QS'}-{domain[:20].replace('.','').upper()}-{datetime.now().strftime('%Y%m%d%H%M')}"
     summary = results.get('summary',{})
     vulns = results.get('vulnerabilities',[])
     rs = summary.get('risk_score', risk(vulns))
     gr = grade(rs)
-    rid = f"VS-QS-{dt.strftime('%Y%m%d')}-{abs(hash(domain))%10000:04d}"
     vb = summary.get('vulnerability_breakdown',{})
     tv = sum(vb.values()) if vb else len(vulns)
     hi = vb.get('critical',0) + vb.get('high',0)
@@ -291,175 +293,195 @@ def generate_quick_report(results, output_path):
             f"<font size=12 color='#fca5a5'><b>Why this matters:</b> {cite['business_impact']}</font>",
             ParagraphStyle(f'bi{i}', fontSize=12, leading=18, spaceAfter=8)))
 
-        # FIX LOCKED to $199
-        fix_box = [[Paragraph(
-            "<font size=11 color='#92400e'><b>🔒 How to fix this → Included in Deep Scan ($199)</b></font><br/>"
-            "<font size=10 color='#78350f'>The Deep Scan report gives you step-by-step instructions "
-            "to fix this issue, written for your exact technology.</font>",
-            ParagraphStyle(f'fx{i}', fontSize=10, leading=15))]]
-        ft = Table(fix_box, colWidths=[6.3*inch])
-        ft.setStyle(TableStyle([
-            ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#fef3c7')),
-            ('BOX',(0,0),(-1,-1),1.5,AMBER),
-            ('TOPPADDING',(0,0),(-1,-1),10), ('BOTTOMPADDING',(0,0),(-1,-1),10),
-            ('LEFTPADDING',(0,0),(-1,-1),12), ('RIGHTPADDING',(0,0),(-1,-1),12),
-        ]))
-        fe.append(ft)
+        # FIX: Show actual steps for deep tier, locked box for quick
+        if tier == 'deep':
+            fix_steps = cite.get('fix_steps', ['Review and apply security best practices.'])
+            steps_text = '<br/>'.join([f"<font size=11 color='#d1fae5'>✅ {s}</font>" for s in fix_steps])
+            fix_box = [[Paragraph(
+                f"<font size=12 color='#22c55e'><b>How to Fix This:</b></font><br/><br/>{steps_text}",
+                ParagraphStyle(f'fx{i}', fontSize=11, leading=17))]]
+            ft = Table(fix_box, colWidths=[6.3*inch])
+            ft.setStyle(TableStyle([
+                ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#052e16')),
+                ('BOX',(0,0),(-1,-1),1.5,GREEN),
+                ('TOPPADDING',(0,0),(-1,-1),12), ('BOTTOMPADDING',(0,0),(-1,-1),12),
+                ('LEFTPADDING',(0,0),(-1,-1),14), ('RIGHTPADDING',(0,0),(-1,-1),14),
+            ]))
+            fe.append(ft)
+        else:
+            fix_box = [[Paragraph(
+                "<font size=11 color='#92400e'><b>🔒 How to fix this → Included in Deep Scan ($199)</b></font><br/>"
+                "<font size=10 color='#78350f'>The Deep Scan report gives you step-by-step instructions "
+                "to fix this issue, written for your exact technology.</font>",
+                ParagraphStyle(f'fx{i}', fontSize=10, leading=15))]]
+            ft = Table(fix_box, colWidths=[6.3*inch])
+            ft.setStyle(TableStyle([
+                ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#fef3c7')),
+                ('BOX',(0,0),(-1,-1),1.5,AMBER),
+                ('TOPPADDING',(0,0),(-1,-1),10), ('BOTTOMPADDING',(0,0),(-1,-1),10),
+                ('LEFTPADDING',(0,0),(-1,-1),12), ('RIGHTPADDING',(0,0),(-1,-1),12),
+            ]))
+            fe.append(ft)
 
         fe.append(Spacer(1, 0.15*inch))
         els.append(KeepTogether(fe))
 
     els.append(PageBreak())
 
-    # ══════════ WHAT'S AT STAKE ══════════
-    els.append(Paragraph("What's at Stake", H1))
-    els.append(HRFlowable(width="100%", thickness=2, color=RED, spaceAfter=14))
+    # Skip upsell pages for deep tier — they already paid
+    if tier == 'deep':
+        # Jump straight to verification standards
+        pass
+    else:
 
-    els.append(Paragraph(
-        f"<font size=14 color='#fca5a5'><b>Your website has {tv} known security gaps. "
-        "Here's what could happen if they're not fixed:</b></font>",
-        ParagraphStyle('stake', fontSize=14, leading=20, spaceAfter=16)))
+        # ══════════ WHAT'S AT STAKE ══════════
+        els.append(Paragraph("What's at Stake", H1))
+        els.append(HRFlowable(width="100%", thickness=2, color=RED, spaceAfter=14))
 
-    risks_list = [
-        ("💰 Financial Loss", "Data breaches cost small businesses $120,000–$200,000 on average."),
-        ("👥 Customer Trust", "One breach can destroy years of built reputation overnight."),
-        ("⚖️ Legal Liability", "Compliance violations carry $50,000+ in fines (GDPR, PCI DSS)."),
-        ("📉 Business Disruption", "Hacked websites go offline, losing revenue every hour."),
-    ]
-    for title, desc in risks_list:
-        risk_row = [[Paragraph(
-            f"<font size=13 color='{WHITE.hexval()}'><b>{title}</b></font><br/>"
-            f"<font size=12 color='{LTXT.hexval()}'>{desc}</font>",
-            ParagraphStyle(f'rr{title[:3]}', fontSize=12, leading=18))]]
-        rt = Table(risk_row, colWidths=[6.3*inch])
-        rt.setStyle(TableStyle([
-            ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#1c1017')),
-            ('BOX',(0,0),(-1,-1),1,colors.HexColor('#7f1d1d')),
-            ('TOPPADDING',(0,0),(-1,-1),12), ('BOTTOMPADDING',(0,0),(-1,-1),12),
-            ('LEFTPADDING',(0,0),(-1,-1),14),
+        els.append(Paragraph(
+            f"<font size=14 color='#fca5a5'><b>Your website has {tv} known security gaps. "
+            "Here's what could happen if they're not fixed:</b></font>",
+            ParagraphStyle('stake', fontSize=14, leading=20, spaceAfter=16)))
+
+        risks_list = [
+            ("💰 Financial Loss", "Data breaches cost small businesses $120,000–$200,000 on average."),
+            ("👥 Customer Trust", "One breach can destroy years of built reputation overnight."),
+            ("⚖️ Legal Liability", "Compliance violations carry $50,000+ in fines (GDPR, PCI DSS)."),
+            ("📉 Business Disruption", "Hacked websites go offline, losing revenue every hour."),
+        ]
+        for title, desc in risks_list:
+            risk_row = [[Paragraph(
+                f"<font size=13 color='{WHITE.hexval()}'><b>{title}</b></font><br/>"
+                f"<font size=12 color='{LTXT.hexval()}'>{desc}</font>",
+                ParagraphStyle(f'rr{title[:3]}', fontSize=12, leading=18))]]
+            rt = Table(risk_row, colWidths=[6.3*inch])
+            rt.setStyle(TableStyle([
+                ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#1c1017')),
+                ('BOX',(0,0),(-1,-1),1,colors.HexColor('#7f1d1d')),
+                ('TOPPADDING',(0,0),(-1,-1),12), ('BOTTOMPADDING',(0,0),(-1,-1),12),
+                ('LEFTPADDING',(0,0),(-1,-1),14),
+            ]))
+            els.append(rt)
+            els.append(Spacer(1, 0.08*inch))
+
+        els.append(PageBreak())
+
+        # ══════════ WHAT THE DEEP SCAN INCLUDES ══════════
+        els.append(Paragraph("What the Deep Scan Includes", H1))
+        els.append(HRFlowable(width="100%", thickness=2, color=PRI, spaceAfter=14))
+
+        els.append(Paragraph(
+            f"The Deep Scan takes everything in this report and goes <b>much deeper</b>. "
+            f"Here's exactly what you get for <b>$199</b>:",
+            BD))
+        els.append(Spacer(1, 0.1*inch))
+
+        ds_features = [
+            ("✅ Step-by-Step Fix Instructions",
+             "For every issue found, you get exact commands and code to fix it — "
+             "written for your specific technology (Apache, Nginx, WordPress, etc). "
+             "No guessing, no Googling. Just copy, paste, and your site is secure.",
+             GREEN),
+            ("✅ OWASP Top 10 Compliance Matrix",
+             "We map every finding to the OWASP Top 10 — the global standard for web security. "
+             "See exactly which categories you pass or fail. Required by most enterprise clients.\n"
+             "Reference: https://owasp.org/www-project-top-ten/",
+             GREEN),
+            ("✅ PCI DSS / SOC 2 / GDPR Compliance Check",
+             "If you handle payments, customer data, or serve EU customers, you need compliance. "
+             "We check your site against PCI DSS, SOC 2, and GDPR requirements and tell you exactly what's missing.",
+             GREEN),
+            ("✅ Full Code-Level Remediation Playbook",
+             "Before/after code examples for every issue. Your developer can implement all fixes in hours, not weeks. "
+             "Each fix is verified against the NIST National Vulnerability Database.\n"
+             "Reference: https://nvd.nist.gov/",
+             GREEN),
+            ("✅ Board-Ready Executive Summary",
+             "A polished 1-page summary you can hand to your board, investors, or clients. "
+             "Shows risk level, remediation progress, and industry benchmarking.",
+             GREEN),
+            ("✅ SSL/TLS Deep Audit",
+             "Complete cipher suite analysis, certificate chain validation, protocol support matrix, "
+             "and HSTS preload status check.",
+             GREEN),
+            ("✅ Priority Email Support",
+             "Got questions about your report? We respond within 24 hours with expert guidance.",
+             GREEN),
+        ]
+
+        for title, desc, color in ds_features:
+            safe_desc = desc.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+            row = [[Paragraph(
+                f"<font size=13 color='{WHITE.hexval()}'><b>{title}</b></font><br/>"
+                f"<font size=11 color='{LTXT.hexval()}'>{safe_desc}</font>",
+                ParagraphStyle(f'ds_{title[:8]}', fontSize=11, leading=17))]]
+            rt = Table(row, colWidths=[6.3*inch])
+            rt.setStyle(TableStyle([
+                ('BACKGROUND',(0,0),(-1,-1),CARD),
+                ('BOX',(0,0),(-1,-1),1,MID),
+                ('TOPPADDING',(0,0),(-1,-1),10), ('BOTTOMPADDING',(0,0),(-1,-1),10),
+                ('LEFTPADDING',(0,0),(-1,-1),14), ('RIGHTPADDING',(0,0),(-1,-1),14),
+            ]))
+            els.append(rt)
+            els.append(Spacer(1, 0.06*inch))
+
+        els.append(PageBreak())
+
+        # ══════════ QUICK SCAN vs DEEP SCAN COMPARISON ══════════
+        els.append(Paragraph("Quick Scan vs Deep Scan", H1))
+        els.append(HRFlowable(width="100%", thickness=2, color=PRI, spaceAfter=14))
+
+        els.append(Paragraph(
+            "See exactly what you get with each plan:",
+            BD))
+        els.append(Spacer(1, 0.1*inch))
+
+        ch = ParagraphStyle('ch', textColor=WHITE, fontSize=11, fontName='Helvetica-Bold')
+        cr = ParagraphStyle('cr', textColor=WHITE, fontSize=11)
+        cg = ParagraphStyle('cg', textColor=GREEN, fontSize=11, fontName='Helvetica-Bold')
+
+        comp = [
+            [Paragraph('<b>Feature</b>',ch), Paragraph('<b>Quick Scan ($49)</b>',ch), Paragraph('<b>Deep Scan ($199)</b>',ch)],
+            [Paragraph('Security issues identified',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
+            [Paragraph('Risk score and grade',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
+            [Paragraph('NVD/CWE citations',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
+            [Paragraph('Business impact explained',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
+            [Paragraph('Step-by-step fix instructions',cr), Paragraph('❌ No',ParagraphStyle('n1',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+            [Paragraph('Code-level fixes (copy-paste)',cr), Paragraph('❌ No',ParagraphStyle('n2',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+            [Paragraph('OWASP Top 10 mapping',cr), Paragraph('❌ No',ParagraphStyle('n3',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+            [Paragraph('PCI/SOC 2/GDPR compliance',cr), Paragraph('❌ No',ParagraphStyle('n4',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+            [Paragraph('Executive summary',cr), Paragraph('❌ No',ParagraphStyle('n5',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+            [Paragraph('SSL/TLS deep audit',cr), Paragraph('❌ No',ParagraphStyle('n6',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+            [Paragraph('Priority support',cr), Paragraph('❌ No',ParagraphStyle('n7',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
+        ]
+        ct2 = Table(comp, colWidths=[2.6*inch, 1.85*inch, 1.85*inch])
+        ct2.setStyle(TableStyle([
+            ('BACKGROUND',(0,0),(-1,0),PRI), ('BACKGROUND',(0,1),(-1,-1),CARD),
+            ('BACKGROUND',(2,1),(2,-1),colors.HexColor('#0a2e1a')),
+            ('GRID',(0,0),(-1,-1),0.5,MID),
+            ('TOPPADDING',(0,0),(-1,-1),8), ('BOTTOMPADDING',(0,0),(-1,-1),8),
+            ('LEFTPADDING',(0,0),(-1,-1),8),
         ]))
-        els.append(rt)
-        els.append(Spacer(1, 0.08*inch))
+        els.append(ct2)
 
-    els.append(PageBreak())
+        els.append(Spacer(1, 0.3*inch))
 
-    # ══════════ WHAT THE DEEP SCAN INCLUDES ══════════
-    els.append(Paragraph("What the Deep Scan Includes", H1))
-    els.append(HRFlowable(width="100%", thickness=2, color=PRI, spaceAfter=14))
-
-    els.append(Paragraph(
-        f"The Deep Scan takes everything in this report and goes <b>much deeper</b>. "
-        f"Here's exactly what you get for <b>$199</b>:",
-        BD))
-    els.append(Spacer(1, 0.1*inch))
-
-    # Detailed breakdown of Deep Scan features
-    ds_features = [
-        ("✅ Step-by-Step Fix Instructions",
-         "For every issue found, you get exact commands and code to fix it — "
-         "written for your specific technology (Apache, Nginx, WordPress, etc). "
-         "No guessing, no Googling. Just copy, paste, and your site is secure.",
-         GREEN),
-        ("✅ OWASP Top 10 Compliance Matrix",
-         "We map every finding to the OWASP Top 10 — the global standard for web security. "
-         "See exactly which categories you pass or fail. Required by most enterprise clients.\n"
-         "Reference: https://owasp.org/www-project-top-ten/",
-         GREEN),
-        ("✅ PCI DSS / SOC 2 / GDPR Compliance Check",
-         "If you handle payments, customer data, or serve EU customers, you need compliance. "
-         "We check your site against PCI DSS, SOC 2, and GDPR requirements and tell you exactly what's missing.",
-         GREEN),
-        ("✅ Full Code-Level Remediation Playbook",
-         "Before/after code examples for every issue. Your developer can implement all fixes in hours, not weeks. "
-         "Each fix is verified against the NIST National Vulnerability Database.\n"
-         "Reference: https://nvd.nist.gov/",
-         GREEN),
-        ("✅ Board-Ready Executive Summary",
-         "A polished 1-page summary you can hand to your board, investors, or clients. "
-         "Shows risk level, remediation progress, and industry benchmarking.",
-         GREEN),
-        ("✅ SSL/TLS Deep Audit",
-         "Complete cipher suite analysis, certificate chain validation, protocol support matrix, "
-         "and HSTS preload status check.",
-         GREEN),
-        ("✅ Priority Email Support",
-         "Got questions about your report? We respond within 24 hours with expert guidance.",
-         GREEN),
-    ]
-
-    for title, desc, color in ds_features:
-        safe_desc = desc.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
-        row = [[Paragraph(
-            f"<font size=13 color='{WHITE.hexval()}'><b>{title}</b></font><br/>"
-            f"<font size=11 color='{LTXT.hexval()}'>{safe_desc}</font>",
-            ParagraphStyle(f'ds_{title[:8]}', fontSize=11, leading=17))]]
-        rt = Table(row, colWidths=[6.3*inch])
-        rt.setStyle(TableStyle([
-            ('BACKGROUND',(0,0),(-1,-1),CARD),
-            ('BOX',(0,0),(-1,-1),1,MID),
-            ('TOPPADDING',(0,0),(-1,-1),10), ('BOTTOMPADDING',(0,0),(-1,-1),10),
-            ('LEFTPADDING',(0,0),(-1,-1),14), ('RIGHTPADDING',(0,0),(-1,-1),14),
+        # BIG CTA
+        cta = [[Paragraph(
+            f"<font size=12 color='{LTXT.hexval()}'>"
+            "Security consultants charge <b>$3,000–$5,000</b> for this level of assessment.</font><br/><br/>"
+            f"<font size=30 color='{GREEN.hexval()}'><b>$199</b></font><br/><br/>"
+            f"<font size=16 color='{ACCENT.hexval()}'><b>→ vulnscan.tech</b></font>",
+            ParagraphStyle('cta', fontSize=12, leading=20, alignment=TA_CENTER))]]
+        ct = Table(cta, colWidths=[6.3*inch])
+        ct.setStyle(TableStyle([
+            ('BACKGROUND',(0,0),(-1,-1),CARD), ('BOX',(0,0),(-1,-1),3,PRI),
+            ('TOPPADDING',(0,0),(-1,-1),24), ('BOTTOMPADDING',(0,0),(-1,-1),24),
+            ('LEFTPADDING',(0,0),(-1,-1),24), ('RIGHTPADDING',(0,0),(-1,-1),24),
         ]))
-        els.append(rt)
-        els.append(Spacer(1, 0.06*inch))
+        els.append(ct)
 
-    els.append(PageBreak())
-
-    # ══════════ QUICK SCAN vs DEEP SCAN COMPARISON ══════════
-    els.append(Paragraph("Quick Scan vs Deep Scan", H1))
-    els.append(HRFlowable(width="100%", thickness=2, color=PRI, spaceAfter=14))
-
-    els.append(Paragraph(
-        "See exactly what you get with each plan:",
-        BD))
-    els.append(Spacer(1, 0.1*inch))
-
-    ch = ParagraphStyle('ch', textColor=WHITE, fontSize=11, fontName='Helvetica-Bold')
-    cr = ParagraphStyle('cr', textColor=WHITE, fontSize=11)
-    cg = ParagraphStyle('cg', textColor=GREEN, fontSize=11, fontName='Helvetica-Bold')
-
-    comp = [
-        [Paragraph('<b>Feature</b>',ch), Paragraph('<b>Quick Scan ($49)</b>',ch), Paragraph('<b>Deep Scan ($199)</b>',ch)],
-        [Paragraph('Security issues identified',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
-        [Paragraph('Risk score and grade',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
-        [Paragraph('NVD/CWE citations',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
-        [Paragraph('Business impact explained',cr), Paragraph('✅ Yes',cg), Paragraph('✅ Yes',cg)],
-        [Paragraph('Step-by-step fix instructions',cr), Paragraph('❌ No',ParagraphStyle('n1',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-        [Paragraph('Code-level fixes (copy-paste)',cr), Paragraph('❌ No',ParagraphStyle('n2',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-        [Paragraph('OWASP Top 10 mapping',cr), Paragraph('❌ No',ParagraphStyle('n3',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-        [Paragraph('PCI/SOC 2/GDPR compliance',cr), Paragraph('❌ No',ParagraphStyle('n4',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-        [Paragraph('Executive summary',cr), Paragraph('❌ No',ParagraphStyle('n5',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-        [Paragraph('SSL/TLS deep audit',cr), Paragraph('❌ No',ParagraphStyle('n6',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-        [Paragraph('Priority support',cr), Paragraph('❌ No',ParagraphStyle('n7',textColor=RED,fontSize=11)), Paragraph('✅ Yes',cg)],
-    ]
-    ct2 = Table(comp, colWidths=[2.6*inch, 1.85*inch, 1.85*inch])
-    ct2.setStyle(TableStyle([
-        ('BACKGROUND',(0,0),(-1,0),PRI), ('BACKGROUND',(0,1),(-1,-1),CARD),
-        ('BACKGROUND',(2,1),(2,-1),colors.HexColor('#0a2e1a')),
-        ('GRID',(0,0),(-1,-1),0.5,MID),
-        ('TOPPADDING',(0,0),(-1,-1),8), ('BOTTOMPADDING',(0,0),(-1,-1),8),
-        ('LEFTPADDING',(0,0),(-1,-1),8),
-    ]))
-    els.append(ct2)
-
-    els.append(Spacer(1, 0.3*inch))
-
-    # BIG CTA
-    cta = [[Paragraph(
-        f"<font size=12 color='{LTXT.hexval()}'>"
-        "Security consultants charge <b>$3,000–$5,000</b> for this level of assessment.</font><br/><br/>"
-        f"<font size=30 color='{GREEN.hexval()}'><b>$199</b></font><br/><br/>"
-        f"<font size=16 color='{ACCENT.hexval()}'><b>→ vulnscan.tech</b></font>",
-        ParagraphStyle('cta', fontSize=12, leading=20, alignment=TA_CENTER))]]
-    ct = Table(cta, colWidths=[6.3*inch])
-    ct.setStyle(TableStyle([
-        ('BACKGROUND',(0,0),(-1,-1),CARD), ('BOX',(0,0),(-1,-1),3,PRI),
-        ('TOPPADDING',(0,0),(-1,-1),24), ('BOTTOMPADDING',(0,0),(-1,-1),24),
-        ('LEFTPADDING',(0,0),(-1,-1),24), ('RIGHTPADDING',(0,0),(-1,-1),24),
-    ]))
-    els.append(ct)
-
-    els.append(PageBreak())
+        els.append(PageBreak())
 
     # ══════════ VERIFICATION STANDARDS ══════════
     els.append(Paragraph("Verification Standards", H1))
@@ -511,16 +533,23 @@ def generate_quick_report(results, output_path):
         els.append(Spacer(1, 0.06*inch))
 
     els.append(Spacer(1, 0.15*inch))
-    els.append(Paragraph(
-        f"<font size=12 color='{WHITE.hexval()}'><b>The Deep Scan ($199)</b> includes direct links "
-        "to the exact NVD and OWASP entries for every vulnerability found, so you can "
-        "verify every finding independently.</font>",
-        ParagraphStyle('db_note', fontSize=12, leading=18, spaceAfter=12)))
+    if tier == 'deep':
+        els.append(Paragraph(
+            f"<font size=12 color='{WHITE.hexval()}'><b>This Deep Scan report</b> includes direct links "
+            "to the exact NVD and OWASP entries for every vulnerability found. You can "
+            "verify every finding independently.</font>",
+            ParagraphStyle('db_note', fontSize=12, leading=18, spaceAfter=12)))
+    else:
+        els.append(Paragraph(
+            f"<font size=12 color='{WHITE.hexval()}'><b>The Deep Scan ($199)</b> includes direct links "
+            "to the exact NVD and OWASP entries for every vulnerability found, so you can "
+            "verify every finding independently.</font>",
+            ParagraphStyle('db_note', fontSize=12, leading=18, spaceAfter=12)))
 
-    els.append(Spacer(1, 0.15*inch))
-    els.append(Paragraph(
-        f"<font size=14 color='{ACCENT.hexval()}'><b>→ Get your Deep Scan at vulnscan.tech</b></font>",
-        ParagraphStyle('final_cta', alignment=TA_CENTER, leading=18, spaceAfter=6)))
+        els.append(Spacer(1, 0.15*inch))
+        els.append(Paragraph(
+            f"<font size=14 color='{ACCENT.hexval()}'><b>→ Get your Deep Scan at vulnscan.tech</b></font>",
+            ParagraphStyle('final_cta', alignment=TA_CENTER, leading=18, spaceAfter=6)))
 
     els.append(Spacer(1, 0.2*inch))
     els.append(Paragraph(
@@ -528,5 +557,5 @@ def generate_quick_report(results, output_path):
         ParagraphStyle('fin', alignment=TA_CENTER, leading=12)))
 
     doc.build(els, onFirstPage=cover_bg, onLaterPages=page_bg)
-    print(f"[+] Quick Scan report generated: {output_path}")
+    print(f"[+] {scan_label} report generated: {output_path}")
     return output_path
