@@ -1,0 +1,25 @@
+[2026-03-15T02:38:03.277Z] ========== DAILY INDEXING RUN ==========
+[2026-03-15T02:38:03.283Z] Found 133 HTML pages
+[2026-03-15T02:38:03.284Z] Getting Google access token...
+[2026-03-15T02:38:03.443Z] ✅ Token acquired
+[2026-03-15T02:38:03.671Z] Sitemap submission: ✅ Success
+[2026-03-15T02:38:03.899Z] 📊 web: 139 submitted, 0 indexed
+[2026-03-15T02:38:03.900Z] Submitting 133 pages to Google Indexing API...
+[2026-03-15T02:38:55.696Z]    ⚠️ supabase-vulnerability-scanner: 429
+[2026-03-15T02:38:56.479Z]    ⚠️ symfony-vulnerability-scanner: 429
+[2026-03-15T02:38:56.826Z]    ⚠️ tomcat-vulnerability-scanner: 429
+[2026-03-15T02:38:57.174Z]    ⚠️ virustotal-alternative: 429
+[2026-03-15T02:38:57.964Z]    ⚠️ webflow-vulnerability-scanner: 429
+[2026-03-15T02:38:58.315Z]    ⚠️ website-malware-scanner: 429
+[2026-03-15T02:38:58.668Z]    ⚠️ website-security-audit: 429
+[2026-03-15T02:38:59.010Z]    ⚠️ website-vulnerability-scanner: 429
+[2026-03-15T02:38:59.795Z]    ⚠️ wordfence-alternative: 429
+[2026-03-15T02:39:00.149Z]    ⚠️ wordpress-security-scanner: 429
+[2026-03-15T02:39:00.498Z]    ⚠️ xss-scanner: 429
+[2026-03-15T02:39:01.242Z] Google Indexing API: ✅ 122 success, ⚠️ 11 failed
+[2026-03-15T02:39:01.523Z] IndexNow api.indexnow.org: 403
+[2026-03-15T02:39:01.720Z] IndexNow www.bing.com: 403
+[2026-03-15T02:39:02.411Z] IndexNow yandex.com: 200
+[2026-03-15T02:39:02.412Z] ========== DAILY INDEXING COMPLETE ==========
+
+[2026-03-15T02:40:07.740Z] IndexNow api.indexnow.org: read ECONNRESET

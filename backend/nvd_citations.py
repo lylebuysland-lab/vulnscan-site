@@ -1,0 +1,215 @@
+"""
+NVD/CWE/OWASP Citation Database — Maps common findings to national standards
+Every finding in our reports MUST cite an authoritative source
+"""
+
+# Maps vulnerability template_ids to their national database citations + real fix instructions
+VULN_DATABASE = {
+    'missing-csp': {
+        'cwe_id': 'CWE-1021',
+        'cwe_name': 'Improper Restriction of Rendered UI Layers',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/1021.html',
+        'cvss': 6.1,
+        'business_impact': 'Cross-site scripting (XSS) attacks can steal customer credentials, inject malware, and deface your website. Average breach cost: $180,000 for small businesses.',
+        'fix_steps': [
+            'Add this header to your web server configuration:',
+            "Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;",
+            'For Apache: Add to .htaccess: Header set Content-Security-Policy "default-src \'self\'"',
+            'For Nginx: Add to server block: add_header Content-Security-Policy "default-src \'self\'";',
+        ],
+    },
+    'missing-csp-header': {
+        'cwe_id': 'CWE-1021',
+        'cwe_name': 'Improper Restriction of Rendered UI Layers',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/1021.html',
+        'cvss': 6.1,
+        'business_impact': 'Without CSP, attackers can inject scripts that steal form data, redirect users, or install cryptocurrency miners on your site.',
+        'fix_steps': [
+            'Add Content-Security-Policy header to your web server',
+            "Apache (.htaccess): Header set Content-Security-Policy \"default-src 'self'\"",
+            "Nginx: add_header Content-Security-Policy \"default-src 'self'\";",
+        ],
+    },
+    'missing-xfo': {
+        'cwe_id': 'CWE-1021',
+        'cwe_name': 'Improper Restriction of Rendered UI Layers',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/1021.html',
+        'cvss': 5.4,
+        'business_impact': 'Clickjacking attacks trick users into clicking hidden buttons — transferring funds, changing passwords, or granting access without knowing.',
+        'fix_steps': [
+            'Add X-Frame-Options: DENY (or SAMEORIGIN) to your server config',
+            'Apache: Header always set X-Frame-Options "DENY"',
+            'Nginx: add_header X-Frame-Options "DENY";',
+            'Also add frame-ancestors directive to your CSP header',
+        ],
+    },
+    'missing-x-frame-options': {
+        'cwe_id': 'CWE-1021',
+        'cwe_name': 'Improper Restriction of Rendered UI Layers',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/1021.html',
+        'cvss': 5.4,
+        'business_impact': 'Clickjacking can trick users into unknowingly performing sensitive actions.',
+        'fix_steps': [
+            'Add X-Frame-Options: DENY header',
+            'Apache: Header always set X-Frame-Options "DENY"',
+            'Nginx: add_header X-Frame-Options "DENY";',
+        ],
+    },
+    'missing-hsts': {
+        'cwe_id': 'CWE-319',
+        'cwe_name': 'Cleartext Transmission of Sensitive Information',
+        'owasp': 'A02:2021 — Cryptographic Failures',
+        'owasp_url': 'https://owasp.org/Top10/A02_2021-Cryptographic_Failures/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/319.html',
+        'cvss': 5.9,
+        'business_impact': 'SSL stripping attacks can intercept login credentials and payment data in transit. PCI DSS requires HSTS for payment processing.',
+        'fix_steps': [
+            'Add Strict-Transport-Security header with minimum 1 year max-age',
+            'Apache: Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"',
+            'Nginx: add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";',
+            'Submit to HSTS preload list: https://hstspreload.org/',
+        ],
+    },
+    'missing-permissions-policy': {
+        'cwe_id': 'CWE-16',
+        'cwe_name': 'Configuration',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/16.html',
+        'cvss': 4.3,
+        'business_impact': 'Without restrictions, injected scripts can access camera, microphone, and location — a GDPR/privacy liability.',
+        'fix_steps': [
+            'Add Permissions-Policy header restricting browser features',
+            'Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self)',
+            'This prevents third-party scripts from accessing sensitive device features',
+        ],
+    },
+    'missing-spf': {
+        'cwe_id': 'CWE-290',
+        'cwe_name': 'Authentication Bypass by Spoofing',
+        'owasp': 'A07:2021 — Identification and Authentication Failures',
+        'owasp_url': 'https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/290.html',
+        'cvss': 5.3,
+        'business_impact': 'Without SPF, anyone can send emails as your domain. Phishing attacks from your domain destroy customer trust and can trigger legal liability.',
+        'fix_steps': [
+            'Add SPF TXT record to your DNS:',
+            'v=spf1 include:_spf.google.com ~all (for Google Workspace)',
+            'v=spf1 include:amazonses.com ~all (for AWS SES)',
+            'Test at: https://mxtoolbox.com/spf.aspx',
+        ],
+    },
+    'missing-dmarc': {
+        'cwe_id': 'CWE-290',
+        'cwe_name': 'Authentication Bypass by Spoofing',
+        'owasp': 'A07:2021 — Identification and Authentication Failures',
+        'owasp_url': 'https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/290.html',
+        'cvss': 5.3,
+        'business_impact': 'No DMARC = no email spoofing protection. Attackers impersonate your brand to phish your customers, partners, and employees.',
+        'fix_steps': [
+            'Add DMARC TXT record to DNS:',
+            '_dmarc.yourdomain.com TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com"',
+            'Start with p=none to monitor, then move to p=quarantine, then p=reject',
+            'Free monitoring: https://dmarc.postmarkapp.com/',
+        ],
+    },
+    'tech-disclosure': {
+        'cwe_id': 'CWE-200',
+        'cwe_name': 'Exposure of Sensitive Information',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/200.html',
+        'cvss': 3.7,
+        'business_impact': 'Exposed tech stack helps attackers find known CVEs for your exact versions. Automated scanners target these fingerprints.',
+        'fix_steps': [
+            'Remove Server, X-Powered-By, and X-AspNet-Version headers',
+            'Apache: ServerTokens Prod / ServerSignature Off',
+            'Nginx: server_tokens off;',
+            'PHP: expose_php = Off in php.ini',
+        ],
+    },
+    'dns-caa-missing': {
+        'cwe_id': 'CWE-295',
+        'cwe_name': 'Improper Certificate Validation',
+        'owasp': 'A02:2021 — Cryptographic Failures',
+        'owasp_url': 'https://owasp.org/Top10/A02_2021-Cryptographic_Failures/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/295.html',
+        'cvss': 3.1,
+        'business_impact': 'Without CAA records, any CA worldwide can issue certificates for your domain, enabling man-in-the-middle attacks.',
+        'fix_steps': [
+            'Add CAA DNS record restricting which CAs can issue certificates:',
+            'yourdomain.com. CAA 0 issue "letsencrypt.org"',
+            'yourdomain.com. CAA 0 iodef "mailto:security@yourdomain.com"',
+        ],
+    },
+    'wordpress-xmlrpc-pingback': {
+        'cwe_id': 'CWE-918',
+        'cwe_name': 'Server-Side Request Forgery (SSRF)',
+        'owasp': 'A10:2021 — Server-Side Request Forgery',
+        'owasp_url': 'https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/',
+        'nvd_url': 'https://nvd.nist.gov/vuln/detail/CVE-2013-0235',
+        'cve_id': 'CVE-2013-0235',
+        'cvss': 7.5,
+        'business_impact': 'XML-RPC enables DDoS amplification, brute-force attacks, and internal network scanning. Your server becomes a weapon.',
+        'fix_steps': [
+            'Disable XML-RPC in WordPress:',
+            'Add to .htaccess: <Files xmlrpc.php>\\n  Order deny,allow\\n  Deny from all\\n</Files>',
+            'Or install "Disable XML-RPC" plugin',
+            'Or add to functions.php: add_filter("xmlrpc_enabled", "__return_false");',
+        ],
+    },
+    'wordpress-login-exposed': {
+        'cwe_id': 'CWE-307',
+        'cwe_name': 'Improper Restriction of Excessive Auth Attempts',
+        'owasp': 'A07:2021 — Identification and Authentication Failures',
+        'owasp_url': 'https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/307.html',
+        'cvss': 7.3,
+        'business_impact': 'Exposed login pages are targeted by automated credential stuffing. Compromised admin = full site takeover.',
+        'fix_steps': [
+            'Install Wordfence or Limit Login Attempts plugin',
+            'Rename wp-login.php URL with WPS Hide Login plugin',
+            'Add IP whitelist or 2FA for admin access',
+            'Block xmlrpc.php to prevent alternative login vector',
+        ],
+    },
+    'wordpress-version-detect': {
+        'cwe_id': 'CWE-200',
+        'cwe_name': 'Exposure of Sensitive Information',
+        'owasp': 'A05:2021 — Security Misconfiguration',
+        'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+        'nvd_url': 'https://cwe.mitre.org/data/definitions/200.html',
+        'cvss': 5.3,
+        'business_impact': 'Known WordPress version lets attackers search CVE databases for exploits targeting your exact version.',
+        'fix_steps': [
+            'Remove version from HTML: add_filter("the_generator", "__return_empty_string");',
+            'Remove from RSS feeds and scripts',
+            'Keep WordPress updated to latest version',
+        ],
+    },
+}
+
+# Fallback citation for unknown vulnerabilities
+DEFAULT_CITATION = {
+    'cwe_id': 'CWE-16',
+    'cwe_name': 'Configuration',
+    'owasp': 'A05:2021 — Security Misconfiguration',
+    'owasp_url': 'https://owasp.org/Top10/A05_2021-Security_Misconfiguration/',
+    'nvd_url': 'https://cwe.mitre.org/data/definitions/16.html',
+    'cvss': 4.0,
+    'business_impact': 'Security misconfigurations are the #1 cause of breaches. Each one is an open door for attackers.',
+    'fix_steps': ['Review and apply security hardening best practices for your platform.'],
+}
+
+def get_citation(template_id):
+    """Get NVD/CWE/OWASP citation for a vulnerability template."""
+    return VULN_DATABASE.get(template_id, DEFAULT_CITATION)
