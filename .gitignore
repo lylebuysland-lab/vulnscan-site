@@ -1,4 +1,7 @@
 # === PROTECT IP: Never push these to public repo ===
+# GitHub Actions & automation scripts
+.github/
+
 # Generator scripts (SECRET SAUCE)
 generate-cve-pages.js
 generate-seo-pages.js
