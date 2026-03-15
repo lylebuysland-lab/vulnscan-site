@@ -146,10 +146,11 @@ def test_pipeline():
 
 @app.route('/scan-test', methods=['GET'])
 def scan_test():
-    """Run REAL nuclei scan on a domain, generate PDF, send email — with timing"""
+    """Run scan, generate PDF, send email — with timing. Use ?tier=deep for $199 report"""
     domain = request.args.get('domain', 'vulnscan.tech')
     email = request.args.get('email', GMAIL_USER)
-    steps = {}
+    tier = request.args.get('tier', 'quick')  # 'quick' or 'deep'
+    steps = {'tier': tier}
     import time as _time
 
     # Step 1: Run Python security scan (replaces nuclei — instant, reliable)
@@ -164,7 +165,7 @@ def scan_test():
         steps['1_scan'] = f'ERROR: {e}'
         vulns = generate_sample_vulns(domain)
 
-    # Step 3: Generate PDF
+    # Step 2: Generate PDF (route by tier)
     t = _time.time()
     try:
         from datetime import datetime
@@ -180,24 +181,31 @@ def scan_test():
             },
             'vulnerabilities': vulns,
         }
-        report_path = os.path.join(work_dir, f'VulnScan_QuickScan_{domain}.pdf')
         import importlib.util
-        spec = importlib.util.spec_from_file_location('report_quick_v2', os.path.join(os.path.dirname(__file__), 'report_quick_v2.py'))
-        report_mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(report_mod)
-        report_mod.generate_quick_report(results_dict, report_path)
-        steps['3_pdf'] = f'OK ({_time.time()-t:.1f}s, {os.path.getsize(report_path)//1024}KB)'
+        if tier == 'deep':
+            report_path = os.path.join(work_dir, f'VulnScan_DeepScan_{domain}.pdf')
+            spec = importlib.util.spec_from_file_location('report_v2', os.path.join(os.path.dirname(__file__), 'report_v2.py'))
+            report_mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(report_mod)
+            report_mod.generate_report(results_dict, report_path)
+        else:
+            report_path = os.path.join(work_dir, f'VulnScan_QuickScan_{domain}.pdf')
+            spec = importlib.util.spec_from_file_location('report_quick_v2', os.path.join(os.path.dirname(__file__), 'report_quick_v2.py'))
+            report_mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(report_mod)
+            report_mod.generate_quick_report(results_dict, report_path)
+        steps['2_pdf'] = f'OK ({_time.time()-t:.1f}s, {os.path.getsize(report_path)//1024}KB)'
     except Exception as e:
-        steps['3_pdf'] = f'ERROR: {e}'
+        steps['2_pdf'] = f'ERROR: {e}'
         return jsonify(steps), 500
 
-    # Step 4: Send email
+    # Step 3: Send email
     t = _time.time()
     try:
-        send_report_email(email, domain, report_path, 'quick')
-        steps['4_email'] = f'OK ({_time.time()-t:.1f}s)'
+        send_report_email(email, domain, report_path, tier)
+        steps['3_email'] = f'OK ({_time.time()-t:.1f}s)'
     except Exception as e:
-        steps['4_email'] = f'ERROR: {e}'
+        steps['3_email'] = f'ERROR: {e}'
 
     return jsonify({'status': 'ok', 'email_sent_to': email, 'domain': domain, 'steps': steps}), 200
 
@@ -294,13 +302,25 @@ def run_scan_and_report(domain, email, tier):
         'vulnerabilities': vulns,
     }
 
-    # Generate PDF using report_quick_v2
-    report_path = os.path.join(work_dir, f'VulnScan_QuickScan_{domain}.pdf')
-    report_module_path = os.path.join(os.path.dirname(__file__), 'report_quick_v2.py')
-    spec = importlib.util.spec_from_file_location('report_quick_v2', report_module_path)
-    report_mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(report_mod)
-    report_mod.generate_quick_report(results_dict, report_path)
+    # Generate PDF — route to correct report based on tier
+    if tier == 'deep':
+        # $199+ Deep Scan — full report with fix instructions, compliance, etc.
+        report_path = os.path.join(work_dir, f'VulnScan_DeepScan_{domain}.pdf')
+        report_module_path = os.path.join(os.path.dirname(__file__), 'report_v2.py')
+        spec = importlib.util.spec_from_file_location('report_v2', report_module_path)
+        report_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(report_mod)
+        report_mod.generate_report(results_dict, report_path)
+        print(f'[+] Deep Scan report generated: {report_path}')
+    else:
+        # $49 Quick Scan — shows issues, locks fixes behind $199 upsell
+        report_path = os.path.join(work_dir, f'VulnScan_QuickScan_{domain}.pdf')
+        report_module_path = os.path.join(os.path.dirname(__file__), 'report_quick_v2.py')
+        spec = importlib.util.spec_from_file_location('report_quick_v2', report_module_path)
+        report_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(report_mod)
+        report_mod.generate_quick_report(results_dict, report_path)
+        print(f'[+] Quick Scan report generated: {report_path}')
 
     return report_path
 
