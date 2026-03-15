@@ -27,6 +27,7 @@ standardize-*.js
 scan.bat
 *.bak
 tools/
+intel-reports/
 
 # Local dev
 node_modules/
